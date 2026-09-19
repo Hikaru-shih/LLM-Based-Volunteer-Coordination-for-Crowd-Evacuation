@@ -30,7 +30,7 @@ You can also open `Assets/Scenes/SampleScene.unity` directly. Its saved configur
 
 `GridWorld.Init()` creates a rectangular grid with boundary walls and a centered, three-cell-wide exit on each of its four sides. Obstacles are generated at initialization, and agents spawn in a configurable area. The current menu does not provide the old README's named S1–S4 scenario presets.
 
-The simulation uses discrete movement steps: evaluate volunteer decisions, handle volunteer work, propose agent moves, resolve competing requests for a cell, commit moves, and update floor fields and diagnostics. A run stops when all agents evacuate or the current **200-step limit** is reached. Reaching 90% evacuation is recorded as a metric; it does not end the run.
+The simulation uses discrete movement steps: evaluate volunteer decisions, propose agent moves, resolve competing requests for a cell, handle volunteer work, commit moves, and update floor fields and diagnostics. A run stops when all agents evacuate or the current **200-step limit** is reached. Reaching 90% evacuation is recorded as a metric; it does not end the run.
 
 ### Independent strategy settings
 
@@ -160,4 +160,197 @@ ProjectSettings/    Editor version, build scenes, and project settings
 
 ## Research scope
 
-The project explores how volunteer decision policies affect cooperation and evacuation performance. The previous README also described proposed random-walk/greedy policy classes, an `ExperimentRunner`/`ExperimentAnalyzer` framework, trajectory playback, comparison charts, an LLM explanation panel, statistical significance tests, and a completed 720-run dataset. These are not implemented or established by the current simulation scripts and should be treated as possible future work, not available features or validated findings.
+The project explores how volunteer decision policies affect cooperation and evacuation performance. The previous README also described proposed random-walk/greedy policy classes, an `ExperimentRunner`/`ExperimentAnalyzer` framework, trajectory playback, comparison charts, an LLM explanation panel, statistical significance tests, and a proposed 720-run dataset. These are not implemented or established by the current simulation scripts and should be treated as possible future work, not available features or validated findings.
+
+# Simulation Workflow
+
+Original conceptual workflow, preserved from the project plan. The diagram below shows the current implementation order; trajectory and exit-flow outputs listed here remain planned.
+
+Initialize Simulation
+
+- Create environment grid
+- Spawn pedestrian agents
+- Initialize floor fields
+
+Simulation Step
+
+- Identify potential volunteers
+- Select volunteers
+- Update anticipation field
+- Agents propose moves
+- Resolve movement conflicts
+- Commit movements
+- Update dynamic floor field
+
+Simulation outputs include:
+
+- agent trajectories
+- evacuation time
+- volunteer statistics
+- exit flow rate
+
+---
+
+## Current simulation flow
+
+```mermaid
+flowchart TD
+    A[Main menu settings or saved Inspector configuration] --> B[Load PlayerPrefs overrides]
+    B --> C[Initialize grid, obstacles, fields, and agents]
+    C --> D[Wait for step interval while running and unpaused]
+    D --> E[Update dynamic volunteer states]
+    E --> F[Agents propose moves]
+    F --> G[Resolve movement conflicts]
+    G --> H[Execute volunteer obstacle-removal actions]
+    H --> I[Commit moves and record evacuations]
+    I --> J[Record first 90 percent evacuation threshold]
+    J --> K[Update DFF, AFF, and diagnostics]
+    K --> L{Run complete or 200-step limit?}
+    L -->|No| D
+    L -->|All evacuated| M[Export detailed data]
+    L -->|Step limit| N[Log timeout and remaining agents]
+    M --> O{More batch rounds?}
+    N --> O
+    O -->|Yes| C
+    O -->|No, batch mode| P[Export accumulated data and 90 percent summary]
+    O -->|No, single run| Q[Stop]
+```
+
+Detailed export conditions and batch aggregation caveats are documented under **Output and metrics**.
+
+# Experimental Design (Original Research Plan)
+
+The following design is retained as a research target. Its strategy suite, scenario presets, seeded repetitions, and complete data collection are not all automated or implemented in the current project.
+
+## Independent Variables
+
+We vary the following factors:
+
+### Strategy
+- Random Walk
+- Greedy Navigation
+- A* Pathfinding
+- Probabilistic Game Theory
+- Context-Aware Game Theory
+- LLM-Based Policy
+
+### Crowd Density
+- Small (25 agents)
+- Medium (50 agents)
+- Large (100 agents)
+
+### Scenario Types
+- S1: Single exit (no obstacle)
+- S2: Single exit (blocked)
+- S3: Dual exits (one blocked)
+- S4: High-density congestion scenario
+
+---
+
+## Controlled Variables
+
+To ensure fair comparison across strategies, the following are fixed:
+
+- Grid size
+- Agent movement speed
+- Observation range
+- Simulation time step
+- LLM input format (prompt structure)
+
+---
+
+## Experimental Procedure
+
+1. Run each configuration **30 times** with different random seeds
+2. Record all evaluation metrics for each run
+3. Compute mean and standard deviation
+4. Perform cross-strategy comparison
+
+---
+
+## Data Collection
+
+For each simulation run, the system records:
+
+- Evacuation time
+- Agent trajectories
+- Conflict events
+- Volunteer decisions
+- Exit usage statistics
+
+All results are exported in CSV format for analysis.
+
+---
+
+# Development Schedule
+
+Original development timeline (9 weeks). This schedule is preserved as the project plan; entries such as "Complete" describe planned milestones, not verified completion status. See the implemented features and limitations above for current behavior.
+
+## Phase 1: Core Framework (Week 1-6)
+
+### Week 1
+Project initialization, grid environment, and basic agent system
+- Complete: GridWorld, PedestrianAgent, SimulationManager
+- Begin: AgentManager
+
+### Week 2
+Agent system and Static Floor Field navigation
+- Complete: AgentManager, StaticFloorField
+- Begin: First baseline strategy (Greedy)
+
+### Week 3
+Parallel movement updates and conflict resolution
+- Complete: Movement synchronization, YielderGame
+- Begin: Probabilistic decision model
+
+### Week 4
+Obstacle system and advanced navigation
+- Complete: Obstacle mechanics, A* Pathfinding
+- Begin: ExperimentConfig and ExperimentRunner
+
+### Week 5
+Volunteer dilemma and obstacle removal mechanics
+- Complete: VolunteerDilemma, obstacle removal logic
+- Enhance: Data collection infrastructure
+
+### Week 6
+Dynamic Floor Field, Anticipation Field, and visualization
+- Complete: DynamicFloorField, AnticipationFloorField
+- Implement: Basic visualization (heatmaps, statistics panel)
+- Prepare: ExperimentConfig and initial testing scenarios
+
+## Phase 2: Advanced Systems (Week 7-9)
+
+### Week 7
+LLM decision policy integration and explainability
+- Integrate: LLMDecisionPolicy with decision explanation
+- Complete: LLMDecisionExplainer visualization
+- Run: Initial experiments to validate system behavior
+- Debug: LLM decision consistency and performance
+
+### Week 8
+Comprehensive simulation experiments and statistical analysis
+- Run: Full parameter sweep with all 6 strategies
+- Collect: All metrics across 30 runs per scenario
+- Complete: ExperimentAnalyzer, comparison charts
+- Analyze: Mean, standard deviation, and performance comparison
+
+### Week 9
+Data analysis, visualization, and final presentation
+- Generate: Performance reports and statistical comparisons
+- Create: Publication-quality charts and visualizations
+- Prepare: Final presentation and research paper
+- Interpret: Differences between LLM and baseline strategies
+
+---
+
+# References
+
+1. Lin, G. W., & Wong, S. K. (2018).
+Evacuation simulation with consideration of obstacle removal and using game theory. Physical Review E.
+
+2. Helbing, D., Farkas, I., & Vicsek, T. (2000).
+Simulating dynamical features of escape panic.
+
+3. Nishinari, K., Kirchner, A., Namazi, A., & Schadschneider, A. (2004).
+Cellular automaton approach to pedestrian dynamics.
