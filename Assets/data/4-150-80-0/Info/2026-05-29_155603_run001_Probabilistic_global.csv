@@ -1,0 +1,2 @@
+RunID,Strategy,TotalSteps,TotalTime,AvgTimePerAgent,MaxTime,MinTime,StdTime,EvacuatedCount
+run001,Probabilistic,62,18.62,0.00,24.91,0.60,9.31,4469

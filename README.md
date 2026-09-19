@@ -87,7 +87,7 @@ Values in the C# field initializers, serialized scenes, and saved PlayerPrefs ca
 
 The current `LLMDecisionPolicy` implementation sends requests directly from Unity using `UnityWebRequest` to the Chat Completions endpoint. The model field defaults to `gpt-4.1` in source and can be changed in settings.
 
-To exercise the remote policy, select `LLM`, configure the model and API key, and enable `debugLLMDecisionFlow` to inspect requests and fallbacks in the Console. The settings controller stores the API key in local PlayerPrefs; it is not an encrypted credential store.
+To exercise the remote policy, select `LLM`, configure the model and API key, and enable `debugLLMDecisionFlow` to inspect requests and fallbacks in the Console. The API key is read from openai-key.local.txt in the project root (next to Assets) in the Unity Editor. Copy openai-key.example.txt to that filename and replace its contents with your key on a single line. This file is ignored by Git; never put keys in scenes or source code. The settings screen saves the key to the same file instead of PlayerPrefs. In a built player, the file lives in Application.persistentDataPath and must be provided separately. The file is plain text, not encrypted. If missing or empty, the existing mock fallback is used.
 
 The implemented decision concerns **volunteering for obstacle removal**. Context includes agent position, nearby agents and obstacles, exit distance, current volunteers, target-obstacle location, and an estimated evacuation impact. The expected response is:
 
