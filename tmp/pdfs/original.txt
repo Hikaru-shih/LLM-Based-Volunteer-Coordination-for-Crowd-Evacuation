@@ -1,0 +1,253 @@
+
+--- PAGE 1 ---
+LLM - Based Volunteer Coordination for 
+Crowd Evacuation: A Comparison with a 
+Game - Theoretic Model 
+110652012   施品光 
+Introduction 
+Crowd evacuation simulation is an important research topic for improving public 
+safety during emergencies such as fires and earthquak es. Existing evacuation 
+models commonly employ Cellular Automata and Floor Field methods to 
+simulate pedestrian movement and evaluate evacuation efficiency. 
+In this work, we investigate whether a Large Language Model (LLM) can improve 
+volunteer coordinatio n in crowd evacuation. We replace the original game - 
+theoretic volunteer decision module with an LLM - based reasoning framework 
+while preserving the remaining simulation components for a fair comparison. 
+Experimental results demonstrate improved evacuation e fficiency together with 
+interpretable volunteer decisions. 
+The main contributions of this work are summarized as follows: 
+1.   We replace the original game - theoretic volunteer decision model with an 
+LLM - based reasoning framework. 
+2.   We preserve the original evacua tion framework to enable a fair comparison. 
+3.   We improve evacuation performance while providing interpretable volunteer 
+decisions. 
+Background 
+II. Background 
+The proposed work is based on the crowd evacuation framework introduced by 
+Lin and Wong [1]. The simulation environment consists of multiple exits, some of 
+--- PAGE 2 ---
+which may be blocked by obstacles. Pedestrians move toward available exits 
+using Cellular Automata (CA) and Floor Field guidance. Unlike conventional 
+evacuation models, the framework allows pedestrians to voluntarily remove 
+obstacles, enabling blocked exit s to become available again and improving 
+evacuation efficiency. 
+To determine volunteer behavior, the original model adopts the Volunteer's 
+Dilemma, a game - theoretic approach that estimates the probability of an agent 
+becoming a volunteer based on predefined mathematical equations. Potential 
+volunteers are first identifi ed, after which a volunteer is assigned to remove each 
+obstacle. Although this approach effectively models volunteer behavior, its 
+decision process mainly relies on predefined rules and limited local information. 
+This limitation motivates the use of LLM - b ased reasoning for volunteer 
+coordination, which is introduced in the following section. 
+--- PAGE 3 ---
+P urpose   Method 
+Original   volunteer coordination 
+Fig.   1 
+The original model determines 
+volunteer behavior using the 
+Volunteer's Dilemma. During each 
+selection step, pedestrians first 
+identify nearby obstacles and 
+visible agents. A game - theoretic 
+decision model is then applied to 
+estimate the willingness of each 
+pedestrian to become a volunteer. 
+Potential volunteers are grouped 
+according to the obstacle they can 
+assist. For each obstacle, the 
+nearest volunteer is selected to 
+remove the blockage, while all 
+remaining pedestrians continue 
+their original evacuation behavior. 
+After the volunteer assignment is 
+completed, selected volunteers 
+move toward the assigned 
+obstacle and remove it. Once the 
+obstacle is cleared, the 
+corresponding exit becomes 
+available again, allowing 
+subsequent pedestrians to 
+evacuate more efficiently. Th is 
+volunteer coordination 
+mechanism serves as the baseline 
+for comparison in this study. 
+--- PAGE 4 ---
+Fig.   2 
+After volunteer probabilities are calculated, potential volunteers are grouped 
+according to each obstacle. The nearest volunteer is then assigned to remove 
+the obstacle while the remaining pedestrians continue evacuation. 
+Proposed LLM Volunteer Coordination 
+Instead of using a predefined mathematical model, the proposed approach 
+employs an LLM to determine volunteer assignments. The LLM reasons over the 
+current evacuation context and generates volunteer coordination decisions. 
+Equation   estimates the probability that a pedestrian becomes a volunteer. The 
+decision is influenced by the local evacuation context, including the number of 
+nearby pedestrians, the obstacle blockage ratio, and the relative cost of 
+volunteering. A higher blockage   ratio generally increases the willingness to 
+volunteer, while a higher volunteer cost decreases the volunteer probability. 
+Finally, a Bernoulli sampling process is performed to determine whether the 
+pedestrian becomes a volunteer. 
+N near :   Number of nearby pedestrians 
+B :   Obstacle blockage ratio 
+ω :   Unwillingness coefficient 
+C v :   Volunteer cost 
+C f :   Failure cost 
+Β :   Cost ratio   𝐶 𝑣 / 𝐶 𝑓 
+--- PAGE 5 ---
+Fig.   3 
+As illustrated in   F i g .   3 , the proposed framework first collects the current 
+evacuation context, including visible obstacles and nearby pedestrians. If a 
+volunteer selection step is triggered, the collected information is provided to the 
+LLM, which generates volunteer assignments.   Otherwise, existing assignments 
+are preserved. 
+--- PAGE 6 ---
+Input   Description 
+Visible Obstacles   Obstacles within observation range 
+Nearby Pedestrians   Pedestrians around each obstacle 
+Available Volunteers   Candidate volunteers 
+Distance   Distance between volunteer and 
+obstacle 
+Obstacle Impact   Estimated influence on evacuation 
+Unlike the original mathematical model, the LLM simultaneously considers 
+multiple contextual factors when making decisions. Table 2 summarizes the 
+information provided to the LLM during each volunteer selection step. 
+Based on the provided context, the LLM determines volunteer assignments for 
+the current evacuation state. Compared with the original obstacle - local strategy, 
+the proposed method performs global volunteer coordination by considering 
+multiple obstacles and c andidate volunteers simultaneously. 
+In addition to volunteer assignments, the LLM also generates natural - language 
+explanations describing the reasoning behind each decision. These explanations 
+improve the interpretability of the proposed framework and facilitate analysis of 
+volunteer behavio r . 
+--- PAGE 7 ---
+Framework 
+Fig.   4 
+Fig   4 illustrates the overall architecture of the proposed evacuation framework. 
+The simulation consists of five major components: the Simulation Core, 
+Environment Layer, Agent Layer, Decision Layer, and Data Export module. 
+Layer   Function 
+Simulation Core   Controls the simulation loop 
+Environment Layer   Manages map and floor fields 
+Agent Layer   Controls pedestrian behaviors 
+Decision Layer   Performs volunteer coordination 
+Data Export   Records simulation results 
+--- PAGE 8 ---
+The Simulation Core manages the overall simulation loop. The Environment 
+Layer maintains map information and floor - field guidance. The Agent Layer 
+controls pedestrian movement, while the Decision Layer performs volunteer 
+coordination. Finally, the Data Exp ort module records simulation statistics for 
+evaluation. 
+Only the volunteer decision module is modified in this work. 
+Compared with the original framework, all simulation components remain 
+unchanged except for the volunteer decision module. This design minimizes 
+implementation bias and enables a fair comparison between the original and 
+proposed approaches. 
+Explainable Volunteer Reasoning 
+Unlike the original mathematical model, the proposed approach not only 
+generates volunteer assignments but also provides natural - language 
+explanations describing the reasoning behind each decision. This additional 
+information improves the interpretability   of the volunteer coordination process 
+Fig 5   ( Example of LLM - generated volunteer reasoning ) 
+The generated reasoning allows users to understand why a particular volunteer is 
+selected. Instead of only producing a final assignment, the LLM explicitly 
+describes the contextual factors considered during decision making, such as 
+obstacle impact, volunte er distance, and surrounding pedestrian density. 
+Although the reasoning itself does not directly affect simulation performance, it 
+provides additional transparency that is unavailable in the original model. Such 
+explainable outputs facilitate result analysis and may support future human - AI 
+collaborative   evacuation planning. 
+--- PAGE 9 ---
+Experimental Setup 
+Simulation Environment 
+Parameter   Value 
+Environment   Grid - based 
+Exits   4 
+Obstacles   Randomly generated 
+Obstacles   Counts   20 , 40, 60, 80 
+Agent Counts   60, 90, 120, 150 
+Runs   30 
+Experiments were conducted in a grid - based evacuation environment with four 
+exits and randomly generated obstacles. Four crowd densities (60, 90, 120, and 
+150 agents) were evaluated. Each scenario was repeated 30 times to reduce 
+randomness, and volunteer s election was performed every six simulation steps. 
+Evaluation Metric 
+Performance was evaluated using the T90 evacuation time, which represents the 
+number of simulation steps required for 90% of pedestrians to successfully 
+evacuate. A lower T90 value indicates better evacuation efficiency. 
+--- PAGE 10 ---
+Experimental Results 
+Evacuation Performance 
+Fig   7. 
+Fi g   7 compares the T90 evacuation time of the original model and the proposed 
+LLM - based approach under different crowd densities. Lower T90 values indicate 
+better evacuation performance. 
+The proposed method consistently achieves lower T90 values than the original 
+model across all scenarios. The performance gap becomes more significant as 
+the number of pedestrians increases, indicating that the LLM - based 
+coordination is more effective in de nse evacuation environments. 
+--- PAGE 11 ---
+Performance Improvement 
+Fig 8 
+Fig   8. Relative improvement of the proposed method over the original model. 
+The improvement is relatively small in low - density scenarios because volunteer 
+conflicts are limited. As crowd density increases, the advantage of global 
+volunteer coordination becomes more apparent, resulting in larger performance 
+gains. 
+Qualitative Analysis 
+In addition to improving evacuation performance, the proposed framework 
+provides interpretable volunteer decisions. Figure 9 presents an example of the 
+reasoning generated by the LLM during volunteer coordination. 
+Unlike the original mathematical model, which only outputs the final volunteer 
+assignment, the LLM explicitly explains why a volunteer is selected. Typical 
+reasoning includes obstacle impact, volunteer proximity, and the number of 
+affected pedestrians. 
+Although these explanations do not directly affect evacuation performance, they 
+--- PAGE 12 ---
+provide additional transparency that is unavailable in the original model. Such 
+interpretable outputs facilitate behavior analysis and may support future human - 
+AI collaborative evacuation planning. 
+Discussion 
+Advantages 
+Global Coordination 
+Unlike the original model, which assigns volunteers independently for each 
+obstacle, the proposed framework considers all obstacles and candidate 
+volunteers simultaneously. This global coordination helps reduce redundant 
+assignments and improves overall ev acuation efficiency. 
+Context Awareness 
+The LLM utilizes richer contextual information, including obstacle impact, 
+volunteer distance, and nearby pedestrian density. This enables more 
+adaptive decisions under different evacuation scenarios. 
+Explainability 
+In addition to volunteer assignments, the proposed framework provides 
+natural - language reasoning that explains the decision process. Such 
+explanations improve transparency and facilitate result analysis. 
+Limitations 
+API Cost 
+Inference Time 
+Prompt Dependency 
+The quality of volunteer assignments depends on the prompt design and the 
+capability of the selected LLM. 
+--- PAGE 13 ---
+Conclusion 
+This work presented an LLM - based volunteer coordination framework for crowd 
+evacuation simulation. By replacing the original game - theoretic volunteer 
+decision module while preserving the remaining simulation framework, a fair 
+comparison between the origina l and proposed approaches was achieved. 
+Experimental results demonstrated that the proposed method consistently 
+reduced the T90 evacuation time under different crowd densities. Furthermore, 
+the LLM provided interpretable decision reasoning, improving the t ransparency 
+of volunteer coordination. These results suggest that LLM - based reasoning is a 
+promising approach for enhancing volunteer decision - making in crowd 
+evacuation simulations. 
+Future work 
+Several directions can be explored in future research. First, more complex 
+evacuation scenarios, such as dynamic obstacles and changing environments, 
+could be considered to evaluate the robustness of the proposed framework. 
+Second, different LLMs or locall y deployed language models may be investigated 
+to reduce inference cost and improve response time. Finally, integrating real - 
+world evacuation data and human behavioral studies could further validate the 
+effectiveness and practicality of the proposed volunt eer coordination 
+framework. 
+R eference 
+[ 1]   Lin, G. W., & Wong, S. K. (2018). Evacuation simulation with consideration of 
+obstacle removal and using game   theory.   Physical Review E ,   97 (6), 062303. 
