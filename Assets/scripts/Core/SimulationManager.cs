@@ -15,6 +15,7 @@ public class SimulationManager : MonoBehaviour
     private const string VolunteerCountKey = "sim.volunteerCount";
     private const string StepIntervalKey = "sim.stepInterval";
     private const string VolunteerDecisionModeKey = "sim.volunteerDecisionMode";
+    private const string ObstacleHandlingModeKey = "sim.obstacleHandlingMode";
     private const string VolunteerSelectionIntervalKey = "sim.volunteerSelectionInterval";
     private const string ObstacleVisibilityRangeKey = "sim.obstacleVisibilityRange";
     private const string ObstacleActionRangeKey = "sim.obstacleActionRange";
@@ -36,9 +37,62 @@ public class SimulationManager : MonoBehaviour
     public enum VolunteerDecisionMode
     {
         OriginalGameTheory,
-        LLM
+        LLM,
+        NoVolunteers,
+        MockHeuristic,
+        RandomMatched
     }
 
+    [Header("Reproducible research (Inspector)")]
+    public ResearchScenario researchScenario = ResearchScenario.RandomRoom;
+    [Header("Paper obstacle dynamics")]
+    public ObstacleHandlingMode obstacleHandlingMode = ObstacleHandlingMode.PaperRelocation;
+    [Header("Coordination extension (Local dispatcher)")]
+    public Coordination.ExecutionMode paperExecutionMode=Coordination.ExecutionMode.PaperReference;
+    public Coordination.AvailabilityMode coordinationAvailability=Coordination.AvailabilityMode.PolicyWillingness;
+    [Min(1)] public int coordinationIdleSteps=30;
+    [Min(1)] public int coordinationCooldownSteps=5;
+    public PaperDestinationRule paperDestinationRule = PaperDestinationRule.NextToWallsOrObstacles;
+    public float paperDestinationExitDistance = 2f;
+    public float paperAbandonDensity = 0.01f;
+    public int paperDensityWindow = 10;
+    public int paperReplanAfterSteps = 10;
+    public bool paperExitWidthWeighting = true;
+    [Min(1)] public int paperManipulationSteps = 1;
+    public PaperSigmaMetric paperSigmaMetric = PaperSigmaMetric.GridDistance;
+    [Range(0,1)] public float paperDiffusion = 0.3f;
+    [Range(0,1)] public float paperDecay = 0.1f;
+    [Min(0)] public float paperAnticipationRadius = 6f;
+    private PaperModelEngine paperModel;
+    public PaperModelEngine PaperModel => paperModel;
+    public int baseSeed = 2026;
+    [Tooltip("0: run until everyone evacuates; positive values are an explicit validation watchdog, not a success threshold.")]
+    public int maxSimulationSteps = 0;
+    public int EffectiveVolunteerActionRange => obstacleHandlingMode==ObstacleHandlingMode.PaperRelocation || volunteerDecisionMode == VolunteerDecisionMode.OriginalGameTheory ? 1 : Mathf.Max(1, obstacleActionRange);
+    public int researchExitWidth = 3;
+    [Range(1,4)] public int exitCount = 4;
+    public int EffectiveExitCount => researchScenario==ResearchScenario.RandomRoom || researchScenario==ResearchScenario.OpenRoom
+        ? Mathf.Clamp(exitCount,1,4) : researchScenario==ResearchScenario.SingleBlockedExit ? 1 : 2;
+    public int exitApproachDepth = 3;
+    [Min(1)] public int obstacleRemovalWorkSteps = 5;
+    private readonly Dictionary<int, int> obstacleWorkProgress = new Dictionary<int, int>();
+    public float yielderDefectionCost = 1f;
+    public float yielderFriction = 0f;
+    public bool allowMockFallback = false;
+    public bool useLLMAssignment = false;
+    [System.NonSerialized] public string researchOutputFolder;
+    [Header("Automatic experiment notebook")]
+    public bool recordExperimentsAutomatically = true;
+    [TextArea] public string experimentPurpose = "";
+    [System.NonSerialized] public string experimentRecordsRootOverride;
+    private string AutomaticPurpose => string.IsNullOrWhiteSpace(experimentPurpose)
+        ? agentResearchPhase+" / "+volunteerDecisionMode+" / "+researchScenario+": evaluate evacuation and assistance; no custom objective supplied."
+        : experimentPurpose;
+    private string experimentID = System.DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss_fff") + "_" + System.Guid.NewGuid().ToString("N").Substring(0, 8);
+    private int activeRunID = 1;
+    private bool runExported;
+    private string currentTermination = "running";
+    private readonly System.Diagnostics.Stopwatch runClock = new System.Diagnostics.Stopwatch();
     private bool isPaused = false;
     [Header("Batch Run")]
     [Tooltip("How many times to run the simulation in batch mode (set in Inspector)")]
@@ -67,10 +121,132 @@ public class SimulationManager : MonoBehaviour
     public int volunteerSelectionInterval = 6;
     public int obstacleVisibilityRange = 5;
     public int obstacleActionRange = 2;
+    [Tooltip("LegacyClearance only. PaperRelocation evaluates every eligible candidate before advancing the step.")]
     public int maxLLMRequestsPerStep = 3;
-    public float volunteerCost = 1.0f;
-    public float failureCost = 2.0f;
-    public float unwillingnessOmega = 1.0f;
+    [Tooltip("Optional JSONL decision trace for strict offline replay; empty means live API.")]
+    public string paperDecisionReplayPath = "";
+    public AgentInformationCondition agentInformation = AgentInformationCondition.Core;
+    public AgentPromptWording agentPromptWording = AgentPromptWording.Standard;
+    public AgentResearchPhase agentResearchPhase = AgentResearchPhase.Development;
+    [Tooltip("Frozen JSON generated from separate calibration runs; required for RandomMatched.")]
+    public string cooperationCalibrationPath = "";
+    [Tooltip("FinalTest requires a locked plan produced by tools/research_plan.py.")]
+    public string lockedStudyPlanPath = "";
+    [System.NonSerialized] public ClosedLoopInitialState closedLoopInitialState;
+    [System.NonSerialized] public System.Action closedLoopBeforeApiRequest;
+    [System.NonSerialized] public bool closedLoopZeroStepValidation;
+    [System.NonSerialized] public string closedLoopSourceSHA="",closedLoopStudyPlanID="",closedLoopLockPath="",closedLoopJobID="";
+    public string lockedCoordinationStudyPlanPath="";
+    private CoordinationStudyPlan.Job coordinationStudyJob;
+    private string lockedStudyPlanID = "";
+    private string activeAgentSettings;
+    private bool activeResearchLocked;
+    private string AgentSettingsIdentity => AgentConditionKey+"|"+volunteerDecisionMode+"|"+agentInformation+"|"+agentResearchPhase+"|"+openAIModel+"|"+paperDecisionReplayPath+"|"+cooperationCalibrationPath+"|"+maxAgentRequestsPerRun+"|"+enableCoordinationLiveRequests+"|"+maxCoordinationRequestsPerRun+"|"+coordinationMaxOutputTokens+"|"+coordinationMaxPromptChars+"|"+coordinationReplayPath+"|"+lockedCoordinationStudyPlanPath+"|"+closedLoopSourceSHA+"|"+closedLoopStudyPlanID+"|"+(closedLoopInitialState==null?"":closedLoopInitialState.Identity);
+    [Tooltip("Zero disables the total live-request safety limit. Exceeding it invalidates, never skips candidates.")]
+    public int maxAgentRequestsPerRun = 0;
+    private CooperationCalibration cooperationCalibration;
+    public string AgentConditionKey => (closedLoopInitialState==null ? "" : "closed-loop-v1|"+PersonalDecisionProtocol.Version+"|"+closedLoopInitialState.TemplateSHA+"|")+string.Join("|", new string[] {
+        paperExecutionMode.ToString(),coordinationAvailability.ToString(),coordinationIdleSteps.ToString(),coordinationCooldownSteps.ToString(),
+        agentPromptWording.ToString(),researchScenario.ToString(), world.width.ToString(), world.height.ToString(), agentCount.ToString(),
+        obstacleCount.ToString(),EffectiveExitCount.ToString(),researchExitWidth.ToString(),agentSpawnAreaSize.x.ToString(),agentSpawnAreaSize.y.ToString(),
+        paperManipulationSteps.ToString(),volunteerCost.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        failureCost.ToString("R",System.Globalization.CultureInfo.InvariantCulture),unwillingnessOmega.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        obstacleVisibilityRange.ToString(),maxSimulationSteps.ToString(),movementStrategy.ToString(),conflictStrategy.ToString(),
+        paperExitWidthWeighting.ToString(),paperSigmaMetric.ToString(),paperDestinationRule.ToString(),
+        paperDestinationExitDistance.ToString("R",System.Globalization.CultureInfo.InvariantCulture),paperAbandonDensity.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        paperDensityWindow.ToString(),paperReplanAfterSteps.ToString(),paperDiffusion.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        paperDecay.ToString("R",System.Globalization.CultureInfo.InvariantCulture),paperAnticipationRadius.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        world.cellSize.ToString("R",System.Globalization.CultureInfo.InvariantCulture),yielderDefectionCost.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        yielderFriction.ToString("R",System.Globalization.CultureInfo.InvariantCulture),exitApproachDepth.ToString(),stepInterval.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        kStatic.ToString("R",System.Globalization.CultureInfo.InvariantCulture),kDynamic.ToString("R",System.Globalization.CultureInfo.InvariantCulture),
+        kAnticipation.ToString("R",System.Globalization.CultureInfo.InvariantCulture),movementTemperature.ToString("R",System.Globalization.CultureInfo.InvariantCulture)
+    });
+    public void ValidateAgentResearchSettings(int runSeed)
+    {
+        if(!System.Enum.IsDefined(typeof(Coordination.ExecutionMode),paperExecutionMode) ||
+            !System.Enum.IsDefined(typeof(Coordination.AvailabilityMode),coordinationAvailability) || coordinationIdleSteps<1 || coordinationCooldownSteps<1)
+            throw new System.InvalidOperationException("Invalid coordination configuration");
+        if(paperExecutionMode!=Coordination.ExecutionMode.PaperReference && obstacleHandlingMode!=ObstacleHandlingMode.PaperRelocation)
+            throw new System.InvalidOperationException("CoordinatedExtension requires PaperRelocation physics");
+        if(coordinationAvailability==Coordination.AvailabilityMode.AllEligibleControl &&
+            (paperExecutionMode==Coordination.ExecutionMode.PaperReference || volunteerDecisionMode==VolunteerDecisionMode.NoVolunteers))
+            throw new System.InvalidOperationException("AllEligibleControl requires the extension and is not a NoVolunteers policy");
+        if(!System.Enum.IsDefined(typeof(AgentInformationCondition),agentInformation) ||
+            !System.Enum.IsDefined(typeof(VolunteerDecisionMode),volunteerDecisionMode) ||
+            !System.Enum.IsDefined(typeof(AgentResearchPhase),agentResearchPhase) ||
+            !System.Enum.IsDefined(typeof(AgentPromptWording),agentPromptWording))
+            throw new System.InvalidOperationException("Unknown agent policy/information setting");
+        if(agentResearchPhase!=AgentResearchPhase.Development &&
+            (obstacleHandlingMode!=ObstacleHandlingMode.PaperRelocation || maxSimulationSteps<=0 || allowMockFallback))
+            throw new System.InvalidOperationException("Calibration/test requires PaperRelocation, finite horizon and no mock fallback");
+        if(paperExecutionMode==Coordination.ExecutionMode.LLMExtension)
+        {
+            if(maxCoordinationRequestsPerRun<1 || coordinationMaxOutputTokens<64 || coordinationMaxOutputTokens>16384 || coordinationMaxPromptChars<256 || string.IsNullOrWhiteSpace(openAIModel))
+                throw new System.InvalidOperationException("Invalid LLM dispatch request/token/prompt limits");
+            if(agentResearchPhase!=AgentResearchPhase.Development && string.IsNullOrEmpty(lockedCoordinationStudyPlanPath))
+                throw new System.InvalidOperationException("LLM dispatch requires its locked coordination study plan outside Development");
+        }
+        if(!string.IsNullOrEmpty(coordinationReplayPath) && (paperExecutionMode!=Coordination.ExecutionMode.LLMExtension || batchRunCount!=1))
+            throw new System.InvalidOperationException("Coordination replay requires one LLM Coordination run");
+        lockedStudyPlanID="";coordinationStudyJob=null;
+        if(!string.IsNullOrEmpty(lockedCoordinationStudyPlanPath))
+        {
+            if(!string.IsNullOrEmpty(lockedStudyPlanPath))throw new System.InvalidOperationException("Select one study lock, not both");
+            coordinationStudyJob=CoordinationStudyPlan.Validate(lockedCoordinationStudyPlanPath,this,runSeed,out lockedStudyPlanID);
+        }
+        else if(closedLoopInitialState!=null && agentResearchPhase==AgentResearchPhase.FinalTest)
+            lockedStudyPlanID=ClosedLoopStudyGuard.Validate(closedLoopLockPath,this,runSeed);
+        else if(agentResearchPhase==AgentResearchPhase.FinalTest || !string.IsNullOrEmpty(lockedStudyPlanPath))
+            lockedStudyPlanID=AgentStudyPlan.LoadAndValidate(lockedStudyPlanPath,this,runSeed).planID;
+        if(agentResearchPhase!=AgentResearchPhase.Development &&
+            (agentCount<=0 || world==null || world.width<3 || world.height<3 ||
+             !PaperDecisionSpecification.HasValidCosts(volunteerCost,failureCost,unwillingnessOmega) || paperManipulationSteps<1 ||
+             string.IsNullOrWhiteSpace(openAIModel)))
+            throw new System.InvalidOperationException("Invalid study population, costs, world or model");
+        cooperationCalibration=null;
+        if(volunteerDecisionMode==VolunteerDecisionMode.RandomMatched)
+        {
+            if(obstacleHandlingMode!=ObstacleHandlingMode.PaperRelocation)
+                throw new System.InvalidOperationException("RandomMatched requires PaperRelocation");
+            cooperationCalibration=CooperationCalibration.Load(cooperationCalibrationPath,AgentConditionKey,
+                openAIModel,agentInformation,runSeed,agentResearchPhase,closedLoopInitialState!=null,closedLoopInitialState==null?"":closedLoopInitialState.TemplateSHA,closedLoopSourceSHA,maxSimulationSteps);
+        }
+        if(!string.IsNullOrEmpty(paperDecisionReplayPath) && (batchRunCount!=1 || volunteerDecisionMode!=VolunteerDecisionMode.LLM))
+            throw new System.InvalidOperationException("Strict replay requires a single LLM run and its matching trace");
+    }
+
+    [Header("LLM Coordination (separate from individual willingness)")]
+    public bool enableCoordinationLiveRequests=false;
+    public int maxCoordinationRequestsPerRun=20;
+    public int coordinationMaxOutputTokens=1024;
+    public int coordinationMaxPromptChars=60000;
+    public string coordinationReplayPath="";
+    private Coordination.LLMDispatchSession coordinationSession;
+#if UNITY_EDITOR
+    [System.NonSerialized] public Coordination.DispatchTransport coordinationTestTransport;
+#endif
+    private Coordination.DispatchOptions DispatchOptions => new Coordination.DispatchOptions {
+        model=openAIModel,conditionKey=AgentConditionKey+"|"+Coordination.LLMDispatchProtocol.Version+"|"+maxCoordinationRequestsPerRun+"|"+coordinationMaxOutputTokens+"|"+coordinationMaxPromptChars,replayPath=coordinationReplayPath,enableLive=enableCoordinationLiveRequests,
+        maxRequests=maxCoordinationRequestsPerRun,maxOutputTokens=coordinationMaxOutputTokens,maxPromptChars=coordinationMaxPromptChars};
+    public void RejectCoordination(string reason)
+    {simulationRunning=false;ExportFinishedRun("invalid_coordination_"+reason);}
+    public IEnumerator DecideCoordination(Coordination.Snapshot snapshot,System.Action<Coordination.Proposal> callback)
+    {
+        simulationData.RecordDispatchStart(snapshot,Coordination.LLMDispatchSession.PayloadFor(snapshot,DispatchOptions));
+        Coordination.Proposal result=null;Coordination.DispatchAudit audit=null;
+        yield return coordinationSession.Decide(snapshot,(proposal,record)=>{result=proposal;audit=record;});
+        if(audit!=null){simulationData.RecordDispatchAudit(audit);llmApiDecisionCallsThisRun+=audit.attempts;}
+        if(!simulationRunning || activeAgentSettings!=AgentSettingsIdentity)
+        {simulationData.RecordDispatchApplication(snapshot,false,"settings_changed_or_interrupted");RejectCoordination("settings_changed_or_interrupted");callback(null);yield break;}
+        if(result==null){simulationData.RecordDispatchApplication(snapshot,false,audit?.error??"missing_result");RejectCoordination(audit?.error??"missing_result");callback(null);yield break;}
+        callback(result);
+    }
+
+    private PaperAgentDecisionJournal paperDecisionJournal = new PaperAgentDecisionJournal();
+    private DecisionRandomStream decisionRandom;
+    public float volunteerCost = 0.005f;
+    public float failureCost = 0.5f;
+    public float unwillingnessOmega = 5f;
 
     [Header("Floor Field Weights")]
     public float kStatic = 1.0f;
@@ -106,6 +282,7 @@ public class SimulationManager : MonoBehaviour
     private float elapsedTime = 0f;
     private bool llmKeyWarningLogged = false;
     private int llmApiDecisionCallsThisRun = 0;
+    private int individualPaperRequestsThisRun = 0;
     private int llmMockFallbackCallsThisRun = 0;
     private int llmRequestsThisStep = 0;
     private int stepsToNinetyPercent = -1;
@@ -133,7 +310,12 @@ public class SimulationManager : MonoBehaviour
             return;
         }
 
-        LoadSettingsFromMainMenu();
+        // Research runs use the reviewed Inspector profile, not stale menu preferences.
+        if(agentResearchPhase==AgentResearchPhase.Development) LoadSettingsFromMainMenu();
+        // Research profiles bypass menu prefs, but credentials are always loaded locally.
+        openAIKey=LocalOpenAIKey.Load();
+        for(int index=0;index<Mathf.Max(1,batchRunCount);index++)
+            ValidateAgentResearchSettings(unchecked(baseSeed+index));
 
         if (batchRunCount > 1)
         {
@@ -147,6 +329,23 @@ public class SimulationManager : MonoBehaviour
 
     private void LoadSettingsFromMainMenu()
     {
+        if(PlayerPrefs.HasKey("sim.researchScenario"))
+        {
+            int selected=PlayerPrefs.GetInt("sim.researchScenario");
+            if(System.Enum.IsDefined(typeof(ResearchScenario),selected))researchScenario=(ResearchScenario)selected;
+        }
+        if(PlayerPrefs.HasKey("sim.maxAgentRequestsPerRun"))maxAgentRequestsPerRun=Mathf.Max(0,PlayerPrefs.GetInt("sim.maxAgentRequestsPerRun"));
+
+        if(PlayerPrefs.HasKey("sim.coordinationMode")) paperExecutionMode=(Coordination.ExecutionMode)PlayerPrefs.GetInt("sim.coordinationMode");
+        if(PlayerPrefs.HasKey("sim.exitCount")) exitCount=Mathf.Clamp(PlayerPrefs.GetInt("sim.exitCount"),1,4);
+        if(PlayerPrefs.HasKey("sim.agentInformation"))
+            agentInformation=(AgentInformationCondition)PlayerPrefs.GetInt("sim.agentInformation");
+        if(PlayerPrefs.HasKey(ObstacleHandlingModeKey))
+        {
+            int handling=PlayerPrefs.GetInt(ObstacleHandlingModeKey);
+            obstacleHandlingMode=System.Enum.IsDefined(typeof(ObstacleHandlingMode),handling)
+                ? (ObstacleHandlingMode)handling : ObstacleHandlingMode.PaperRelocation;
+        }
         if (world == null)
             return;
 
@@ -236,6 +435,10 @@ public class SimulationManager : MonoBehaviour
     [ContextMenu("Sync Current Values To MainMenu Settings")]
     private void SyncCurrentValuesToMainMenuSettings()
     {
+        PlayerPrefs.SetInt("sim.coordinationMode",(int)paperExecutionMode);
+        PlayerPrefs.SetInt("sim.exitCount",Mathf.Clamp(exitCount,1,4));
+        PlayerPrefs.SetInt("sim.agentInformation",(int)agentInformation);
+        PlayerPrefs.SetInt(ObstacleHandlingModeKey,(int)obstacleHandlingMode);
         if (world != null)
         {
             PlayerPrefs.SetInt(GridWidthKey, world.width);
@@ -275,34 +478,81 @@ public class SimulationManager : MonoBehaviour
         Debug.Log("Current SimulationManager values synced to MainMenu settings.");
     }
 
-    private void StartSingleRun()
+    private void StartSingleRun(int runID = 1)
     {
+        if(closedLoopInitialState!=null)closedLoopInitialState.Validate(agentCount,unchecked(baseSeed+runID-1));
+        ValidateAgentResearchSettings(unchecked(baseSeed + runID - 1));
+        if(coordinationStudyJob!=null)
+        {
+            bool apiNeeded=paperExecutionMode==Coordination.ExecutionMode.LLMExtension ||
+                (volunteerDecisionMode==VolunteerDecisionMode.LLM && coordinationAvailability!=Coordination.AvailabilityMode.AllEligibleControl);
+            if(apiNeeded && (string.IsNullOrEmpty(openAIKey) || (paperExecutionMode==Coordination.ExecutionMode.LLMExtension && !enableCoordinationLiveRequests)))
+                throw new System.InvalidOperationException("Scheduled LLM job requires configured key/live dispatch before its budget is claimed");
+            CoordinationStudyPlan.Claim(experimentRecordsRootOverride??AutomaticExperimentLog.DefaultRoot,lockedStudyPlanID,coordinationStudyJob);
+        }
+        activeRunID = runID;
+        currentTermination = "running";
+        runClock.Restart();
+        obstacleWorkProgress.Clear();
+        runExported = false;
+        agentManager?.DestroyAllAgents();
+        Random.InitState(unchecked(baseSeed + runID - 1));
+        decisionRandom = new DecisionRandomStream(DecisionRandomStream.SeedForRun(unchecked(baseSeed + runID - 1)));
         world.Init();
+        world.paperNeighborhood = obstacleHandlingMode == ObstacleHandlingMode.PaperRelocation;
         Debug.Log("GridWorld initialized with size: " + world.width + "x" + world.height);
-        world.SetRandomObstacles(obstacleCount);
+        if(closedLoopInitialState!=null)closedLoopInitialState.Configure(world);
+        else ResearchEnvironment.Configure(world, researchScenario, obstacleCount, researchExitWidth, exitApproachDepth,exitCount);
         floorField = new StaticFloorField(world);
         dynamicFloorField = new DynamicFloorField(world);
         anticipationFloorField = new AnticipationFloorField(world);
+        if(world.paperNeighborhood)
+        {
+            dynamicFloorField.diffusionRate=paperDiffusion;dynamicFloorField.decayRate=paperDecay;
+            anticipationFloorField.influenceRadius=paperAnticipationRadius;
+        }
         pathfinder = new AStarPathfinding(world);
         agentManager = new AgentManager(world, agentPrefab);
-        yielderGame = new YielderGame(conflictStrategy);
-        volunteerDilemma = new VolunteerDilemma(agentManager, world, floorField);
+        yielderGame = new YielderGame(conflictStrategy) { defectionCost = yielderDefectionCost, friction = yielderFriction };
+        volunteerDilemma = new VolunteerDilemma(agentManager, world, floorField) {
+            observationRange = obstacleVisibilityRange, exitApproachDepth = exitApproachDepth,
+            volunteerCost = volunteerCost, failureCost = failureCost, unwillingness = unwillingnessOmega
+        };
         llmDecisionPolicy = new LLMDecisionPolicy(openAIKey, openAIModel);
         volunteerDilemma.SetLLMPolicy(llmDecisionPolicy);
         volunteerDilemma.decisionMode = useLLMVolunteerDecision ? VolunteerDilemma.DecisionMode.LLM : VolunteerDilemma.DecisionMode.Probabilistic;
         ConfigureVolunteerDecisionStrategy();
-        // simulationData 只在 batch 開始時 new 一次
-        if (simulationData == null)
+        paperDecisionJournal = new PaperAgentDecisionJournal();
+        coordinationSession=null;
+        if(paperExecutionMode==Coordination.ExecutionMode.LLMExtension)
         {
-            simulationData = new SimulationData(conflictStrategy.ToString());
-            simulationData.SetSimulationParameters(kStatic, kDynamic, kAnticipation, movementTemperature, agentCount, obstacleCount);
+            Coordination.DispatchTransport transport=(payload,callback)=>Coordination.DispatchHttp.Send(openAIKey,payload,callback);
+#if UNITY_EDITOR
+            if(coordinationTestTransport!=null) transport=coordinationTestTransport;
+#endif
+            coordinationSession=new Coordination.LLMDispatchSession(DispatchOptions,transport);
         }
+        simulationData = new SimulationData(conflictStrategy.ToString(), runID, researchOutputFolder, experimentID,
+            recordExperimentsAutomatically ? experimentRecordsRootOverride??AutomaticExperimentLog.DefaultRoot : null,AutomaticPurpose);
         SpawnAgents();
+        paperModel = obstacleHandlingMode == ObstacleHandlingMode.PaperRelocation
+            ? new PaperModelEngine(this,world,agentManager.GetAgents(),dynamicFloorField,anticipationFloorField,yielderGame,DecidePaperVolunteer) : null;
+        if(paperModel!=null && paperModel.InitialBlockedTaskCount==0)
+            Debug.LogWarning("[VOLUNTEER] No unfinished obstacle blocks an exit. Paper recruitment will not trigger in this layout; choose a blocked-exit scenario for a functional test.");
+        simulationData.SetSimulationParameters(kStatic, kDynamic, kAnticipation, movementTemperature,
+            agentManager.GetAgentCount(), world.GetObstaclePositions().Count);
+        activeAgentSettings=AgentSettingsIdentity;
+        activeResearchLocked=agentResearchPhase!=AgentResearchPhase.Development || paperExecutionMode==Coordination.ExecutionMode.LLMExtension;
+        simulationData.SetRunMetadata(JsonUtility.ToJson(CaptureConfiguration(), true));
+        foreach (var agent in agentManager.GetAgents())
+            simulationData.RecordPosition(0, agent.AgentID, agent.gridPos, agent.GetVolunteerState().ToString(), false);
+        if(paperModel!=null) foreach(var obstacle in paperModel.Obstacles) simulationData.RecordObstacleState(0,obstacle);
         simulationRunning = true;
         currentStep = 0;
         timeSinceLastStep = 0f;
         elapsedTime = 0f;
-        llmApiDecisionCallsThisRun = 0;
+        evacuatedCount = 0;
+        llmApiDecisionCallsThisRun = 0;individualPaperRequestsThisRun=0;
         llmMockFallbackCallsThisRun = 0;
         stepsToNinetyPercent = -1;
         timeToNinetyPercent = -1f;
@@ -318,10 +568,23 @@ public class SimulationManager : MonoBehaviour
         // Keep legacy flag synchronized with the new enum mode to avoid split behavior.
         useLLMVolunteerDecision = (volunteerDecisionMode == VolunteerDecisionMode.LLM);
 
-        if (volunteerDecisionMode == VolunteerDecisionMode.LLM)
-            volunteerDecisionStrategy = new MockLLMVolunteerStrategy();
+        System.Func<float> decisionSample = null;
+        if (obstacleHandlingMode == ObstacleHandlingMode.PaperRelocation)
+        {
+            if (decisionRandom == null)
+                decisionRandom = new DecisionRandomStream(DecisionRandomStream.SeedForRun(unchecked(baseSeed + activeRunID - 1)));
+            decisionSample = decisionRandom.NextValue;
+        }
+        if (volunteerDecisionMode == VolunteerDecisionMode.RandomMatched)
+        {
+            if(cooperationCalibration==null)
+            { volunteerDecisionStrategy=null; return; } // Inspector configuration is validated before starting.
+            volunteerDecisionStrategy = new RandomMatchedVolunteerStrategy(cooperationCalibration.probability,decisionSample);
+        }
+        else if (volunteerDecisionMode == VolunteerDecisionMode.LLM || volunteerDecisionMode == VolunteerDecisionMode.MockHeuristic)
+            volunteerDecisionStrategy = new MockLLMVolunteerStrategy(decisionSample);
         else
-            volunteerDecisionStrategy = new OriginalGameTheoryVolunteerStrategy();
+            volunteerDecisionStrategy = new OriginalGameTheoryVolunteerStrategy(decisionSample);
 
         if (volunteerDilemma != null)
         {
@@ -331,91 +594,135 @@ public class SimulationManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Apply Paper Reference Parameters (Paper Relocation)")]
+    private void ApplyPaperReferenceParameters()
+    {
+        obstacleHandlingMode = ObstacleHandlingMode.PaperRelocation;
+        paperExecutionMode=Coordination.ExecutionMode.PaperReference;coordinationAvailability=Coordination.AvailabilityMode.PolicyWillingness;
+        paperDiffusion=0.3f;paperDecay=0.1f;paperAnticipationRadius=6;
+        if(world!=null) world.cellSize=0.4f;
+        volunteerDecisionMode = VolunteerDecisionMode.OriginalGameTheory;
+        agentInformation=AgentInformationCondition.Core;agentPromptWording=AgentPromptWording.Standard;
+        movementStrategy = PedestrianAgent.MovementStrategy.Combined;
+        conflictStrategy = YielderGame.Strategy.PaperYielder;
+        kStatic = 3f; kDynamic = 1f; kAnticipation = 5f; movementTemperature = 1f;
+        yielderDefectionCost = 1f; yielderFriction = 0f;
+        volunteerCost = 0.005f; failureCost = 0.5f; unwillingnessOmega = 5f;
+        volunteerSelectionInterval = 1; obstacleVisibilityRange = 20; obstacleActionRange = 1;
+        stepInterval = 0.3f; maxSimulationSteps = 0;
+        allowMockFallback = false; useLLMAssignment = false;
+        SyncCurrentValuesToMainMenuSettings();
+        Debug.Log("Applied paper reference parameters and relocation dynamics. See model audit for explicit implementation choices.");
+    }
+
     private IEnumerator BatchRunCoroutine()
     {
-        // 只 new 一次 SimulationData
-        simulationData = new SimulationData(conflictStrategy.ToString());
-        simulationData.SetSimulationParameters(kStatic, kDynamic, kAnticipation, movementTemperature, agentCount, obstacleCount);
-
-        // 用來統計每輪達到 90% 撤離的步數和時間
         List<int> stepsList = new List<int>();
         List<float> timeList = new List<float>();
-        List<bool> reachedNinetyList = new List<bool>();
+        List<bool> completedList = new List<bool>();
+        List<bool> validRuns = new List<bool>();
 
         for (int i = 0; i < batchRunCount; i++)
         {
             if (inGameUIController != null)
                 inGameUIController.SetRoundText(i + 1, batchRunCount);
             simulationRunning = false; // 確保每輪開始前重置
-            StartSingleRun();
+            StartSingleRun(i + 1);
             // 等待本輪模擬結束
             while (simulationRunning)
                 yield return null;
             // 每輪結束後記錄步數和時間
-            bool reachedNinety = stepsToNinetyPercent >= 0;
-            reachedNinetyList.Add(reachedNinety);
+            bool valid = currentTermination == "completed" || currentTermination == "timeout";
+            validRuns.Add(valid);
+            bool completed = currentTermination == "completed";
+            completedList.Add(completed);
 
-            int steps90 = reachedNinety ? stepsToNinetyPercent : ninetyPercentFallbackSteps;
-            float time90 = reachedNinety ? timeToNinetyPercent : ninetyPercentFallbackSteps * stepInterval;
-            stepsList.Add(steps90);
-            timeList.Add(time90);
+            int completionSteps = completed ? currentStep : -1;
+            float completionTime = completed ? elapsedTime : float.NaN;
+            stepsList.Add(completionSteps);
+            timeList.Add(completionTime);
             yield return new WaitForSeconds(0.5f); // 可調整每輪間隔
         }
         // batch 結束時一次性輸出所有資料
-        if (simulationData != null)
-            simulationData.ExportData();
         // 輸出 batch summary
-        ExportBatchSummary(stepsList, timeList, reachedNinetyList);
+        ExportBatchSummary(stepsList, timeList, completedList, validRuns);
         if (inGameUIController != null)
             inGameUIController.SetRoundText(0, batchRunCount); // 清空或顯示完成
         Debug.Log($"Batch run {batchRunCount} completed.");
     }
 
     // 輸出 batch summary csv
-    private void ExportBatchSummary(List<int> stepsList, List<float> timeList, List<bool> reachedNinetyList)
+    private void ExportBatchSummary(List<int> stepsList, List<float> timeList, List<bool> completedList, List<bool> validRuns)
     {
         if (stepsList.Count == 0) return;
-        string dataFolderPath = System.IO.Path.Combine(Application.dataPath, "data");
-        if (!System.IO.Directory.Exists(dataFolderPath))
-            System.IO.Directory.CreateDirectory(dataFolderPath);
-        string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
-        string fileName = $"{timestamp}_batch_summary.csv";
-        string filePath = System.IO.Path.Combine(dataFolderPath, fileName);
-        float avgSteps = 0f, avgTime = 0f, stdSteps = 0f, stdTime = 0f;
-        int minSteps = int.MaxValue, maxSteps = int.MinValue;
-        float minTime = float.MaxValue, maxTime = float.MinValue;
-        foreach (var s in stepsList) { avgSteps += s; if (s < minSteps) minSteps = s; if (s > maxSteps) maxSteps = s; }
-        foreach (var t in timeList) { avgTime += t; if (t < minTime) minTime = t; if (t > maxTime) maxTime = t; }
-        avgSteps /= stepsList.Count;
-        avgTime /= timeList.Count;
-        foreach (var s in stepsList) stdSteps += (s - avgSteps) * (s - avgSteps);
-        foreach (var t in timeList) stdTime += (t - avgTime) * (t - avgTime);
-        stdSteps = Mathf.Sqrt(stdSteps / stepsList.Count);
-        stdTime = Mathf.Sqrt(stdTime / timeList.Count);
-        int successRuns90 = reachedNinetyList.FindAll(x => x).Count;
-        int failedRuns = reachedNinetyList.Count - successRuns90;
-        using (var writer = new System.IO.StreamWriter(filePath))
+        string folder = simulationData.DataFolderPath;
+        string path = System.IO.Path.Combine(folder, experimentID + "_batch_summary.csv");
+        var steps = new List<float>();
+        var times = new List<float>();
+        int validCount = validRuns.FindAll(v => v).Count;
+        for (int i = 0; i < stepsList.Count; i++)
+            if (completedList[i]) { steps.Add(stepsList[i]); times.Add(timeList[i]); }
+        using (var writer = new System.IO.StreamWriter(path))
         {
-            writer.WriteLine($"Strategy,{conflictStrategy}");
-            writer.WriteLine($"useLLMVolunteerDecision,{useLLMVolunteerDecision}");
-            writer.WriteLine($"volunteerCount,{volunteerCount}");
-            writer.WriteLine($"obstacleCount,{obstacleCount}");
-            writer.WriteLine($"agentCount,{agentCount}");
-            writer.WriteLine($"stepInterval,{stepInterval}");
-            writer.WriteLine($"mapWidth,{world?.width ?? -1}");
-            writer.WriteLine($"mapHeight,{world?.height ?? -1}");
-            writer.WriteLine($"batchRunCount,{batchRunCount}");
-            writer.WriteLine($"kStatic,{kStatic}");
-            writer.WriteLine($"kDynamic,{kDynamic}");
-            writer.WriteLine($"kAnticipation,{kAnticipation}");
-            writer.WriteLine($"movementTemperature,{movementTemperature}");
-            writer.WriteLine($"summaryMetric,90pct_evacuated");
-            writer.WriteLine($"ninetyPercentFallbackSteps,{ninetyPercentFallbackSteps}");
-            writer.WriteLine();
-            writer.WriteLine("BatchSize,Strategy,AvgSteps,StdSteps,MinSteps,MaxSteps,AvgTime,StdTime,MinTime,MaxTime,Reached90PctAllRuns,SuccessRuns90Pct,FailedRuns");
-            writer.WriteLine($"{stepsList.Count},{conflictStrategy},{avgSteps:F2},{stdSteps:F2},{minSteps},{maxSteps},{avgTime:F2},{stdTime:F2},{minTime:F2},{maxTime:F2},{(failedRuns == 0 ? "true" : "false")},{successRuns90},{failedRuns}");
+            writer.WriteLine("SummaryMetric,successful_runs_only_T100; failures are right-censored at maxSimulationSteps");
+            writer.WriteLine("BatchSize,Strategy,AvgStepsT100,StdStepsT100,AvgTimeT100,StdTimeT100,CompletedRuns100Pct,TimedOutRuns,CompletionRate100Pct,ValidRuns,InvalidRuns");
+            writer.WriteLine(System.FormattableString.Invariant($"{stepsList.Count},{conflictStrategy},{SimulationData.Mean(steps):F4},{SimulationData.PopulationStd(steps):F4},{SimulationData.Mean(times):F4},{SimulationData.PopulationStd(times):F4},{steps.Count},{validCount - steps.Count},{(validCount > 0 ? (float)steps.Count / validCount : float.NaN):F4},{validCount},{stepsList.Count - validCount}"));
         }
-        Debug.Log($"Batch summary exported to {fileName}");
+    }
+
+    private ResearchRunConfiguration CaptureConfiguration()
+    {
+        return new ResearchRunConfiguration {
+            zeroStepValidation=closedLoopZeroStepValidation,geometryTemplateSHA=closedLoopInitialState==null?"":closedLoopInitialState.TemplateSHA,initialStateSHA=closedLoopInitialState==null?"":closedLoopInitialState.Identity,closedLoopSourceSHA=closedLoopSourceSHA,
+            initialBlockedObstacles=closedLoopInitialState==null?-1:closedLoopInitialState.blocked,mirrored=closedLoopInitialState!=null && closedLoopInitialState.mirrored,
+            schemaVersion = obstacleHandlingMode == ObstacleHandlingMode.PaperRelocation ? "4-paper-relocation" : "3-clearance-completion",
+            modelScope = obstacleHandlingMode == ObstacleHandlingMode.PaperRelocation ? "Paper relocation implementation; numerical figure replication pending" : "Legacy clearance approximation",
+            obstacleHandling = obstacleHandlingMode.ToString(),destinationRule = paperDestinationRule.ToString(),
+            destinationExitDistance = paperDestinationExitDistance,abandonDensity = paperAbandonDensity,
+            densityWindow = paperDensityWindow,replanAfterSteps = paperReplanAfterSteps,
+            movableObstacles = paperModel!=null ? paperModel.Obstacles.Count : world.GetObstaclePositions().Count,
+            immovableObstacles = world.immovableObstacles.Count,
+            fixedObstaclePositions = new List<Vector2Int>(world.immovableObstacles).ToArray(),
+            cellSize = world.cellSize,
+            exitWidthWeighted = paperExitWidthWeighting,
+            manipulationSteps = paperManipulationSteps,
+            sigmaMetric = paperSigmaMetric.ToString(),
+            experimentID = experimentID, runID = activeRunID, seed = unchecked(baseSeed + activeRunID - 1),
+            unityVersion = Application.unityVersion, scenario = researchScenario.ToString(),
+            movement = movementStrategy.ToString(), conflict = conflictStrategy.ToString(),
+            volunteerPolicy = paperExecutionMode!=Coordination.ExecutionMode.PaperReference && coordinationAvailability==Coordination.AvailabilityMode.AllEligibleControl
+                ? "AllEligibleControl" : volunteerDecisionMode.ToString(), model = openAIModel,
+            coordinationProtocol=Coordination.LLMDispatchProtocol.Version,coordinationExecution=string.IsNullOrEmpty(coordinationReplayPath)?"live_or_disabled":"strict_replay",
+            coordinationRequestLimit=maxCoordinationRequestsPerRun,coordinationOutputTokenLimit=coordinationMaxOutputTokens,coordinationPromptCharLimit=coordinationMaxPromptChars,
+            executionMode=paperExecutionMode.ToString(),availabilityMode=coordinationAvailability.ToString(),
+            dispatcher=paperExecutionMode==Coordination.ExecutionMode.PaperReference ? "paper-adjacent-random" : paperExecutionMode==Coordination.ExecutionMode.LLMExtension ? Coordination.LLMDispatchProtocol.Version : paperExecutionMode==Coordination.ExecutionMode.OptimizedExtension ? Coordination.OptimalDispatcher.Version : Coordination.LocalDispatcher.Version,
+            reservationIdleSteps=coordinationIdleSteps,reservationCooldownSteps=coordinationCooldownSteps,
+            paperPromptVersion = LLMDecisionPolicy.PaperPromptVersion,personalResponseVersion=PersonalDecisionProtocol.Version,
+            paperPromptTemplateSHA256 = PaperVolunteerPrompt.Hash(agentInformation.ToString(),agentPromptWording),
+            decisionRandomAlgorithm = obstacleHandlingMode==ObstacleHandlingMode.PaperRelocation ? DecisionRandomStream.Version : "Unity-shared-legacy",
+            decisionSeed = DecisionRandomStream.SeedForRun(unchecked(baseSeed + activeRunID - 1)),
+            observationScope = agentInformation.ToString(),promptWording=agentPromptWording.ToString(),
+            coordinationStudyCell=coordinationStudyJob?.cellId??"",coordinationStudyGroup=coordinationStudyJob?.groupId??"",coordinationStudyJob=coordinationStudyJob?.jobID??"",
+            researchPhase = agentResearchPhase.ToString(),conditionKey = AgentConditionKey,studyPlanID=string.IsNullOrEmpty(closedLoopStudyPlanID)?lockedStudyPlanID:closedLoopStudyPlanID,experimentPurpose=AutomaticPurpose,
+            calibrationID = cooperationCalibration!=null ? cooperationCalibration.calibrationID : "",
+            calibratedProbability = cooperationCalibration!=null ? cooperationCalibration.probability : -1f,
+            maxAgentRequestsPerRun = maxAgentRequestsPerRun,
+            decisionExecution = string.IsNullOrEmpty(paperDecisionReplayPath) ? "live" : "strict_replay",
+            width = world.width, height = world.height, requestedAgents = agentCount,
+            actualAgents = agentManager.GetAgentCount(), requestedObstacles = obstacleCount,
+            actualObstacles = world.GetObstaclePositions().Count, maxSteps = maxSimulationSteps,
+            visibilityRange = obstacleVisibilityRange, actionRange = EffectiveVolunteerActionRange,
+            selectionInterval = obstacleHandlingMode==ObstacleHandlingMode.PaperRelocation || volunteerDecisionMode == VolunteerDecisionMode.OriginalGameTheory ? 1 : volunteerSelectionInterval, maxRequestsPerStep = obstacleHandlingMode==ObstacleHandlingMode.PaperRelocation ? 0 : maxLLMRequestsPerStep,
+            approachDepth = exitApproachDepth, spawnWidth = agentSpawnAreaSize.x, spawnHeight = agentSpawnAreaSize.y,
+            removalWorkSteps = obstacleRemovalWorkSteps,
+            exitWidth = researchExitWidth,requestedExitCount=exitCount,actualExitCount=ResearchEnvironment.CountExitGroups(world), hasApiKey = !string.IsNullOrEmpty(openAIKey),
+            allowMockFallback = allowMockFallback && obstacleHandlingMode==ObstacleHandlingMode.LegacyClearance, llmAssignment = useLLMAssignment && obstacleHandlingMode == ObstacleHandlingMode.LegacyClearance,
+            stepInterval = stepInterval, kStatic = kStatic, kDynamic = kDynamic, kAnticipation = kAnticipation,
+            temperature = movementTemperature, volunteerCost = volunteerCost, failureCost = failureCost,
+            omega = unwillingnessOmega, dffDecay = dynamicFloorField.decayRate,
+            dffDiffusion = dynamicFloorField.diffusionRate, anticipationRadius = anticipationFloorField.influenceRadius,
+            defectionCost = yielderDefectionCost, friction = yielderFriction
+        };
     }
 
     void OnValidate()
@@ -459,7 +766,6 @@ public class SimulationManager : MonoBehaviour
         }
 
         timeSinceLastStep += Time.deltaTime;
-        elapsedTime += Time.deltaTime;
 
         if (timeSinceLastStep >= stepInterval)
         {
@@ -467,7 +773,6 @@ public class SimulationManager : MonoBehaviour
             StartCoroutine(SimulationStepCoroutine());
         }
 
-        CheckSimulationComplete();
     }
 
     private void SpawnAgents()
@@ -482,6 +787,28 @@ public class SimulationManager : MonoBehaviour
         int startY = (world.height - agentSpawnAreaSize.y) / 2;
         int endX = startX + agentSpawnAreaSize.x;
         int endY = startY + agentSpawnAreaSize.y;
+
+        if(world.paperNeighborhood)
+        {
+            var available=closedLoopInitialState==null ? new List<Vector2Int>() : new List<Vector2Int>(closedLoopInitialState.agentCells);
+            if(closedLoopInitialState==null)for(int x=Mathf.Max(1,startX);x<Mathf.Min(world.width-1,endX);x++)
+            for(int y=Mathf.Max(1,startY);y<Mathf.Min(world.height-1,endY);y++)
+                if(world.IsWalkable(x,y)) available.Add(new Vector2Int(x,y));
+            int count=Mathf.Min(agentCount,available.Count);
+            for(int i=0;i<count;i++)
+            {
+                int selected=closedLoopInitialState==null?Random.Range(i,available.Count):i;var cell=available[selected];
+                available[selected]=available[i];available[i]=cell;
+                var agent=agentManager.SpawnAgent(cell);
+                agent.SetVolunteerState(PedestrianAgent.VolunteerState.None);agent.SetFloorField(floorField);
+                agent.SetDynamicField(dynamicFloorField);agent.SetAnticipationField(anticipationFloorField);
+                agent.SetPathfinder(pathfinder);agent.SetMovementStrategy(movementStrategy);
+                agent.SetMovementCoefficients(kStatic,kDynamic,kAnticipation,movementTemperature);
+                agent.SetVolunteerActionRange(1);
+            }
+            if(count<agentCount) Debug.LogWarning("Requested crowd exceeds available spawn cells; actual count is exported.");
+            return;
+        }
 
         HashSet<Vector2Int> occupiedPositions = new HashSet<Vector2Int>();
         for (int i = 0; i < agentCount; i++)
@@ -512,7 +839,7 @@ public class SimulationManager : MonoBehaviour
                 agent.SetPathfinder(pathfinder);
                 agent.SetMovementStrategy(movementStrategy);
                 agent.SetMovementCoefficients(kStatic, kDynamic, kAnticipation, movementTemperature);
-                agent.SetVolunteerActionRange(obstacleActionRange);
+            agent.SetVolunteerActionRange(EffectiveVolunteerActionRange);
             }
         }
 
@@ -562,9 +889,11 @@ public class SimulationManager : MonoBehaviour
 
     private IEnumerator SimulationStepCoroutine()
     {
+        if(closedLoopZeroStepValidation)throw new System.InvalidOperationException("Zero-step final validation cannot simulate or call a model");
         isStepInProgress = true;
         yield return ExecuteSimulationStep();
         isStepInProgress = false;
+        CheckSimulationComplete();
     }
 
     public void SimulationStep()
@@ -577,7 +906,12 @@ public class SimulationManager : MonoBehaviour
 
     private IEnumerator ExecuteSimulationStep()
     {
+        if(activeResearchLocked && activeAgentSettings!=AgentSettingsIdentity)
+        {
+            simulationRunning=false;ExportFinishedRun("invalid_settings_changed");yield break;
+        }
         currentStep++;
+        elapsedTime = currentStep * stepInterval;
         llmRequestsThisStep = 0;
 
         if (agentManager == null || agentManager.GetAgentCount() == 0)
@@ -586,20 +920,38 @@ public class SimulationManager : MonoBehaviour
             yield break;
         }
 
+        int conflictCount=0, volunteerActionsThisStep=0;
+        if(paperModel!=null)
+        {
+            if(volunteerDecisionMode==VolunteerDecisionMode.LLM) floorField.Recompute();
+            yield return paperModel.PrepareStep(currentStep,simulationData);
+            if(!simulationRunning) yield break;
+            conflictCount=paperModel.Conflicts; volunteerActionsThisStep=paperModel.Manipulations;
+        }
+        else
+        {
         yield return UpdateDynamicVolunteerStatesCoroutine();
+        if (!simulationRunning) yield break;
+        anticipationFloorField.UpdateField(agentManager.GetAgents());
+
+        var occupied = new HashSet<Vector2Int>();
+        foreach (var agent in agentManager.GetAgents())
+            if (!agent.IsEvacuated()) occupied.Add(agent.gridPos);
 
         foreach (PedestrianAgent agent in agentManager.GetAgents())
         {
             if (!agent.IsEvacuated())
             {
+                agent.SetOccupancy(occupied);
                 agent.ProposeMove();
             }
         }
 
-        int conflictCount = ResolveMovementConflicts();
+        conflictCount = ResolveMovementConflicts();
 
-        int volunteerActionsThisStep = 0;
         yield return ExecuteVolunteerActionsCoroutine(value => volunteerActionsThisStep = value);
+
+        }
 
         foreach (PedestrianAgent agent in agentManager.GetAgents())
         {
@@ -607,13 +959,16 @@ public class SimulationManager : MonoBehaviour
             {
                 agent.CommitMove();
             }
-            else if (agent.evacuationStep == -1)
+            if (agent.IsEvacuated() && agent.evacuationStep == -1)
             {
                 agent.evacuationStep = currentStep;
-                simulationData.RecordAgentEvacuation(agent.gameObject.GetInstanceID(), currentStep, elapsedTime);
+                simulationData.RecordAgentEvacuation(agent.AgentID, currentStep, elapsedTime);
             }
+            if (!agent.IsEvacuated() || agent.evacuationStep == currentStep)
+                simulationData.RecordPosition(currentStep, agent.AgentID, agent.gridPos, agent.GetVolunteerState().ToString(), agent.IsEvacuated());
         }
 
+        paperModel?.AfterCommit(currentStep,simulationData);
         evacuatedCount = agentManager.GetEvacuatedCount();
 
         int totalAgents = agentManager.GetAgentCount();
@@ -629,7 +984,7 @@ public class SimulationManager : MonoBehaviour
 
         float avgDFF = CalculateAverageDFFValue();
         float avgAFF = CalculateAverageAFFValue();
-        int obstaclesRemaining = world.GetObstaclePositions().Count;
+        int obstaclesRemaining = paperModel!=null ? paperModel.UnsettledCount : world.GetObstaclePositions().Count;
         int agentsRemaining = agentManager.GetAgentCount() - agentManager.GetEvacuatedCount();
 
         simulationData.RecordStepDiagnostics(currentStep, agentsRemaining, conflictCount, volunteerActionsThisStep, 
@@ -683,70 +1038,72 @@ public class SimulationManager : MonoBehaviour
 
     private int ResolveMovementConflicts()
     {
-        List<PedestrianAgent> agents = agentManager.GetAgents();
-        
-        Dictionary<Vector2Int, List<PedestrianAgent>> targetPositions = 
-            new Dictionary<Vector2Int, List<PedestrianAgent>>();
+        return MovementConflictResolver.Resolve(agentManager.GetAgents(), yielderGame);
+    }
 
-        foreach (PedestrianAgent agent in agents)
+    private IEnumerator DecidePaperVolunteer(PedestrianAgent agent,PaperObstacle obstacle,VolunteerDecisionContext context,
+        System.Action<bool?,string,string> callback)
+    {
+        string source="game_theory", explanation="", failure="";
+        bool willing=false;
+        if(volunteerDecisionMode!=VolunteerDecisionMode.LLM)
         {
-            if (agent.IsEvacuated())
-                continue;
-
-            Vector2Int desiredPos = agent.GetDesiredPos();
-            
-            if (!targetPositions.ContainsKey(desiredPos))
+            source=volunteerDecisionMode==VolunteerDecisionMode.MockHeuristic ? "heuristic" :
+                volunteerDecisionMode==VolunteerDecisionMode.RandomMatched ? "random_matched" : "game_theory";
+            willing=volunteerDecisionStrategy.ShouldVolunteer(context);
+        }
+        else
+        {
+            string observation=AgentObservation.Serialize(context,agentInformation);
+            string replayError;
+            if(!PaperDecisionSpecification.HasValidCosts(context.volunteerCost,context.failureCost,context.unwillingness))
             {
-                targetPositions[desiredPos] = new List<PedestrianAgent>();
+                failure="invalid_game_payoffs";
+                explanation="Paper decisions require 0 < volunteerCost < failureCost < 1 and finite omega >= 0. Apply the paper reference parameters.";
             }
-            targetPositions[desiredPos].Add(agent);
-        }
-
-        int conflictCount = 0;
-        foreach (var entry in targetPositions)
-        {
-            Vector2Int targetPos = entry.Key;
-            List<PedestrianAgent> agentsAtTarget = entry.Value;
-
-            if (agentsAtTarget.Count > 1)
+            else if (!string.IsNullOrEmpty(paperDecisionReplayPath))
             {
-                conflictCount++;
-
-                // If someone is already standing on targetPos and chooses to stay,
-                // keep that occupant to avoid two agents ending in the same cell.
-                PedestrianAgent winner = null;
-                for (int i = 0; i < agentsAtTarget.Count; i++)
-                {
-                    PedestrianAgent candidate = agentsAtTarget[i];
-                    if (candidate.GetGridPos() == targetPos && candidate.GetDesiredPos() == targetPos)
-                    {
-                        winner = candidate;
-                        break;
-                    }
-                }
-
-                if (winner == null)
-                {
-                    winner = yielderGame.ResolveConflict(agentsAtTarget);
-                }
-                
-                for (int i = 0; i < agentsAtTarget.Count; i++)
-                {
-                    PedestrianAgent agent = agentsAtTarget[i];
-                    if (agent != winner)
-                    {
-                        agent.desiredPos = agent.GetGridPos();
-                    }
-                }
+                if (paperDecisionJournal.TryReplay(paperDecisionReplayPath,currentStep,agent.AgentID,obstacle.id,
+                    observation,out willing,out explanation,out replayError,AgentConditionKey,openAIModel,PaperVolunteerPrompt.Hash(agentInformation.ToString(),agentPromptWording),
+                    PersonalDecisionProtocol.Payload(openAIModel,observation,agentInformation.ToString(),agentPromptWording))) source="replay";
+                else { failure="replay_mismatch"; explanation=replayError; }
+            }
+            else if(string.IsNullOrEmpty(openAIKey)) failure="missing_api_key";
+            else if(maxAgentRequestsPerRun>0 && individualPaperRequestsThisRun>=maxAgentRequestsPerRun) failure="run_request_limit";
+            else
+            {
+                // API latency pauses this CA step; request caps never exclude candidates.
+                closedLoopBeforeApiRequest?.Invoke();
+                llmRequestsThisStep++; individualPaperRequestsThisRun++; source="api";
+                var llmContext=new LLMDecisionPolicy.VolunteerContext { sharedObservationJson=observation,informationCondition=agentInformation.ToString(),promptWording=agentPromptWording,agentId=agent.AgentID };
+                var clock=System.Diagnostics.Stopwatch.StartNew();
+                yield return llmDecisionPolicy.RequestVolunteerDecision(llmContext,(level,reason)=>{
+                    willing=level!=VolunteerDilemma.CooperationLevel.Selfish; explanation=reason;
+                });
+                clock.Stop();
+                source=llmDecisionPolicy.LastExecution=="synthetic_test"?"synthetic_test":"api";
+                if(source=="api")llmApiDecisionCallsThisRun++;
+                if(!llmDecisionPolicy.LastRequestSucceeded) failure=string.IsNullOrEmpty(llmDecisionPolicy.LastRequestError)?"api_failure":llmDecisionPolicy.LastRequestError;
+                if(closedLoopInitialState!=null && llmDecisionPolicy.LastRequestSucceeded && !ClosedLoopStudyGuard.MatchesProvider(llmDecisionPolicy.LastResponse,openAIModel))failure="provider_model_drift";
+                paperDecisionJournal.Record(simulationData.DecisionTracePath,currentStep,agent.AgentID,obstacle.id,
+                    observation,willing,explanation,llmDecisionPolicy.LastRequestSucceeded && failure.Length==0,openAIModel,
+                    llmDecisionPolicy.LastPayload,llmDecisionPolicy.LastResponse,llmDecisionPolicy.LastAttempts,clock.Elapsed.TotalSeconds,AgentConditionKey,
+                    failure.Length>0?failure:llmDecisionPolicy.LastRequestError,PaperVolunteerPrompt.Hash(agentInformation.ToString(),agentPromptWording),
+                    llmDecisionPolicy.LastExecution,llmDecisionPolicy.LastHttpStatus,llmDecisionPolicy.LastAttemptAudit);
+            }
+            if(failure.Length>0)
+            {
+                // Research comparisons never mix API decisions with heuristic substitutions.
+                Debug.LogWarning($"[LLM-ERROR] step={currentStep} agent={agent.AgentID} obstacle={obstacle.id} model={openAIModel} source={source} error={failure} | reason={explanation}");
+                simulationData.RecordLLMDecision(currentStep,agent.AgentID,"error",explanation,"error",failure);
+                simulationRunning=false; ExportFinishedRun("invalid_llm_"+failure);
+                callback(null,failure,"error"); yield break;
             }
         }
-
-        if (currentStep % 20 == 0 && conflictCount > 0)
-        {
-            Debug.Log($"Step {currentStep}: {conflictCount} conflict(s) detected and resolved");
-        }
-
-        return conflictCount;
+        if(volunteerDecisionMode==VolunteerDecisionMode.LLM && !willing)
+            Debug.Log($"[LLM-DECLINED] step={currentStep} agent={agent.AgentID} obstacle={obstacle.id} model={openAIModel} source={source} X={context.nearbyAgentCount} tau={context.exitNonBlockage} | reason={(string.IsNullOrWhiteSpace(explanation)?"<empty explanation>":explanation)}");
+        simulationData.RecordLLMDecision(currentStep,agent.AgentID,willing ? "volunteer" : "selfish",explanation,source,failure);
+        callback(willing,explanation,source);
     }
 
     private IEnumerator ExecuteVolunteerActionsCoroutine(System.Action<int> callback)
@@ -778,16 +1135,23 @@ public class SimulationManager : MonoBehaviour
             Vector2Int targetObstacle = obstacleMap[obstacleId];
             int dist = Mathf.Abs(volunteer.GetGridPos().x - targetObstacle.x) + Mathf.Abs(volunteer.GetGridPos().y - targetObstacle.y);
 
-            if (dist <= obstacleActionRange)
+            if (dist <= EffectiveVolunteerActionRange)
             {
+                obstacleWorkProgress.TryGetValue(obstacleId, out int work);
+                work++;
+                obstacleWorkProgress[obstacleId] = work;
+                simulationData.RecordVolunteerWork(currentStep, volunteer.AgentID, obstacleId, work,
+                    work >= Mathf.Max(1, obstacleRemovalWorkSteps));
+                if (work < Mathf.Max(1, obstacleRemovalWorkSteps)) continue;
                 if (!processedObstacles.Contains(obstacleId))
                 {
                     processedObstacles.Add(obstacleId);
                     volunteerActionCount++;
                     volunteerDilemma.ExecuteVolunteerActionAtObstacle(volunteer, VolunteerDilemma.CooperationLevel.Cooperative, targetObstacle);
+                    floorField.Recompute();
                     if (volunteerDecisionMode == VolunteerDecisionMode.LLM)
                     {
-                        simulationData.RecordLLMDecision(currentStep, volunteer.gameObject.GetInstanceID(), "volunteer", "assigned volunteer cleared obstacle");
+                        simulationData.RecordLLMDecision(currentStep, volunteer.AgentID, "volunteer", "assigned volunteer cleared obstacle", "action");
                     }
                 }
 
@@ -807,34 +1171,51 @@ public class SimulationManager : MonoBehaviour
         int consideredAgents = 0;
         int outOfVisibilityAgents = 0;
         int noObstacleAgents = 0;
+        // Clear completed/stale assignments every step, not just selection steps.
+        CleanupInvalidVolunteerAssignments(allAgents, obstacleMap);
+        // A visible obstacle at an otherwise open exit does not trigger a
+        // volunteer game, but it must still enter the evacuee's bypass field.
+        // Otherwise the base SFF keeps attracting the last pedestrian into a
+        // local minimum behind an ordinary, visible obstacle.
+        foreach (var agent in allAgents)
+        {
+            if (agent.IsEvacuated() || agent.GetVolunteerState() != PedestrianAgent.VolunteerState.None) continue;
+            foreach (var obstacle in obstacles)
+                if (Mathf.Abs(agent.gridPos.x - obstacle.x) + Mathf.Abs(agent.gridPos.y - obstacle.y) <= obstacleVisibilityRange
+                    && ResearchEnvironment.ExitNonBlockage(world, obstacle, exitApproachDepth) >= 1f)
+                    agent.RememberRejectedObstacle(obstacle);
+        }
 
-        if (obstacles.Count == 0 || volunteerDecisionStrategy == null)
+        if (volunteerDecisionMode == VolunteerDecisionMode.NoVolunteers || obstacles.Count == 0 || volunteerDecisionStrategy == null)
         {
             foreach (PedestrianAgent agent in allAgents)
             {
                 if (!agent.IsEvacuated())
                 {
                     agent.SetVolunteerState(PedestrianAgent.VolunteerState.None);
+                    if (volunteerDecisionMode == VolunteerDecisionMode.NoVolunteers)
+                        foreach (var obstacle in obstacles)
+                            if (Mathf.Abs(agent.gridPos.x - obstacle.x) + Mathf.Abs(agent.gridPos.y - obstacle.y) <= obstacleVisibilityRange)
+                                agent.RememberRejectedObstacle(obstacle);
                 }
             }
             yield break;
         }
 
-        if (!ShouldRunVolunteerSelectionThisStep())
+        if (volunteerDecisionMode != VolunteerDecisionMode.OriginalGameTheory && !ShouldRunVolunteerSelectionThisStep())
         {
             CleanupInvalidVolunteerAssignments(allAgents, obstacleMap);
             yield break;
         }
 
-        // Keep original model behavior as-is, except active volunteers are assigned
-        // a concrete obstacle target so they can move directly toward it.
-        if (volunteerDecisionMode == VolunteerDecisionMode.OriginalGameTheory)
-        {
-            HandleOriginalVolunteerStates(allAgents, obstacles, obstacleMap);
-            yield break;
-        }
-
         List<PedestrianAgent> potentialVolunteers = new List<PedestrianAgent>();
+        var eligibleCountByObstacle = new Dictionary<int, int>();
+        var reservedObstacles = new HashSet<int>();
+        foreach (var agent in allAgents)
+            if (!agent.IsEvacuated() && agent.HasAssignedObstacle()) reservedObstacles.Add(agent.GetAssignedObstacleId());
+        foreach (var entry in obstacleMap)
+            eligibleCountByObstacle[entry.Key] = agentManager.GetAgentsNearPosition(entry.Value, obstacleVisibilityRange)
+                .FindAll(a => a.GetVolunteerState() == PedestrianAgent.VolunteerState.None).Count;
 
         foreach (PedestrianAgent agent in allAgents)
         {
@@ -902,14 +1283,19 @@ public class SimulationManager : MonoBehaviour
 
             consideredAgents++;
             int nearestObstacleId = GetObstacleId(nearestObstacle);
+            // Paper Stage 1: play only when this obstacle's Lv is empty.
+            if (reservedObstacles.Contains(nearestObstacleId)) continue;
 
-            int nearbyAgentCount = agentManager.GetAgentsNearPosition(agent.GetGridPos(), obstacleVisibilityRange).Count;
-            float blockageRatio = CalculateBlockageRatio(obstacles.Count);
+            int nearbyAgentCount = eligibleCountByObstacle[nearestObstacleId];
+            float exitNonBlockage = ResearchEnvironment.ExitNonBlockage(world, nearestObstacle, exitApproachDepth);
+            float blockageRatio = 1f - exitNonBlockage;
+            if (exitNonBlockage >= 1f) continue;
             int currentVolunteerCount = potentialVolunteers.Count;
 
             VolunteerDecisionContext context = new VolunteerDecisionContext
             {
-                nearbyAgentCount = Mathf.Max(2, nearbyAgentCount),
+                nearbyAgentCount = nearbyAgentCount,
+                exitNonBlockage = exitNonBlockage,
                 obstacleCount = obstacles.Count,
                 blockageRatio = blockageRatio,
                 distanceToObstacle = nearestDist,
@@ -921,75 +1307,54 @@ public class SimulationManager : MonoBehaviour
             };
 
             bool shouldVolunteer = false;
-
+            string explanation = "";
+            string source = volunteerDecisionMode == VolunteerDecisionMode.MockHeuristic ? "heuristic" : "game_theory";
+            string fallbackReason = "";
             if (volunteerDecisionMode == VolunteerDecisionMode.LLM)
             {
-                if (string.IsNullOrEmpty(openAIKey))
+                if (string.IsNullOrEmpty(openAIKey)) fallbackReason = "missing_api_key";
+                else if (llmRequestsThisStep >= Mathf.Max(1, maxLLMRequestsPerStep))
                 {
-                    if (!llmKeyWarningLogged)
+                    if (!allowMockFallback)
                     {
-                        Debug.LogWarning("[LLM] openAIKey is empty. Fallback to mock LLM volunteer strategy.");
-                        llmKeyWarningLogged = true;
+                        simulationData.RecordLLMDecision(currentStep, agent.AgentID, "deferred", "request budget reached", "budget");
+                        continue;
                     }
-                    llmMockFallbackCallsThisRun++;
-                    if (debugLLMDecisionFlow)
-                    {
-                        Debug.Log($"[LLM-DEBUG] Step {currentStep} Agent {agent.gameObject.GetInstanceID()} -> MOCK fallback (no API key)");
-                    }
-                    shouldVolunteer = new MockLLMVolunteerStrategy().ShouldVolunteer(context);
+                    fallbackReason = "request_cap";
                 }
                 else
                 {
-                    if (llmRequestsThisStep >= Mathf.Max(1, maxLLMRequestsPerStep))
-                    {
-                        llmMockFallbackCallsThisRun++;
-                        if (debugLLMDecisionFlow)
-                        {
-                            Debug.Log($"[LLM-DEBUG] Step {currentStep} Agent {agent.gameObject.GetInstanceID()} -> MOCK fallback (request cap)");
-                        }
-                        shouldVolunteer = new MockLLMVolunteerStrategy().ShouldVolunteer(context);
-                        goto LlmDecisionDone;
-                    }
-
                     llmRequestsThisStep++;
                     llmApiDecisionCallsThisRun++;
-                    if (debugLLMDecisionFlow)
-                    {
-                        Debug.Log($"[LLM-DEBUG] Step {currentStep} Agent {agent.gameObject.GetInstanceID()} -> API request");
-                    }
+                    source = "api";
                     VolunteerDilemma.CooperationLevel level = VolunteerDilemma.CooperationLevel.Selfish;
-                    string explanation = string.Empty;
                     float obstacleToExitDist = GetObstacleDistanceToNearestExit(nearestObstacle);
                     int evacueesNearObstacle = CountEvacueesNearPosition(nearestObstacle, obstacleVisibilityRange);
-                    float evacuationImpact = EstimateEvacuationImpactScore(obstacleToExitDist, evacueesNearObstacle);
-
-                    yield return volunteerDilemma.DecideVolunteerActionAsync(agent, nearestObstacle, obstacleToExitDist, evacueesNearObstacle, evacuationImpact, (result, reason) =>
-                    {
-                        level = result;
-                        explanation = reason;
-                    });
-                    shouldVolunteer = (level != VolunteerDilemma.CooperationLevel.Selfish);
-
-                    if (!shouldVolunteer && IsLLMDecisionFailureReason(explanation))
-                    {
-                        llmMockFallbackCallsThisRun++;
-                        if (debugLLMDecisionFlow)
-                        {
-                            Debug.Log($"[LLM-DEBUG] Step {currentStep} Agent {agent.gameObject.GetInstanceID()} -> MOCK fallback (api failure)");
-                        }
-                        shouldVolunteer = new MockLLMVolunteerStrategy().ShouldVolunteer(context);
-                    }
-
-                    simulationData.RecordLLMDecision(currentStep, agent.gameObject.GetInstanceID(), shouldVolunteer ? "volunteer" : "selfish", explanation);
+                    float impact = EstimateEvacuationImpactScore(obstacleToExitDist, evacueesNearObstacle);
+                    yield return volunteerDilemma.DecideVolunteerActionAsync(agent, nearestObstacle, obstacleToExitDist,
+                        evacueesNearObstacle, impact, (result, reason) => { level = result; explanation = reason; });
+                    shouldVolunteer = level != VolunteerDilemma.CooperationLevel.Selfish;
+                    if (!llmDecisionPolicy.LastRequestSucceeded) fallbackReason = "api_failure";
                 }
+                if (fallbackReason.Length > 0)
+                {
+                    if (!allowMockFallback)
+                    {
+                        simulationData.RecordLLMDecision(currentStep, agent.AgentID, "error", explanation, "error", fallbackReason);
+                        simulationRunning = false;
+                        ExportFinishedRun("invalid_llm_" + fallbackReason);
+                        yield break;
+                    }
+                    source = "mock";
+                    llmMockFallbackCallsThisRun++;
+                    shouldVolunteer = new MockLLMVolunteerStrategy().ShouldVolunteer(context);
+                }
+            }
+            else shouldVolunteer = volunteerDecisionStrategy.ShouldVolunteer(context);
 
-LlmDecisionDone:
-                ;
-            }
-            else
-            {
-                shouldVolunteer = volunteerDecisionStrategy.ShouldVolunteer(context);
-            }
+            simulationData.RecordLLMDecision(currentStep, agent.AgentID,
+                shouldVolunteer ? "volunteer" : "selfish", explanation, source, fallbackReason);
+            if (!shouldVolunteer) agent.RememberRejectedObstacle(nearestObstacle);
 
             // In LLM mode, only mark evaluated once the agent actually volunteers for this obstacle.
             // This prevents permanently locking agents into "already evaluated" + always-selfish states.
@@ -1038,7 +1403,7 @@ LlmDecisionDone:
 
         if (unassignedObstacles.Count > 0 && candidatesByObstacle.Count > 0)
         {
-            if (volunteerDecisionMode == VolunteerDecisionMode.LLM && !string.IsNullOrEmpty(openAIKey) && llmRequestsThisStep < Mathf.Max(1, maxLLMRequestsPerStep))
+            if (useLLMAssignment && volunteerDecisionMode == VolunteerDecisionMode.LLM && !string.IsNullOrEmpty(openAIKey) && llmRequestsThisStep < Mathf.Max(1, maxLLMRequestsPerStep))
             {
                 llmRequestsThisStep++;
                 llmApiDecisionCallsThisRun++;
@@ -1047,13 +1412,15 @@ LlmDecisionDone:
 
             if (assignments.Count == 0)
             {
-                BuildGreedyAssignment(candidatesByObstacle, unassignedObstacles, assignments);
+                if (volunteerDecisionMode == VolunteerDecisionMode.OriginalGameTheory)
+                    BuildAdjacentPaperAssignment(candidatesByObstacle, unassignedObstacles, assignments);
+                else BuildGreedyAssignment(candidatesByObstacle, unassignedObstacles, assignments);
             }
 
             Dictionary<int, PedestrianAgent> candidateById = new Dictionary<int, PedestrianAgent>();
             foreach (PedestrianAgent candidate in potentialVolunteers)
             {
-                candidateById[candidate.gameObject.GetInstanceID()] = candidate;
+                candidateById[candidate.AgentID] = candidate;
             }
 
             foreach (KeyValuePair<int, int> assignment in assignments)
@@ -1094,119 +1461,6 @@ LlmDecisionDone:
                 {
                     agent.SetVolunteerState(PedestrianAgent.VolunteerState.None);
                 }
-            }
-        }
-    }
-
-    private void HandleOriginalVolunteerStates(List<PedestrianAgent> allAgents, List<Vector2Int> obstacles, Dictionary<int, Vector2Int> obstacleMap)
-    {
-        // Original behavior: reset dynamic volunteer states every step.
-        foreach (PedestrianAgent agent in allAgents)
-        {
-            if (!agent.IsEvacuated())
-            {
-                agent.SetVolunteerState(PedestrianAgent.VolunteerState.None);
-            }
-        }
-
-        List<PedestrianAgent> visibleAgents = new List<PedestrianAgent>();
-        Dictionary<int, float> visibleNearestObstacleDist = new Dictionary<int, float>();
-        Dictionary<int, Vector2Int> visibleNearestObstaclePos = new Dictionary<int, Vector2Int>();
-        foreach (PedestrianAgent agent in allAgents)
-        {
-            if (agent.IsEvacuated())
-                continue;
-
-            Vector2Int nearestObstacle;
-            float nearestDist;
-            if (!TryGetNearestObstacle(agent.GetGridPos(), obstacles, out nearestObstacle, out nearestDist))
-                continue;
-
-            if (nearestDist > obstacleVisibilityRange)
-                continue;
-
-            visibleAgents.Add(agent);
-            int agentId = agent.gameObject.GetInstanceID();
-            visibleNearestObstacleDist[agentId] = nearestDist;
-            visibleNearestObstaclePos[agentId] = nearestObstacle;
-        }
-
-        List<PedestrianAgent> potentialVolunteers = new List<PedestrianAgent>();
-        Dictionary<int, List<PedestrianAgent>> potentialByObstacle = new Dictionary<int, List<PedestrianAgent>>();
-        foreach (PedestrianAgent agent in visibleAgents)
-        {
-            int agentId = agent.gameObject.GetInstanceID();
-            float nearestDist = visibleNearestObstacleDist[agentId];
-            Vector2Int nearestObstacle = visibleNearestObstaclePos[agentId];
-            int nearestObstacleId = GetObstacleId(nearestObstacle);
-            int nearbyAgentCount = agentManager.GetAgentsNearPosition(agent.GetGridPos(), obstacleVisibilityRange).Count;
-            float blockageRatio = CalculateBlockageRatio(obstacles.Count);
-            int currentVolunteerCount = potentialVolunteers.Count;
-
-            VolunteerDecisionContext context = new VolunteerDecisionContext
-            {
-                nearbyAgentCount = Mathf.Max(2, nearbyAgentCount),
-                obstacleCount = obstacles.Count,
-                blockageRatio = blockageRatio,
-                distanceToObstacle = nearestDist,
-                currentVolunteerCount = currentVolunteerCount,
-                volunteerCost = volunteerCost,
-                failureCost = failureCost,
-                unwillingness = unwillingnessOmega,
-                agentPosition = agent.GetGridPos()
-            };
-
-            bool shouldVolunteer = volunteerDecisionStrategy.ShouldVolunteer(context);
-            if (shouldVolunteer)
-            {
-                agent.SetVolunteerState(PedestrianAgent.VolunteerState.PotentialVolunteer);
-                agent.AssignObstacle(nearestObstacleId, nearestObstacle);
-                potentialVolunteers.Add(agent);
-
-                if (!potentialByObstacle.ContainsKey(nearestObstacleId))
-                {
-                    potentialByObstacle[nearestObstacleId] = new List<PedestrianAgent>();
-                }
-                potentialByObstacle[nearestObstacleId].Add(agent);
-            }
-        }
-
-        HashSet<int> usedAgentIds = new HashSet<int>();
-        foreach (KeyValuePair<int, Vector2Int> obstacleEntry in obstacleMap)
-        {
-            int obstacleId = obstacleEntry.Key;
-            Vector2Int obstaclePos = obstacleEntry.Value;
-
-            if (!potentialByObstacle.ContainsKey(obstacleId))
-                continue;
-
-            List<PedestrianAgent> obstacleCandidates = potentialByObstacle[obstacleId];
-
-            PedestrianAgent selected = null;
-            float bestDist = float.MaxValue;
-            for (int i = 0; i < obstacleCandidates.Count; i++)
-            {
-                PedestrianAgent candidate = obstacleCandidates[i];
-                if (candidate.IsEvacuated())
-                    continue;
-
-                int candidateId = candidate.gameObject.GetInstanceID();
-                if (usedAgentIds.Contains(candidateId))
-                    continue;
-
-                float dist = Mathf.Abs(candidate.GetGridPos().x - obstaclePos.x) + Mathf.Abs(candidate.GetGridPos().y - obstaclePos.y);
-                if (dist < bestDist)
-                {
-                    bestDist = dist;
-                    selected = candidate;
-                }
-            }
-
-            if (selected != null)
-            {
-                usedAgentIds.Add(selected.gameObject.GetInstanceID());
-                selected.SetVolunteerState(PedestrianAgent.VolunteerState.ActiveVolunteer);
-                selected.AssignObstacle(obstacleId, obstaclePos);
             }
         }
     }
@@ -1297,7 +1551,7 @@ LlmDecisionDone:
             for (int i = 0; i < candidates.Count; i++)
             {
                 PedestrianAgent candidate = candidates[i];
-                int candidateId = candidate.gameObject.GetInstanceID();
+                int candidateId = candidate.AgentID;
                 if (candidate.IsEvacuated() || usedAgentIds.Contains(candidateId) || candidate.IsActiveVolunteer())
                     continue;
 
@@ -1311,10 +1565,25 @@ LlmDecisionDone:
 
             if (bestAgent != null)
             {
-                int bestAgentId = bestAgent.gameObject.GetInstanceID();
+                int bestAgentId = bestAgent.AgentID;
                 usedAgentIds.Add(bestAgentId);
                 assignments[obstacleId] = bestAgentId;
             }
+        }
+    }
+
+    private void BuildAdjacentPaperAssignment(Dictionary<int, List<PedestrianAgent>> candidatesByObstacle,
+        Dictionary<int, Vector2Int> obstacles, Dictionary<int, int> assignments)
+    {
+        foreach (var entry in candidatesByObstacle)
+        {
+            var target = obstacles[entry.Key];
+            var adjacent = entry.Value.FindAll(agent => !agent.IsEvacuated() && !agent.IsActiveVolunteer() &&
+                Mathf.Abs(agent.gridPos.x - target.x) + Mathf.Abs(agent.gridPos.y - target.y) == 1);
+            // Paper p.2 Stage 2: activate a randomly chosen ADJACENT candidate.
+            // Never reserve an obstacle for a remote volunteer who may be blocked
+            // by the other candidates already waiting beside it.
+            if (adjacent.Count > 0) assignments[entry.Key] = adjacent[Random.Range(0, adjacent.Count)].AgentID;
         }
     }
 
@@ -1388,7 +1657,7 @@ LlmDecisionDone:
             for (int i = 0; i < obstacleCandidates.Count; i++)
             {
                 PedestrianAgent candidate = obstacleCandidates[i];
-                int candidateId = candidate.gameObject.GetInstanceID();
+                int candidateId = candidate.AgentID;
                 if (!candidateIdSet.Contains(candidateId))
                 {
                     candidateIdSet.Add(candidateId);
@@ -1404,7 +1673,7 @@ LlmDecisionDone:
         for (int i = 0; i < candidates.Count; i++)
         {
             PedestrianAgent c = candidates[i];
-            int id = c.gameObject.GetInstanceID();
+            int id = c.AgentID;
             candidateIds.Add(id);
             Vector2Int pos = c.GetGridPos();
             candidatesJson += (i > 0 ? "," : "") + "{\"agent_id\":" + id + ",\"x\":" + pos.x + ",\"y\":" + pos.y + "}";
@@ -1434,7 +1703,7 @@ LlmDecisionDone:
             for (int i = 0; i < obstacleCandidates.Count; i++)
             {
                 PedestrianAgent candidate = obstacleCandidates[i];
-                int agentId = candidate.gameObject.GetInstanceID();
+                int agentId = candidate.AgentID;
                 int dist = Mathf.Abs(candidate.GetGridPos().x - obstaclePos.x) + Mathf.Abs(candidate.GetGridPos().y - obstaclePos.y);
                 if (!first) distancesJson += ",";
                 distancesJson += "{\"agent_id\":" + agentId + ",\"obstacle_id\":" + obstacleId + ",\"distance\":" + dist + "}";
@@ -1508,12 +1777,6 @@ LlmDecisionDone:
         return nearestObstacle.x >= 0;
     }
 
-    private float CalculateBlockageRatio(int obstacleCountCurrent)
-    {
-        int exitCellCount = world != null ? Mathf.Max(1, world.exitPositions.Count) : 1;
-        return Mathf.Clamp01((float)obstacleCountCurrent / exitCellCount);
-    }
-
     private List<PedestrianAgent> GetAgentsByVolunteerState(PedestrianAgent.VolunteerState state)
     {
         List<PedestrianAgent> result = new List<PedestrianAgent>();
@@ -1530,9 +1793,16 @@ LlmDecisionDone:
 
     private void CheckSimulationComplete()
     {
+        if (!simulationRunning) return;
         int totalAgents = agentManager.GetAgentCount();
         int evacuatedCount = agentManager.GetEvacuatedCount();
 
+        if (totalAgents == 0)
+        {
+            simulationRunning = false;
+            ExportFinishedRun("invalid_no_agents");
+            return;
+        }
         if (evacuatedCount == totalAgents && totalAgents > 0)
         {
             simulationRunning = false;
@@ -1547,12 +1817,12 @@ LlmDecisionDone:
                 Debug.Log($"[LLM-DEBUG] Run summary | API calls: {llmApiDecisionCallsThisRun}, Mock fallback calls: {llmMockFallbackCallsThisRun}");
             }
             
-            simulationData.SetSimulationStats(currentStep, elapsedTime);
-            simulationData.ExportData();
+            ExportFinishedRun("completed");
         }
-        else if (currentStep >= 200 && simulationRunning)
+        else if (maxSimulationSteps > 0 && currentStep >= maxSimulationSteps && simulationRunning)
         {
             simulationRunning = false;
+            ExportFinishedRun("timeout");
             Debug.Log("=== SIMULATION TIMEOUT (after " + currentStep + " steps) ===");
             Debug.Log("Evacuated: " + evacuatedCount + " / " + totalAgents);
             Debug.Log("Remaining: " + (totalAgents - evacuatedCount));
@@ -1579,6 +1849,23 @@ LlmDecisionDone:
     }
 
 
+    private void ExportFinishedRun(string reason)
+    {
+        if (runExported || simulationData == null) return;
+        if(activeResearchLocked && activeAgentSettings!=AgentSettingsIdentity) reason="invalid_settings_changed";
+        if(!string.IsNullOrEmpty(paperDecisionReplayPath) && (reason=="completed" || reason=="timeout") &&
+            !paperDecisionJournal.ReplayFullyConsumed(paperDecisionReplayPath)) reason="invalid_replay_unused_entries";
+        if((reason=="completed" || reason=="timeout") && coordinationSession!=null && !coordinationSession.ReplayFullyConsumed)
+            reason="invalid_coordination_replay_unused_entries";
+        currentTermination = reason;
+        runClock.Stop();
+        simulationData.SetRuntimeMetrics(runClock.Elapsed.TotalSeconds, llmApiDecisionCallsThisRun, llmMockFallbackCallsThisRun);
+        simulationData.SetTermination(reason);
+        simulationData.SetSimulationStats(currentStep, elapsedTime);
+        simulationData.ExportData();
+        runExported = true;
+    }
+
     public int GetCurrentStep()
     {
         return currentStep;
@@ -1599,6 +1886,16 @@ LlmDecisionDone:
         return agentManager != null ? agentManager.GetAgentsByRole(PedestrianAgent.Role.Volunteer).Count : 0;
     }
 
+    public string GetRunStateLabel()
+    {
+        if(simulationRunning) return isPaused ? "Paused" : "Running";
+        if(currentTermination.StartsWith("invalid_llm_")) return "LLM error (see Console)";
+        if(currentTermination.StartsWith("invalid_")) return "Invalid (see Console)";
+        if(currentTermination=="completed") return "Completed";
+        if(currentTermination=="timeout") return "Timed out";
+        return "Stopped";
+    }
+
     public int GetEvacueeCount()
     {
         return agentManager != null ? agentManager.GetAgentsByRole(PedestrianAgent.Role.Evacuee).Count : 0;
@@ -1606,7 +1903,7 @@ LlmDecisionDone:
 
     public int GetObstacleCount()
     {
-        return world != null ? world.GetObstaclePositions().Count : 0;
+        return paperModel!=null ? paperModel.UnsettledCount : (world != null ? world.GetObstaclePositions().Count : 0);
     }
 
     public bool IsSimulationRunning()
@@ -1653,8 +1950,17 @@ LlmDecisionDone:
         Debug.Log(isPaused ? "Simulation paused" : "Simulation resumed");
     }
 
+    private void RecordInterruptedRun(string reason)
+    {
+        if(recordExperimentsAutomatically && simulationData!=null && !runExported)
+            ExportFinishedRun(reason);
+    }
+    void OnApplicationQuit() {RecordInterruptedRun("interrupted_application_exit");}
+    void OnDestroy() {RecordInterruptedRun("interrupted_scene_unload");}
+
     public void ResetSimulation()
     {
+        RecordInterruptedRun("interrupted_manual_reset");
         simulationRunning = false;
         if (agentManager != null)
         {

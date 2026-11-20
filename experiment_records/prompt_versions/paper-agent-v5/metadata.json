@@ -1,0 +1,7 @@
+{
+  "promptVersion": "paper-agent-v5",
+  "liveValidated": false,
+  "autonomousSinglePlayer": true,
+  "supersedes": "paper-agent-v4",
+  "responseProtocol": "paper-choice-response-v1"
+}

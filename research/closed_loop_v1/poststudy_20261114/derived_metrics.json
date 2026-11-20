@@ -1,0 +1,319 @@
+{
+  "schema": "poststudy-descriptive-v1",
+  "sourceCompleteSHA256": "c28c59e67ba21092cb72fa4888f8eb79bd5d40e48c9310900a4f8607b40d8d6c",
+  "sourceManifestSHA256": "0189346388723cd1c9ca03067db0a23b7af4f25db0766a7d4a8d22cc13e5ae02",
+  "registeredPrimary": {
+    "metric": "equal-cell-weight mean LLM minus Original A_H, then mean over base seeds",
+    "seedBlocks": 30,
+    "estimate": -1.0734722222222222,
+    "pointwise95": [
+      -1.4083333333333334,
+      -0.7481944444444443
+    ],
+    "bootstrapIterations": 4000,
+    "bootstrapSeed": 2026111304,
+    "blocks": [
+      {
+        "seed": 53001,
+        "difference": -0.579166666666667
+      },
+      {
+        "seed": 53002,
+        "difference": -2.2916666666666665
+      },
+      {
+        "seed": 53003,
+        "difference": -1.2666666666666662
+      },
+      {
+        "seed": 53004,
+        "difference": -1.5333333333333332
+      },
+      {
+        "seed": 53005,
+        "difference": -1.2333333333333325
+      },
+      {
+        "seed": 53006,
+        "difference": 0.5
+      },
+      {
+        "seed": 53007,
+        "difference": -0.8750000000000004
+      },
+      {
+        "seed": 53008,
+        "difference": -0.5458333333333338
+      },
+      {
+        "seed": 53009,
+        "difference": -0.5458333333333334
+      },
+      {
+        "seed": 53010,
+        "difference": -1.9208333333333338
+      },
+      {
+        "seed": 53011,
+        "difference": -2.6166666666666667
+      },
+      {
+        "seed": 53012,
+        "difference": 1.0958333333333328
+      },
+      {
+        "seed": 53013,
+        "difference": -1.0374999999999992
+      },
+      {
+        "seed": 53014,
+        "difference": -0.1625000000000001
+      },
+      {
+        "seed": 53015,
+        "difference": -0.47083333333333277
+      },
+      {
+        "seed": 53016,
+        "difference": -1.4083333333333332
+      },
+      {
+        "seed": 53017,
+        "difference": -2.5375
+      },
+      {
+        "seed": 53018,
+        "difference": -2.1
+      },
+      {
+        "seed": 53019,
+        "difference": -0.9791666666666661
+      },
+      {
+        "seed": 53020,
+        "difference": -1.4291666666666667
+      },
+      {
+        "seed": 53021,
+        "difference": -0.5999999999999996
+      },
+      {
+        "seed": 53022,
+        "difference": -0.04999999999999982
+      },
+      {
+        "seed": 53023,
+        "difference": -1.1791666666666663
+      },
+      {
+        "seed": 53024,
+        "difference": -0.4041666666666668
+      },
+      {
+        "seed": 53025,
+        "difference": -0.7125000000000004
+      },
+      {
+        "seed": 53026,
+        "difference": -1.2416666666666671
+      },
+      {
+        "seed": 53027,
+        "difference": -0.20416666666666572
+      },
+      {
+        "seed": 53028,
+        "difference": -2.687499999999999
+      },
+      {
+        "seed": 53029,
+        "difference": -0.6750000000000003
+      },
+      {
+        "seed": 53030,
+        "difference": -2.5124999999999993
+      }
+    ],
+    "confirmatoryTests": false
+  },
+  "posthocExploratoryLLMMinusRandom": {
+    "mean": -0.054583333333333386,
+    "pointwise95": [
+      -0.25444444444444453,
+      0.14194444444444437
+    ],
+    "seedBlocks": 30,
+    "exploratory": true
+  },
+  "posthocB2": {
+    "mean": -2.0202777777777774,
+    "pointwise95": [
+      -2.693055555555555,
+      -1.3652777777777776
+    ],
+    "seedBlocks": 30,
+    "exploratory": true
+  },
+  "posthocB5": {
+    "mean": -0.12666666666666665,
+    "pointwise95": [
+      -0.3722222222222223,
+      0.11972222222222226
+    ],
+    "seedBlocks": 30,
+    "exploratory": true
+  },
+  "identicalCappedOutcomePairsLLMRandom": 197,
+  "pairedBlockedRuns": 240,
+  "llmDecisionWeightedRate": 0.9960714285714286,
+  "decisionSteps": [
+    1
+  ],
+  "cells": [
+    {
+      "cell": "B2_N10_cv0p05",
+      "N": 10,
+      "blocked": 2,
+      "cv": 0.05000000074505806,
+      "tau": 0.6,
+      "initialFormulaProbability": 0.229680337784419,
+      "llmRate": 1.0,
+      "originalObservedRate": 0.2411764705882353,
+      "randomObservedRate": 1.0,
+      "llmAH": 20.466666666666665,
+      "originalAH": 21.183333333333334,
+      "noVolunteerAH": 19.25,
+      "randomAH": 20.466666666666665,
+      "llmEffort": 7.6,
+      "originalEffort": 6.466666666666667,
+      "delta": -0.7166666666666686
+    },
+    {
+      "cell": "B2_N10_cv0p2",
+      "N": 10,
+      "blocked": 2,
+      "cv": 0.20000000298023224,
+      "tau": 0.6,
+      "initialFormulaProbability": 0.10139974426905984,
+      "llmRate": 1.0,
+      "originalObservedRate": 0.10816542948038176,
+      "randomObservedRate": 1.0,
+      "llmAH": 20.466666666666665,
+      "originalAH": 22.206666666666667,
+      "noVolunteerAH": 19.25,
+      "randomAH": 20.466666666666665,
+      "llmEffort": 7.6,
+      "originalEffort": 6.766666666666667,
+      "delta": -1.740000000000002
+    },
+    {
+      "cell": "B2_N30_cv0p05",
+      "N": 30,
+      "blocked": 2,
+      "cv": 0.05000000074505806,
+      "tau": 0.6,
+      "initialFormulaProbability": 0.07790017524127146,
+      "llmRate": 1.0,
+      "originalObservedRate": 0.08233454924439812,
+      "randomObservedRate": 1.0,
+      "llmAH": 26.20888888888889,
+      "originalAH": 28.50222222222222,
+      "noVolunteerAH": 27.164444444444445,
+      "randomAH": 26.20888888888889,
+      "llmEffort": 6.9,
+      "originalEffort": 7.066666666666666,
+      "delta": -2.2933333333333294
+    },
+    {
+      "cell": "B2_N30_cv0p2",
+      "N": 30,
+      "blocked": 2,
+      "cv": 0.20000000298023224,
+      "tau": 0.6,
+      "initialFormulaProbability": 0.032750243988459715,
+      "llmRate": 0.9988888888888889,
+      "originalObservedRate": 0.036337209302325583,
+      "randomObservedRate": 0.9977777777777778,
+      "llmAH": 26.20111111111111,
+      "originalAH": 29.532222222222224,
+      "noVolunteerAH": 27.164444444444445,
+      "randomAH": 26.20888888888889,
+      "llmEffort": 6.9,
+      "originalEffort": 7.566666666666666,
+      "delta": -3.331111111111113
+    },
+    {
+      "cell": "B5_N10_cv0p05",
+      "N": 10,
+      "blocked": 5,
+      "cv": 0.05000000074505806,
+      "tau": 0,
+      "initialFormulaProbability": 1.0,
+      "llmRate": 0.998,
+      "originalObservedRate": 1.0,
+      "randomObservedRate": 0.9986666666666667,
+      "llmAH": 30.77,
+      "originalAH": 31.2,
+      "noVolunteerAH": 300.0,
+      "randomAH": 31.39,
+      "llmEffort": 22.966666666666665,
+      "originalEffort": 23.266666666666666,
+      "delta": -0.4299999999999997
+    },
+    {
+      "cell": "B5_N10_cv0p2",
+      "N": 10,
+      "blocked": 5,
+      "cv": 0.20000000298023224,
+      "tau": 0,
+      "initialFormulaProbability": 1.0,
+      "llmRate": 0.988,
+      "originalObservedRate": 1.0,
+      "randomObservedRate": 0.9906666666666667,
+      "llmAH": 31.003333333333334,
+      "originalAH": 31.2,
+      "noVolunteerAH": 300.0,
+      "randomAH": 31.586666666666666,
+      "llmEffort": 22.966666666666665,
+      "originalEffort": 23.266666666666666,
+      "delta": -0.19666666666666544
+    },
+    {
+      "cell": "B5_N30_cv0p05",
+      "N": 30,
+      "blocked": 5,
+      "cv": 0.05000000074505806,
+      "tau": 0,
+      "initialFormulaProbability": 1.0,
+      "llmRate": 0.9984444444444445,
+      "originalObservedRate": 1.0,
+      "randomObservedRate": 0.9962222222222222,
+      "llmAH": 34.48777777777778,
+      "originalAH": 34.59222222222222,
+      "noVolunteerAH": 300.0,
+      "randomAH": 34.31222222222222,
+      "llmEffort": 25.666666666666668,
+      "originalEffort": 25.466666666666665,
+      "delta": -0.10444444444443945
+    },
+    {
+      "cell": "B5_N30_cv0p2",
+      "N": 30,
+      "blocked": 5,
+      "cv": 0.20000000298023224,
+      "tau": 0,
+      "initialFormulaProbability": 1.0,
+      "llmRate": 0.992,
+      "originalObservedRate": 1.0,
+      "randomObservedRate": 0.9888888888888889,
+      "llmAH": 34.81666666666667,
+      "originalAH": 34.59222222222222,
+      "noVolunteerAH": 300.0,
+      "randomAH": 34.217777777777776,
+      "llmEffort": 25.566666666666666,
+      "originalEffort": 25.466666666666665,
+      "delta": 0.2244444444444511
+    }
+  ],
+  "scope": "Derived from sealed P-028 only. New aggregates/strata are post-hoc exploratory, not new confirmatory tests or new experiments. Identical A_H does not establish identical trajectories/actions."
+}

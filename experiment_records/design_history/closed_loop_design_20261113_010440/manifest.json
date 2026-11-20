@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "path": "design.draft.json",
+      "sha256": "fb5ffb55f0a43e041ceeab371a66f2918f5236b36bb899062896377435662130"
+    },
+    {
+      "path": "DESIGN.zh-TW.md",
+      "sha256": "7eb0c750743f886d2d85c206c6d130bed5df8c631afbf2c9b99ab50015910e4a"
+    },
+    {
+      "path": "RESEARCH_PROTOCOL.before.md",
+      "sha256": "f7663fa99429091374241bdc52a9a7ff25833b302ccce4379e8fed2db1c2124d"
+    },
+    {
+      "path": "seed-history-check.json",
+      "sha256": "0cb4134e0f58764f817346bdcbc6da4cd03249ff219a6543ffb6b4d30072d5cd"
+    },
+    {
+      "path": "source-references.json",
+      "sha256": "ce0732571fd085cecdfa92cb9a7c8588dcb08d2bc455c6eabc782cdf3f021d7a"
+    }
+  ]
+}

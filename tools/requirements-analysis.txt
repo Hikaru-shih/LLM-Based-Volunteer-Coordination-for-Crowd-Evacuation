@@ -1,0 +1,2 @@
+# Static P3 figures; other analysis dependencies are Python standard library.
+matplotlib>=3.8,<4

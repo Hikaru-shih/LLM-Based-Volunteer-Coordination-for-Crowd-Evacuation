@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-16",
+  "stage4": "two_layer_reason_codebook_and_audit_tools_complete",
+  "codebookVersion": "scenario-reasons-v3",
+  "labels": 12,
+  "newTestsPassed": 25,
+  "stage3RegressionTestsPassed": 27,
+  "legacyRegressionTestsPassed": 11,
+  "syntheticWorkedRows": 16,
+  "realNewLLMReasonsAnalyzed": 0,
+  "newAPICalls": 0,
+  "newUnityRuns": 0,
+  "independentHumanReview": false,
+  "semanticClassifierAccuracyEstablished": false,
+  "report": "STAGE4_REASON_ANALYSIS.zh-TW.md",
+  "codebook": "REASON_CODEBOOK_V3.zh-TW.md",
+  "next": "Stage5: prospectively lock small-pilot sampling and exact registrations; collect real diagnostic replies, review reasons, then permit free-choice phases."
+}

@@ -1,0 +1,7 @@
+{
+  "registeredBeforeDispatch": true,
+  "registrationID": "P-029",
+  "planSHA256": "1a9d68d711c248141ba28eee8e52f9c132dd2642dcad484a336ba00d64b52a81",
+  "plannedMaxAttempts": 208,
+  "actualDispatchesAtRegistration": 0
+}

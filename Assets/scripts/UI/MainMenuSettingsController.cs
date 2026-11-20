@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Decision;
+using System.Globalization;
+using UnityEngine.Serialization;
 
-public class MainMenuSettingsController : MonoBehaviour
+public partial class MainMenuSettingsController : MonoBehaviour
 {
     private const string BatchRunCountKey = "sim.batchRunCount";
     private const string GridWidthKey = "sim.gridWidth";
@@ -15,7 +17,8 @@ public class MainMenuSettingsController : MonoBehaviour
     private const string VolunteerCountKey = "sim.volunteerCount";
     private const string StepIntervalKey = "sim.stepInterval";
     private const string VolunteerDecisionModeKey = "sim.volunteerDecisionMode";
-    private const string VolunteerSelectionIntervalKey = "sim.volunteerSelectionInterval";
+    private const string ObstacleHandlingModeKey = "sim.obstacleHandlingMode";
+    private const string ExitCountKey = "sim.exitCount";
     private const string ObstacleVisibilityRangeKey = "sim.obstacleVisibilityRange";
     private const string ObstacleActionRangeKey = "sim.obstacleActionRange";
     private const string MaxLlmRequestsPerStepKey = "sim.maxLlmRequestsPerStep";
@@ -43,7 +46,8 @@ public class MainMenuSettingsController : MonoBehaviour
     public GameObject obstacleCountInput;
     public GameObject volunteerCountInput;
     public GameObject stepIntervalInput;
-    public GameObject volunteerSelectionIntervalInput;
+    [FormerlySerializedAs("volunteerSelectionIntervalInput")]
+    public GameObject exitCountInput;
     public GameObject obstacleVisibilityRangeInput;
     public GameObject obstacleActionRangeInput;
     public GameObject maxLlmRequestsPerStepInput;
@@ -60,6 +64,9 @@ public class MainMenuSettingsController : MonoBehaviour
 
     [Header("Dropdown Objects (Legacy Dropdown or TMP_Dropdown)")]
     public GameObject volunteerDecisionModeDropdown;
+    public GameObject obstacleHandlingModeDropdown;
+    public GameObject agentInformationDropdown;
+    public GameObject coordinationModeDropdown;
     public GameObject movementStrategyDropdown;
     public GameObject conflictStrategyDropdown;
 
@@ -68,6 +75,7 @@ public class MainMenuSettingsController : MonoBehaviour
 
     [Header("Defaults")]
     public int defaultBatchRunCount = 1;
+    public ObstacleHandlingMode defaultObstacleHandlingMode = ObstacleHandlingMode.PaperRelocation;
     public int defaultGridWidth = 30;
     public int defaultGridHeight = 30;
     public int defaultAgentCount = 50;
@@ -76,13 +84,13 @@ public class MainMenuSettingsController : MonoBehaviour
     public int defaultObstacleCount = 40;
     public int defaultVolunteerCount = 5;
     public float defaultStepInterval = 0.30f;
-    public int defaultVolunteerSelectionInterval = 6;
+    public int defaultExitCount = 4;
     public int defaultObstacleVisibilityRange = 5;
     public int defaultObstacleActionRange = 2;
     public int defaultMaxLlmRequestsPerStep = 3;
-    public float defaultVolunteerCost = 1.0f;
-    public float defaultFailureCost = 2.0f;
-    public float defaultUnwillingnessOmega = 1.0f;
+    public float defaultVolunteerCost = 0.005f;
+    public float defaultFailureCost = 0.5f;
+    public float defaultUnwillingnessOmega = 5f;
     public float defaultKStatic = 1.0f;
     public float defaultKDynamic = 1.0f;
     public float defaultKAnticipation = 1.0f;
@@ -94,12 +102,17 @@ public class MainMenuSettingsController : MonoBehaviour
 
     void Start()
     {
+        EnsureResearchControls();
         InitializeDropdownOptions();
         LoadToUI();
     }
 
+    public bool LastSettingsApplySucceeded {get;private set;}
+    public bool TryApplySettings(){ApplySettings();return LastSettingsApplySucceeded;}
     public void ApplySettings()
     {
+        LastSettingsApplySucceeded=false;
+        if(!ValidateResearchSettings()) return;
         SaveInt(batchRunCountInput, BatchRunCountKey);
         SaveInt(gridWidthInput, GridWidthKey);
         SaveInt(gridHeightInput, GridHeightKey);
@@ -108,7 +121,7 @@ public class MainMenuSettingsController : MonoBehaviour
         SaveInt(agentSpawnAreaHeightInput, AgentSpawnAreaHeightKey);
         SaveInt(obstacleCountInput, ObstacleCountKey);
         SaveInt(volunteerCountInput, VolunteerCountKey);
-        SaveInt(volunteerSelectionIntervalInput, VolunteerSelectionIntervalKey);
+        SaveExitCount();
         SaveInt(obstacleVisibilityRangeInput, ObstacleVisibilityRangeKey);
         SaveInt(obstacleActionRangeInput, ObstacleActionRangeKey);
         SaveInt(maxLlmRequestsPerStepInput, MaxLlmRequestsPerStepKey);
@@ -127,17 +140,26 @@ public class MainMenuSettingsController : MonoBehaviour
         if (openAiKeyInput != null) LocalOpenAIKey.Save(GetInputText(openAiKeyInput));
 
         SaveDropdownValue(volunteerDecisionModeDropdown, VolunteerDecisionModeKey);
+        SaveDropdownValue(obstacleHandlingModeDropdown, ObstacleHandlingModeKey);
+        SaveDropdownValue(agentInformationDropdown,"sim.agentInformation");
+        SaveDropdownValue(coordinationModeDropdown,"sim.coordinationMode");
         SaveDropdownValue(movementStrategyDropdown, MovementStrategyKey);
         SaveDropdownValue(conflictStrategyDropdown, ConflictStrategyKey);
 
         SaveToggleValue(debugLlmDecisionFlowToggle, DebugLlmDecisionFlowKey);
 
+        SaveResearchSettings();
         PlayerPrefs.Save();
+        LastSettingsApplySucceeded=true;
+        UpdateResearchFeedback("Settings saved. No API request sent.");
         Debug.Log("Main menu settings saved.");
     }
 
     private void LoadToUI()
     {
+        LoadResearchSettings();
+        SetDropdownValue(coordinationModeDropdown,Mathf.Clamp(PlayerPrefs.GetInt("sim.coordinationMode",0),0,3));
+        SetDropdownValue(agentInformationDropdown,Mathf.Clamp(PlayerPrefs.GetInt("sim.agentInformation",1),0,1));
         SetText(batchRunCountInput, PlayerPrefs.GetInt(BatchRunCountKey, defaultBatchRunCount).ToString());
         SetText(gridWidthInput, PlayerPrefs.GetInt(GridWidthKey, defaultGridWidth).ToString());
         SetText(gridHeightInput, PlayerPrefs.GetInt(GridHeightKey, defaultGridHeight).ToString());
@@ -146,39 +168,49 @@ public class MainMenuSettingsController : MonoBehaviour
         SetText(agentSpawnAreaHeightInput, PlayerPrefs.GetInt(AgentSpawnAreaHeightKey, defaultAgentSpawnAreaHeight).ToString());
         SetText(obstacleCountInput, PlayerPrefs.GetInt(ObstacleCountKey, defaultObstacleCount).ToString());
         SetText(volunteerCountInput, PlayerPrefs.GetInt(VolunteerCountKey, defaultVolunteerCount).ToString());
-        SetText(volunteerSelectionIntervalInput, PlayerPrefs.GetInt(VolunteerSelectionIntervalKey, defaultVolunteerSelectionInterval).ToString());
+        SetText(exitCountInput, Mathf.Clamp(PlayerPrefs.GetInt(ExitCountKey, defaultExitCount),1,4).ToString());
         SetText(obstacleVisibilityRangeInput, PlayerPrefs.GetInt(ObstacleVisibilityRangeKey, defaultObstacleVisibilityRange).ToString());
         SetText(obstacleActionRangeInput, PlayerPrefs.GetInt(ObstacleActionRangeKey, defaultObstacleActionRange).ToString());
         SetText(maxLlmRequestsPerStepInput, PlayerPrefs.GetInt(MaxLlmRequestsPerStepKey, defaultMaxLlmRequestsPerStep).ToString());
         SetText(ninetyPercentFallbackStepsInput, PlayerPrefs.GetInt(NinetyPercentFallbackStepsKey, defaultNinetyPercentFallbackSteps).ToString());
 
-        SetText(stepIntervalInput, PlayerPrefs.GetFloat(StepIntervalKey, defaultStepInterval).ToString("F2"));
-        SetText(volunteerCostInput, PlayerPrefs.GetFloat(VolunteerCostKey, defaultVolunteerCost).ToString("F2"));
-        SetText(failureCostInput, PlayerPrefs.GetFloat(FailureCostKey, defaultFailureCost).ToString("F2"));
-        SetText(unwillingnessOmegaInput, PlayerPrefs.GetFloat(UnwillingnessOmegaKey, defaultUnwillingnessOmega).ToString("F2"));
-        SetText(kStaticInput, PlayerPrefs.GetFloat(KStaticKey, defaultKStatic).ToString("F2"));
-        SetText(kDynamicInput, PlayerPrefs.GetFloat(KDynamicKey, defaultKDynamic).ToString("F2"));
-        SetText(kAnticipationInput, PlayerPrefs.GetFloat(KAnticipationKey, defaultKAnticipation).ToString("F2"));
-        SetText(temperatureInput, PlayerPrefs.GetFloat(TemperatureKey, defaultTemperature).ToString("F2"));
+        SetText(stepIntervalInput, PlayerPrefs.GetFloat(StepIntervalKey, defaultStepInterval).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(volunteerCostInput, PlayerPrefs.GetFloat(VolunteerCostKey, defaultVolunteerCost).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(failureCostInput, PlayerPrefs.GetFloat(FailureCostKey, defaultFailureCost).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(unwillingnessOmegaInput, PlayerPrefs.GetFloat(UnwillingnessOmegaKey, defaultUnwillingnessOmega).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(kStaticInput, PlayerPrefs.GetFloat(KStaticKey, defaultKStatic).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(kDynamicInput, PlayerPrefs.GetFloat(KDynamicKey, defaultKDynamic).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(kAnticipationInput, PlayerPrefs.GetFloat(KAnticipationKey, defaultKAnticipation).ToString("G9", CultureInfo.InvariantCulture));
+        SetText(temperatureInput, PlayerPrefs.GetFloat(TemperatureKey, defaultTemperature).ToString("G9", CultureInfo.InvariantCulture));
 
         SetText(openAiModelInput, PlayerPrefs.GetString(OpenAiModelKey, defaultOpenAiModel));
-        SetText(openAiKeyInput, LocalOpenAIKey.Load());
+        if(openAiKeyInput!=null) SetText(openAiKeyInput, LocalOpenAIKey.Load());
 
         SetDropdownValue(volunteerDecisionModeDropdown, PlayerPrefs.GetInt(VolunteerDecisionModeKey, GetDropdownValue(volunteerDecisionModeDropdown, 0)));
+        int handling = PlayerPrefs.GetInt(ObstacleHandlingModeKey,(int)defaultObstacleHandlingMode);
+        SetDropdownValue(obstacleHandlingModeDropdown,System.Enum.IsDefined(typeof(ObstacleHandlingMode),handling) ? handling : (int)defaultObstacleHandlingMode);
         SetDropdownValue(movementStrategyDropdown, PlayerPrefs.GetInt(MovementStrategyKey, GetDropdownValue(movementStrategyDropdown, 0)));
         SetDropdownValue(conflictStrategyDropdown, PlayerPrefs.GetInt(ConflictStrategyKey, GetDropdownValue(conflictStrategyDropdown, 0)));
 
         SetToggleValue(debugLlmDecisionFlowToggle, PlayerPrefs.GetInt(DebugLlmDecisionFlowKey, defaultDebugLlmDecisionFlow ? 1 : 0) == 1);
+        RefreshPayoffs();
     }
 
     private void InitializeDropdownOptions()
     {
-        SetDropdownOptionsIfEmpty(
+        SetDropdownOptions(coordinationModeDropdown,new System.Collections.Generic.List<string>{"Paper Reference","Local Coordination","Optimal Coordination","LLM Coordination"});
+        SetDropdownOptions(agentInformationDropdown,new System.Collections.Generic.List<string>{"Shared Context", "Core (Game Inputs)"});
+        SetDropdownOptions(obstacleHandlingModeDropdown,
+            new System.Collections.Generic.List<string>{"Paper Relocation", "Legacy Clearance"});
+        SetDropdownOptions(
             volunteerDecisionModeDropdown,
             new System.Collections.Generic.List<string>
             {
                 SimulationManager.VolunteerDecisionMode.OriginalGameTheory.ToString(),
-                SimulationManager.VolunteerDecisionMode.LLM.ToString()
+                SimulationManager.VolunteerDecisionMode.LLM.ToString(),
+                SimulationManager.VolunteerDecisionMode.NoVolunteers.ToString(),
+                "Heuristic",
+                SimulationManager.VolunteerDecisionMode.RandomMatched.ToString()
             });
 
         System.Collections.Generic.List<string> movementOptions = new System.Collections.Generic.List<string>();
@@ -186,14 +218,14 @@ public class MainMenuSettingsController : MonoBehaviour
         {
             movementOptions.Add(strategy.ToString());
         }
-        SetDropdownOptionsIfEmpty(movementStrategyDropdown, movementOptions);
+        SetDropdownOptions(movementStrategyDropdown, movementOptions);
 
         System.Collections.Generic.List<string> conflictOptions = new System.Collections.Generic.List<string>();
         foreach (YielderGame.Strategy strategy in System.Enum.GetValues(typeof(YielderGame.Strategy)))
         {
             conflictOptions.Add(strategy.ToString());
         }
-        SetDropdownOptionsIfEmpty(conflictStrategyDropdown, conflictOptions);
+        SetDropdownOptions(conflictStrategyDropdown, conflictOptions);
     }
 
     private static void SetText(GameObject inputObject, string value)
@@ -231,6 +263,15 @@ public class MainMenuSettingsController : MonoBehaviour
         return null;
     }
 
+    private void SaveExitCount()
+    {
+        if(exitCountInput==null) return;
+        int parsed;
+        if(!int.TryParse(GetInputText(exitCountInput),out parsed)) parsed=defaultExitCount;
+        parsed=Mathf.Clamp(parsed,1,4);
+        SetText(exitCountInput,parsed.ToString());PlayerPrefs.SetInt(ExitCountKey,parsed);
+    }
+
     private static void SaveInt(GameObject inputObject, string key)
     {
         string text = GetInputText(inputObject);
@@ -247,7 +288,8 @@ public class MainMenuSettingsController : MonoBehaviour
         if (string.IsNullOrWhiteSpace(text))
             return;
 
-        if (float.TryParse(text, out float parsed))
+        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out float parsed) ||
+            float.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out parsed))
             PlayerPrefs.SetFloat(key, parsed);
     }
 
@@ -304,7 +346,7 @@ public class MainMenuSettingsController : MonoBehaviour
         }
     }
 
-    private static void SetDropdownOptionsIfEmpty(GameObject dropdownObject, System.Collections.Generic.List<string> options)
+    private static void SetDropdownOptions(GameObject dropdownObject, System.Collections.Generic.List<string> options)
     {
         if (dropdownObject == null || options == null)
             return;
@@ -312,61 +354,23 @@ public class MainMenuSettingsController : MonoBehaviour
         Dropdown legacy = dropdownObject.GetComponent<Dropdown>();
         if (legacy != null)
         {
-            if (legacy.options == null || legacy.options.Count == 0 || IsPlaceholderOptionsLegacy(legacy.options))
-            {
-                legacy.ClearOptions();
-                legacy.AddOptions(options);
-            }
+            int previous = legacy.value;
+            legacy.ClearOptions();
+            legacy.AddOptions(options);
+            legacy.SetValueWithoutNotify(Mathf.Clamp(previous,0,options.Count-1));
+            legacy.RefreshShownValue();
             return;
         }
 
         TMP_Dropdown tmp = dropdownObject.GetComponent<TMP_Dropdown>();
-        if (tmp != null && (tmp.options == null || tmp.options.Count == 0 || IsPlaceholderOptionsTmp(tmp.options)))
+        if (tmp != null)
         {
+            int previous = tmp.value;
             tmp.ClearOptions();
             tmp.AddOptions(options);
+            tmp.SetValueWithoutNotify(Mathf.Clamp(previous,0,options.Count-1));
+            tmp.RefreshShownValue();
         }
-    }
-
-    private static bool IsPlaceholderOptionsLegacy(System.Collections.Generic.List<Dropdown.OptionData> options)
-    {
-        if (options == null || options.Count == 0)
-            return false;
-
-        int placeholders = 0;
-        for (int i = 0; i < options.Count; i++)
-        {
-            string text = options[i] != null ? options[i].text : string.Empty;
-            if (IsPlaceholderText(text))
-                placeholders++;
-        }
-
-        return placeholders == options.Count;
-    }
-
-    private static bool IsPlaceholderOptionsTmp(System.Collections.Generic.List<TMP_Dropdown.OptionData> options)
-    {
-        if (options == null || options.Count == 0)
-            return false;
-
-        int placeholders = 0;
-        for (int i = 0; i < options.Count; i++)
-        {
-            string text = options[i] != null ? options[i].text : string.Empty;
-            if (IsPlaceholderText(text))
-                placeholders++;
-        }
-
-        return placeholders == options.Count;
-    }
-
-    private static bool IsPlaceholderText(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            return true;
-
-        string normalized = text.Trim().ToLowerInvariant();
-        return normalized.StartsWith("option");
     }
 
     private static void SaveToggleValue(GameObject toggleObject, string key)

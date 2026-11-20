@@ -1,0 +1,368 @@
+{
+  "schema": "scenario-physical-calibration-v1",
+  "date": "2026-11-16",
+  "purpose": "Complete own-action counterfactual holding others willing; development only",
+  "baseSourceSHA": "1466241a451c2d176f942ec8ebe26452a9df7e1a1be440d841f4b8cf83e2c59a",
+  "horizon": 300,
+  "jobs": [
+    {
+      "id": "B2_M1_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M1_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M1_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M1_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M1_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M1_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B3_M1_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B3_M4_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 3,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B4_M1_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B4_M4_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 4,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M1_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_OthersHelp_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "OthersHelp",
+      "manipulationSteps": 4
+    }
+  ],
+  "agents": 10,
+  "apiCallsAllowed": 0,
+  "randomization": "Fixed six fresh development seed blocks; paired initial positions, divergent trajectories need not share future random draws",
+  "intervention": "Override decision callback; focal ID0 or all willing, others decline. No false Original or LLM policy claims.",
+  "factors": "B2/B5 layouts and workProgress intervals1/4; total5 obstacles; no pure tau causal claim",
+  "units": "simulation ticks, not measured human seconds",
+  "failureRule": "Stop on invalid or unexpected API; retain all timeouts, negative benefits and unsuccessful handling; no automatic rerun",
+  "mappingRule": {
+    "scale": 301,
+    "burden": "per-agent approach-assigned ticks plus active-handler ticks; includes nonworker candidates and failed approach",
+    "personalDelta": "capped exit step in intervention minus same-ID None control",
+    "othersBenefit": "mean capped exit step in None minus intervention for IDs1..9, focal comparison only",
+    "noHelpLoss": "mean capped exit step None blocked minus None open; never use test-future values as LLM observation",
+    "projection": "exploratory nonnegative time-burden/301 and nonnegative noHelpLoss/301; report zero/negative raw values and reject cv>=av or av=0, never clip into paper domain"
+  },
+  "sourceFiles": {
+    "tools/ScenarioPhysicalCalibration.cs": "d7bc68ee41d5c4caf6df8c98f742a6c82089946bae7ed45300deb394a4911a02",
+    "tools/prepare_scenario_counterfactual.py": "9f3d392dce526ffd903708af79f27481d71788d6ecf672afb1622102dde55881"
+  },
+  "geometryExtension": "Isolated Build supports3,4; B3 x9..11 and B4 x8..11 at y1, mirror by seed parity; total5 unchanged. Open/B2/B5 generator unchanged.",
+  "selectionRule": "Include BOTH intermediate blockage counts, all seeds and policies regardless of benefit signs; not a prospectively registered formal hypothesis test.",
+  "openControls": "Reuse same-seed B0 None raw baseline from completed r2; no duplication or new independent sample claim",
+  "counterfactual": "Pair new OthersHelp with existing AllHelp on same seed/layout/work; focal ID0 declines vs participates, everyone else willing. Pair Focal0/None holds others declining. No hand-picked focal or favorable cells."
+}

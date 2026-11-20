@@ -1,0 +1,91 @@
+{
+  "schema": "individual-sampling-v1",
+  "purpose": "P4 development pilot: compatibility, invalid rate, latency and coarse variation; excluded from formal estimates",
+  "model": "gpt-4o-mini",
+  "promptVersion": "paper-agent-v5",
+  "repetitions": 3,
+  "orderSeed": 20261111,
+  "maxHttpAttempts": 72,
+  "scenarios": [
+    {
+      "id": "center",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "cost_low",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "cost_high",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "players_low",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "players_high",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "blocked",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "mostly_open",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "single",
+      "nearbyAgentCount": 1,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "zero_players",
+      "nearbyAgentCount": 0,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "unblocked",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 1,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    }
+  ]
+}

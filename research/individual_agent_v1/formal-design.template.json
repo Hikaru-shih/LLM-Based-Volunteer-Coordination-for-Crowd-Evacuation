@@ -1,0 +1,24 @@
+{
+  "schema": "individual-formal-design-v1",
+  "model": "MODEL_AFTER_VALIDATION",
+  "primaryContrast": {
+    "factor": "volunteerCost",
+    "fromValue": 0.005,
+    "toValue": 0.2,
+    "fixed": {
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    "metric": "(LLM participation rate at high cost - at low cost) - (reference probability at high cost - at low cost)"
+  },
+  "failurePolicy": "Stop session on invalid response, retain it, never code as refusal or silently replace. Preserve missing/interrupted records and conservative reservations; no repair retries. Transport retries at most 3 attempts per choice. Resume may repeat unknown-result interruptions, with old reservation retained.",
+  "multiplicityPolicy": "One declared primary contrast; pointwise descriptive intervals; all other comparisons exploratory, no unadjusted family significance claims",
+  "pilotExcluded": true,
+  "modelLifecycleReviewed": false,
+  "explanationReview": "Separate factual eight-question diagnostic and manual statement-review table. Never exclude valid actions or force cooperation based on explanations.",
+  "repetitionsJustification": "Provisional 100 planned trials/state; review feasibility and precision before freeze, never adapt to willingness direction or significance",
+  "scope": "Fixed-state only; closed-loop study, independent RandomMatched calibration and group outcomes are not defined by this lock",
+  "promptVersion": "paper-agent-v5"
+}

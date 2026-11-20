@@ -1,0 +1,1754 @@
+{
+  "schema": "scenario-interface-registration-v1",
+  "registeredAtUtc": "2026-11-16T11:34:06.932154+00:00",
+  "purpose": "Stage3 isolated development/pilot, not formal or human evidence",
+  "bundlePath": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\preparation\\scenario_agent_stage3_20261116",
+  "bundleSHA256": "ba0a228cb449cdcff0fb25de6f9a1830a02bbca67ea9a60ee4b74741d92db109",
+  "phase": "physical_diagnostic",
+  "repetitions": 2,
+  "orderSeed": 2026111652,
+  "execution": "live",
+  "providerAvailabilityVerified": false,
+  "model": "gpt-6-luna",
+  "endpoint": "https://api.openai.com/v1/chat/completions",
+  "attemptsPerTrial": 1,
+  "maxAttempts": 32,
+  "maxGeneratedTokens": 7040,
+  "maxPayloadBytes": 136576,
+  "timeoutSeconds": 60,
+  "wallSeconds": 2080,
+  "automaticRetries": 0,
+  "stopRule": "Stop on first invalid/network/model/duplicate-ID error. No automatic resume, refill or overwrite.",
+  "costDisclosure": "Fixed request and output ceilings, not a dollar-price guarantee. Input usage and account pricing remain provider-side.",
+  "gateEvidence": [],
+  "trials": [
+    {
+      "trialID": "PD_B5_M1_others_willing_r001",
+      "case": {
+        "caseID": "PD_B5_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 27.5, \"observedMin\": 17.0, \"observedMax\": 32.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 29.12963, \"observedMin\": 24.555556, \"observedMax\": 33.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 38.333333, \"observedMin\": 32.0, \"observedMax\": 41.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 32.962963, \"observedMin\": 24.777778, \"observedMax\": 38.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "53f0978420864d3904ff1e5cb93ba63febebba1687b30dd3c4b50045f8717797",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B2_M1_others_willing_r001",
+      "case": {
+        "caseID": "PD_B2_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 19.666667, \"observedMin\": 8.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 20.37037, \"observedMin\": 18.333333, \"observedMax\": 23.888889}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 18.0, \"observedMin\": 9.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 19.703704, \"observedMin\": 15.111111, \"observedMax\": 23.888889}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "375750cc0b669bc847df3c4c4122bcb07fbf3e93d44e2e424e36b050e193faa6",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B2_M4_others_decline_r002",
+      "case": {
+        "caseID": "PD_B2_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 30.833333, \"observedMin\": 19.0, \"observedMax\": 46.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 34.351852, \"observedMin\": 26.555556, \"observedMax\": 41.444444}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 12.333333, \"observedMin\": 8.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 17.648148, \"observedMin\": 14.0, \"observedMax\": 23.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "29de9bb8b67c01fd38b1397c8aa4274919ca783545142720631471a455e3933f",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B4_M4_others_willing_r001",
+      "case": {
+        "caseID": "PD_B4_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 55.5, \"observedMin\": 50.0, \"observedMax\": 64.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 51.092593, \"observedMin\": 47.333333, \"observedMax\": 58.333333}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 56.0, \"observedMin\": 44.0, \"observedMax\": 68.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 54.444444, \"observedMin\": 46.777778, \"observedMax\": 59.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c93d112c17c39c0f626a36b7bb67fc9c4fe91d35f3c9be5442b94c548d347ac5",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B5_M1_others_decline_r002",
+      "case": {
+        "caseID": "PD_B5_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 47.833333, \"observedMin\": 42.0, \"observedMax\": 58.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 39.240741, \"observedMin\": 33.111111, \"observedMax\": 43.0}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "6c4511df62ae450edb52cd85efeacb012f0b0611312986d8af15137b303b7c8f",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B4_M1_others_decline_r002",
+      "case": {
+        "caseID": "PD_B4_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 38.166667, \"observedMin\": 34.0, \"observedMax\": 42.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 32.444444, \"observedMin\": 30.333333, \"observedMax\": 35.222222}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 17.666667, \"observedMin\": 8.0, \"observedMax\": 30.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 22.907407, \"observedMin\": 21.888889, \"observedMax\": 24.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "706d565806bce9a34388a5ef8643283cc8a433e63ce49bc6079a6fad0034d22a",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B5_M4_others_willing_r002",
+      "case": {
+        "caseID": "PD_B5_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 61.666667, \"observedMin\": 48.0, \"observedMax\": 76.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 60.259259, \"observedMin\": 49.555556, \"observedMax\": 69.777778}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 65.666667, \"observedMin\": 52.0, \"observedMax\": 76.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 67.481481, \"observedMin\": 58.0, \"observedMax\": 77.555556}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d3e5529028a237496a17bd847354274a7eafc1ca767806288327308531ce4c88",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B3_M4_others_decline_r002",
+      "case": {
+        "caseID": "PD_B3_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 66.5, \"observedMin\": 61.0, \"observedMax\": 73.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 54.981481, \"observedMin\": 47.222222, \"observedMax\": 67.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 15.166667, \"observedMin\": 11.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.759259, \"observedMin\": 18.888889, \"observedMax\": 26.222222}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "17db758a0de2640141ce7f2307809a6cf6f2f20442bef3c15f8b2dc85370da73",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B3_M1_others_willing_r001",
+      "case": {
+        "caseID": "PD_B3_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 23.833333, \"observedMin\": 18.0, \"observedMax\": 35.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 24.574074, \"observedMin\": 21.111111, \"observedMax\": 31.555556}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 24.333333, \"observedMin\": 18.0, \"observedMax\": 32.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.981481, \"observedMin\": 19.777778, \"observedMax\": 23.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "5158dfa7cfee49653415e409d08d3eeda89fbc9dfbe0cb3aa225262ed0a2780b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B4_M4_others_decline_r001",
+      "case": {
+        "caseID": "PD_B4_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 89.166667, \"observedMin\": 79.0, \"observedMax\": 101.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 65.62963, \"observedMin\": 56.555556, \"observedMax\": 78.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 17.666667, \"observedMin\": 8.0, \"observedMax\": 30.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 22.907407, \"observedMin\": 21.888889, \"observedMax\": 24.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "62cb941f9d60d88d4c7fbabdb175f258b280a8872313eee856df9d753b22f253",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B2_M1_others_willing_r002",
+      "case": {
+        "caseID": "PD_B2_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 19.666667, \"observedMin\": 8.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 20.37037, \"observedMin\": 18.333333, \"observedMax\": 23.888889}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 18.0, \"observedMin\": 9.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 19.703704, \"observedMin\": 15.111111, \"observedMax\": 23.888889}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "375750cc0b669bc847df3c4c4122bcb07fbf3e93d44e2e424e36b050e193faa6",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B4_M4_others_willing_r002",
+      "case": {
+        "caseID": "PD_B4_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 55.5, \"observedMin\": 50.0, \"observedMax\": 64.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 51.092593, \"observedMin\": 47.333333, \"observedMax\": 58.333333}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 56.0, \"observedMin\": 44.0, \"observedMax\": 68.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 54.444444, \"observedMin\": 46.777778, \"observedMax\": 59.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c93d112c17c39c0f626a36b7bb67fc9c4fe91d35f3c9be5442b94c548d347ac5",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B2_M4_others_decline_r001",
+      "case": {
+        "caseID": "PD_B2_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 30.833333, \"observedMin\": 19.0, \"observedMax\": 46.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 34.351852, \"observedMin\": 26.555556, \"observedMax\": 41.444444}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 12.333333, \"observedMin\": 8.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 17.648148, \"observedMin\": 14.0, \"observedMax\": 23.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "29de9bb8b67c01fd38b1397c8aa4274919ca783545142720631471a455e3933f",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B3_M4_others_willing_r002",
+      "case": {
+        "caseID": "PD_B3_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 46.0, \"observedMin\": 36.0, \"observedMax\": 52.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 48.092593, \"observedMin\": 33.777778, \"observedMax\": 56.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 51.333333, \"observedMin\": 37.0, \"observedMax\": 67.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 47.537037, \"observedMin\": 34.555556, \"observedMax\": 59.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "107f148b93a3b247fa9b956f9d38c22346fe901f27abe98bec8cd1efa7b2cfc6",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B4_M1_others_willing_r002",
+      "case": {
+        "caseID": "PD_B4_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 27.666667, \"observedMin\": 15.0, \"observedMax\": 46.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 25.277778, \"observedMin\": 20.444444, \"observedMax\": 30.0}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 24.333333, \"observedMin\": 18.0, \"observedMax\": 29.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 26.888889, \"observedMin\": 23.777778, \"observedMax\": 31.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "df775ce2d56624d545dcd7ad6eca3a7d731974bcaaf094c2607fba1abb517af0",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B2_M4_others_willing_r002",
+      "case": {
+        "caseID": "PD_B2_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 32.833333, \"observedMin\": 14.0, \"observedMax\": 41.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 37.185185, \"observedMin\": 31.222222, \"observedMax\": 42.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 38.666667, \"observedMin\": 31.0, \"observedMax\": 45.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 34.777778, \"observedMin\": 26.777778, \"observedMax\": 42.888889}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "7428c4dee312aba898b927e054cbaf183a29053873e705fb61b3dd2636c8b433",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B4_M1_others_decline_r001",
+      "case": {
+        "caseID": "PD_B4_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 38.166667, \"observedMin\": 34.0, \"observedMax\": 42.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 32.444444, \"observedMin\": 30.333333, \"observedMax\": 35.222222}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 17.666667, \"observedMin\": 8.0, \"observedMax\": 30.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 22.907407, \"observedMin\": 21.888889, \"observedMax\": 24.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "706d565806bce9a34388a5ef8643283cc8a433e63ce49bc6079a6fad0034d22a",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B3_M1_others_willing_r002",
+      "case": {
+        "caseID": "PD_B3_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 23.833333, \"observedMin\": 18.0, \"observedMax\": 35.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 24.574074, \"observedMin\": 21.111111, \"observedMax\": 31.555556}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 24.333333, \"observedMin\": 18.0, \"observedMax\": 32.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.981481, \"observedMin\": 19.777778, \"observedMax\": 23.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "5158dfa7cfee49653415e409d08d3eeda89fbc9dfbe0cb3aa225262ed0a2780b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B2_M4_others_willing_r001",
+      "case": {
+        "caseID": "PD_B2_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 32.833333, \"observedMin\": 14.0, \"observedMax\": 41.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 37.185185, \"observedMin\": 31.222222, \"observedMax\": 42.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 38.666667, \"observedMin\": 31.0, \"observedMax\": 45.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 34.777778, \"observedMin\": 26.777778, \"observedMax\": 42.888889}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "7428c4dee312aba898b927e054cbaf183a29053873e705fb61b3dd2636c8b433",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B5_M4_others_decline_r002",
+      "case": {
+        "caseID": "PD_B5_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 98.0, \"observedMin\": 39.0, \"observedMax\": 120.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 77.425926, \"observedMin\": 51.777778, \"observedMax\": 94.222222}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "016fd395176374466eb99d1f8f6153af1c1bc41c9caa7d6f4bb42ed68f4f5fef",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B5_M4_others_willing_r001",
+      "case": {
+        "caseID": "PD_B5_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 61.666667, \"observedMin\": 48.0, \"observedMax\": 76.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 60.259259, \"observedMin\": 49.555556, \"observedMax\": 69.777778}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 65.666667, \"observedMin\": 52.0, \"observedMax\": 76.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 67.481481, \"observedMin\": 58.0, \"observedMax\": 77.555556}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d3e5529028a237496a17bd847354274a7eafc1ca767806288327308531ce4c88",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B2_M1_others_decline_r001",
+      "case": {
+        "caseID": "PD_B2_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 19.666667, \"observedMin\": 13.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 23.074074, \"observedMin\": 17.888889, \"observedMax\": 27.333333}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 12.333333, \"observedMin\": 8.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 17.648148, \"observedMin\": 14.0, \"observedMax\": 23.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b6737977dccf0a77da3d1f24b63874052b2e74626ef7b1e3b2426835a542e23c",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B3_M1_others_decline_r001",
+      "case": {
+        "caseID": "PD_B3_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 31.666667, \"observedMin\": 26.0, \"observedMax\": 42.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 27.37037, \"observedMin\": 23.222222, \"observedMax\": 31.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 15.166667, \"observedMin\": 11.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.759259, \"observedMin\": 18.888889, \"observedMax\": 26.222222}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "7c15643e3371dcfa04a3f0763bdb99895c75b318dd28d57263288af84bb25084",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B4_M1_others_willing_r001",
+      "case": {
+        "caseID": "PD_B4_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 27.666667, \"observedMin\": 15.0, \"observedMax\": 46.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 25.277778, \"observedMin\": 20.444444, \"observedMax\": 30.0}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 24.333333, \"observedMin\": 18.0, \"observedMax\": 29.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 26.888889, \"observedMin\": 23.777778, \"observedMax\": 31.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "df775ce2d56624d545dcd7ad6eca3a7d731974bcaaf094c2607fba1abb517af0",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B5_M4_others_decline_r001",
+      "case": {
+        "caseID": "PD_B5_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 98.0, \"observedMin\": 39.0, \"observedMax\": 120.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 77.425926, \"observedMin\": 51.777778, \"observedMax\": 94.222222}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "016fd395176374466eb99d1f8f6153af1c1bc41c9caa7d6f4bb42ed68f4f5fef",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B5_M1_others_willing_r002",
+      "case": {
+        "caseID": "PD_B5_M1_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M1",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 27.5, \"observedMin\": 17.0, \"observedMax\": 32.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 29.12963, \"observedMin\": 24.555556, \"observedMax\": 33.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 38.333333, \"observedMin\": 32.0, \"observedMax\": 41.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 32.962963, \"observedMin\": 24.777778, \"observedMax\": 38.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "53f0978420864d3904ff1e5cb93ba63febebba1687b30dd3c4b50045f8717797",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B3_M4_others_decline_r001",
+      "case": {
+        "caseID": "PD_B3_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 66.5, \"observedMin\": 61.0, \"observedMax\": 73.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 54.981481, \"observedMin\": 47.222222, \"observedMax\": 67.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 15.166667, \"observedMin\": 11.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.759259, \"observedMin\": 18.888889, \"observedMax\": 26.222222}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "17db758a0de2640141ce7f2307809a6cf6f2f20442bef3c15f8b2dc85370da73",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B2_M1_others_decline_r002",
+      "case": {
+        "caseID": "PD_B2_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B2_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.6, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 19.666667, \"observedMin\": 13.0, \"observedMax\": 27.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 23.074074, \"observedMin\": 17.888889, \"observedMax\": 27.333333}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 12.333333, \"observedMin\": 8.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 17.648148, \"observedMin\": 14.0, \"observedMax\": 23.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b6737977dccf0a77da3d1f24b63874052b2e74626ef7b1e3b2426835a542e23c",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B5_M1_others_decline_r001",
+      "case": {
+        "caseID": "PD_B5_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B5_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.0, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 47.833333, \"observedMin\": 42.0, \"observedMax\": 58.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 39.240741, \"observedMin\": 33.111111, \"observedMax\": 43.0}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 300.0, \"observedMin\": 300.0, \"observedMax\": 300.0}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "6c4511df62ae450edb52cd85efeacb012f0b0611312986d8af15137b303b7c8f",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "PD_B4_M4_others_decline_r002",
+      "case": {
+        "caseID": "PD_B4_M4_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B4_M4",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.19999999999999996, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 89.166667, \"observedMin\": 79.0, \"observedMax\": 101.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 65.62963, \"observedMin\": 56.555556, \"observedMax\": 78.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 17.666667, \"observedMin\": 8.0, \"observedMax\": 30.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 22.907407, \"observedMin\": 21.888889, \"observedMax\": 24.333333}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "62cb941f9d60d88d4c7fbabdb175f258b280a8872313eee856df9d753b22f253",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B3_M1_others_decline_r002",
+      "case": {
+        "caseID": "PD_B3_M1_others_decline",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M1",
+        "information": "others_decline",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 1, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_decline. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_decline\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 31.666667, \"observedMin\": 26.0, \"observedMax\": 42.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 27.37037, \"observedMin\": 23.222222, \"observedMax\": 31.111111}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_decline\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 15.166667, \"observedMin\": 11.0, \"observedMax\": 18.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 21.759259, \"observedMin\": 18.888889, \"observedMax\": 26.222222}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "7c15643e3371dcfa04a3f0763bdb99895c75b318dd28d57263288af84bb25084",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "PD_B3_M4_others_willing_r001",
+      "case": {
+        "caseID": "PD_B3_M4_others_willing",
+        "phase": "physical_diagnostic",
+        "scenario": "B3_M4",
+        "information": "others_willing",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis is an extension using capped evacuation time, not the reference game's payoff table or participation formula. Population is 10 and there are five movable obstacles. You are the focal pedestrian, ID 0, in a fixed grid-layout family. Initial tau describes the relevant exit, not every path. The grid uses eight-neighbor movement. Partial blockage in these layouts still permits evacuation without handling. M is the work-progress interval per manipulation unit, not total handling time, weight, seconds or injury risk. Only the simulator activates candidates and executes movement.\nYour own time utility, if needed, is U=1-min(T,300)/301. Earlier evacuation gives higher utility. The number 301 is a common normalization, not a human psychological scale. Helping gives no separate reward. Other pedestrians' time outcomes are reported separately, never added as a reward to your own utility. Handling burden and net evacuation delay are different quantities.\nObservation:\n{\"initialExitNonBlockage\": 0.4, \"population\": 10, \"totalMovableObstacles\": 5, \"workProgressIntervalM\": 4, \"horizon\": 300, \"timeUnit\": \"simulation ticks, not human seconds\"}\nThe forecasts below are estimates from six earlier development seeds, not this decision's future outcome, human measurements, or guarantees. Means and observed ranges describe variation across those six seeds, not confidence bounds. Non-evacuation by step 300 counts as 300. The two background profiles are hypothetical endpoints: all other nine decline, or all other nine are willing. Willingness is not actual handling. Mixed profiles were not calibrated. Do not treat 'all others willing' as 'at least one other willing', infer their probability, or assume an endpoint describes the current situation.\nFor this comprehension diagnostic only, use the specified background others_willing. Choose the action with the lower supplied MEAN own capped exit steps, ignoring other peoples' outcomes for this arithmetic check. Either action is acceptable if the means tie. This is a comparison of development estimates, not guaranteed future performance.\nForecasts:\n[{\"otherProfile\": \"others_willing\", \"ownChoice\": \"participate\", \"ownCappedExitSteps\": {\"mean\": 46.0, \"observedMin\": 36.0, \"observedMax\": 52.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 48.092593, \"observedMin\": 33.777778, \"observedMax\": 56.666667}, \"developmentSeedCount\": 6}, {\"otherProfile\": \"others_willing\", \"ownChoice\": \"decline_assistance\", \"ownCappedExitSteps\": {\"mean\": 51.333333, \"observedMin\": 37.0, \"observedMax\": 67.0}, \"otherNineMeanCappedExitSteps\": {\"mean\": 47.537037, \"observedMin\": 34.555556, \"observedMax\": 59.777778}, \"developmentSeedCount\": 6}]"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "107f148b93a3b247fa9b956f9d38c22346fe901f27abe98bec8cd1efa7b2cfc6",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "notOriginalFormulaTask": true
+        }
+      },
+      "repetition": 1
+    }
+  ]
+}

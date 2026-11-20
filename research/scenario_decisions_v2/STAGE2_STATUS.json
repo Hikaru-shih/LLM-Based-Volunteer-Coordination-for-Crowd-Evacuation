@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-16",
+  "stage2": "physical_characterization_and_scoring_specification_complete",
+  "paperUtilityToTimeValidated": false,
+  "newLLMCalls": 0,
+  "developmentUnityRuns": 174,
+  "formalUnityRuns": 0,
+  "validTimeouts": 6,
+  "invalid": 0,
+  "stage3ExecutionHold": true,
+  "reason": "Align abstract diagnostic and physical extension interfaces; old156-choice plan is not the calibrated physical task",
+  "report": "STAGE2_COMPLETE.zh-TW.md",
+  "specification": "stage2-scenario-specification.json",
+  "analysis": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/results.json"
+}

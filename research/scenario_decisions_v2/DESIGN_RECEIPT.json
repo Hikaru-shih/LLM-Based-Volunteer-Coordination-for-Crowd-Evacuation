@@ -1,0 +1,61 @@
+{
+  "status": "draft_only_no_execution",
+  "date": "2026-11-16",
+  "checks": [
+    "6 valid-domain cells",
+    "same-ratio formula invariance",
+    "36 diagnostic choices with 4 ties and 32 non-ties",
+    "120 free choices; 156 total planned; 0 executed"
+  ],
+  "sources": [
+    {
+      "path": "experiment_records/data/validation/model_comparison_20261112/paper_pages/page-7.txt",
+      "sha256": "c25f232f988e4402fd13b4e98ed60a191e46e4b37e5bed86d913df5324d6dadf"
+    },
+    {
+      "path": "experiment_records/data/validation/model_comparison_20261112/paper_pages/page-8.txt",
+      "sha256": "7e515d78018c4b0e5a3b5d7c145de2c90c276fb06e5d7b6e9fd064a18eff3bac"
+    },
+    {
+      "path": "experiment_records/data/group_bundles/g1r2/source_snapshot/Assets/scripts/Decision/OriginalGameTheoryVolunteerStrategy.cs",
+      "sha256": "3bcb10c3a55dcc8b1237a246fed675eceded113f3d0cec98c786539f8039356b"
+    },
+    {
+      "path": "experiment_records/data/group_bundles/g1r2/source_snapshot/Assets/scripts/Decision/PaperVolunteerPrompt.cs",
+      "sha256": "3a728576221d1e0efbf0a62e86b4e6d6f7ff117fe9cc50b9852f388665224c98"
+    }
+  ],
+  "files": [
+    {
+      "path": "MODEL_AND_SCENARIOS.zh-TW.md",
+      "sha256": "f424c26cba4bd790ac1293fd9786cdbce26b88429a6d7e19abe51a510c36bba5"
+    },
+    {
+      "path": "pilot-plan.draft.json",
+      "sha256": "288a326dbb0670a8bcf02e2619262caa58726edede5539ac666f0d1c2dc71a07"
+    },
+    {
+      "path": "PILOT_AND_GATES.zh-TW.md",
+      "sha256": "6a0fe16ef59475588fcb8dc8762bdac7273080f9c598aa253997cce1d22d395c"
+    },
+    {
+      "path": "PROMPT_CANDIDATE.en.md",
+      "sha256": "5a9f89924d23d4dd9d7963c7505c95f048df9dec42c645b0365529344a48ac6d"
+    },
+    {
+      "path": "README.zh-TW.md",
+      "sha256": "9584f8e475be9353a3a152c3d46fc83a83a95231c57f3d5386279cd258ceb25f"
+    },
+    {
+      "path": "REASON_CODEBOOK.zh-TW.md",
+      "sha256": "c11165f42e09d5d2c9ba27bed1d400d9c05400afda19e84f0b0648deca6c29c8"
+    },
+    {
+      "path": "scenario-matrix.csv",
+      "sha256": "9ba7aba1fd4a1d00419c0d7853fdb1430d37f2e4697ada26200ce43bb29d221d"
+    }
+  ],
+  "historicalDesignOnly": true,
+  "currentReceipt": "STAGE2_RECEIPT.json",
+  "scopeNote": "Original design file hashes describe the earlier draft; current documents include stage2 supersession notices."
+}

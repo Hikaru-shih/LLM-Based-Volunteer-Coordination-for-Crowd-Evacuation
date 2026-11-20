@@ -7,10 +7,18 @@ public class GridWorld : MonoBehaviour
     public int height = 30;
     public float cellSize = 1f;
     public Vector3 origin = Vector3.zero;
+    public List<Vector2Int> fixedObstaclePositions = new List<Vector2Int>();
     public CellType[,] cells;
     public List<Vector2Int> exitPositions = new List<Vector2Int>();
+    public int ObstacleRevision { get; private set; }
+    [System.NonSerialized] public bool paperNeighborhood;
+    public readonly HashSet<Vector2Int> immovableObstacles = new HashSet<Vector2Int>();
+    public readonly HashSet<Vector2Int> settledObstacles = new HashSet<Vector2Int>();
+    public readonly HashSet<Vector2Int> movingObstacles = new HashSet<Vector2Int>();
     public void Init()
     {
+        ObstacleRevision++;
+        immovableObstacles.Clear(); settledObstacles.Clear(); movingObstacles.Clear();
         cells = new CellType[width, height];
         for(int i=0; i<width; i++)
         {
@@ -48,6 +56,9 @@ public class GridWorld : MonoBehaviour
         int startYRight = (height - exitWidth) / 2;
         for (int y = startYRight; y < startYRight + exitWidth; y++)
             AddExit(width - 1, y);
+        foreach(var position in fixedObstaclePositions)
+            if(position.x>0 && position.y>0 && position.x<width-1 && position.y<height-1)
+                SetImmovableObstacle(position);
     }
 
     // Add an exit at (x, y) and register it
@@ -62,6 +73,12 @@ public class GridWorld : MonoBehaviour
     // 設定出口開啟的邊（下、上、左、右），可指定寬度
     public void SetExits(bool bottom, bool top, bool left, bool right, int exitWidth = 3)
     {
+        // Remove exits left over from Init or a previous configuration.
+        for (int x = 0; x < width; x++)
+        { cells[x, 0] = CellType.Wall; cells[x, height - 1] = CellType.Wall; }
+        for (int y = 0; y < height; y++)
+        { cells[0, y] = CellType.Wall; cells[width - 1, y] = CellType.Wall; }
+        exitWidth = Mathf.Clamp(exitWidth, 1, Mathf.Min(width, height) - 2);
         exitPositions.Clear();
         // Bottom edge (y=0)
         if (bottom)
@@ -146,6 +163,7 @@ public class GridWorld : MonoBehaviour
             return;
         }
         cells[x, y] = type;
+        ObstacleRevision++;
     }
 
     public bool RemoveObstacleAt(int x, int y)
@@ -156,11 +174,27 @@ public class GridWorld : MonoBehaviour
         if (cells[x, y] == CellType.Obstacle)
         {
             cells[x, y] = CellType.Empty;
+            ObstacleRevision++;
             return true;
         }
 
         return false;
     }
+
+    public void SetImmovableObstacle(Vector2Int position)
+    { SetCellType(position.x,position.y,CellType.Obstacle); immovableObstacles.Add(position); }
+
+    public bool MoveObstacle(Vector2Int from, Vector2Int to)
+    {
+        if(!InBounds(from.x,from.y) || !InBounds(to.x,to.y) || cells[from.x,from.y]!=CellType.Obstacle ||
+            cells[to.x,to.y]!=CellType.Empty || immovableObstacles.Contains(from) || settledObstacles.Contains(from)) return false;
+        cells[from.x,from.y]=exitPositions.Contains(from) ? CellType.Exit : CellType.Empty; cells[to.x,to.y]=CellType.Obstacle;
+        movingObstacles.Remove(from); movingObstacles.Add(to); ObstacleRevision++;
+        return true;
+    }
+
+    public void SettleObstacle(Vector2Int position)
+    { movingObstacles.Remove(position); settledObstacles.Add(position); ObstacleRevision++; }
 
     public bool RemoveNearestObstacle(Vector2Int center, int radius = 2)
     {
@@ -193,6 +227,7 @@ public class GridWorld : MonoBehaviour
         if (bestX >= 0 && bestY >= 0)
         {
             cells[bestX, bestY] = CellType.Empty;
+            ObstacleRevision++;
             return true;
         }
 

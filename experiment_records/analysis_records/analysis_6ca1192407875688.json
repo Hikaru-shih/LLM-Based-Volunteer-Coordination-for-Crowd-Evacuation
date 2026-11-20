@@ -1,0 +1,15 @@
+{
+  "recordID": "analysis_6ca1192407875688",
+  "recordedAtUtc": "2026-11-11T12:24:07.169234+00:00",
+  "kind": "individual_fixed_state_analysis",
+  "model": "offline-analysis-fixture",
+  "promptVersion": "paper-agent-v5",
+  "execution": "synthetic_test",
+  "reportDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\validation\\individual_p3_v1\\demo\\report",
+  "manifestSHA256": "f7469ce5de8adb73c9d69c1cbc07948895aa4c57475ec44184ec8abe8a919806",
+  "valid": 98,
+  "invalid": 18,
+  "missing": 34,
+  "noGame": 20,
+  "remoteRequests": 0
+}

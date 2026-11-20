@@ -1,0 +1,102 @@
+{
+  "schema": "bounded-game-pilot-v1",
+  "model": "gpt-6-luna",
+  "width": 21,
+  "height": 21,
+  "agents": 10,
+  "spawn": 8,
+  "exitWidth": 3,
+  "visibility": 20,
+  "maxSteps": 150,
+  "maxRequestsPerRun": 100,
+  "wallSeconds": 1800,
+  "cv": 0.05,
+  "av": 0.5,
+  "omega": 5,
+  "jobs": [
+    {
+      "id": "partial_3101_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3101,
+      "obstacles": 2,
+      "expectedTau": 0.6
+    },
+    {
+      "id": "blocked_3101_LLM",
+      "policy": "LLM",
+      "seed": 3101,
+      "obstacles": 5,
+      "expectedTau": 0
+    },
+    {
+      "id": "blocked_3102_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3102,
+      "obstacles": 5,
+      "expectedTau": 0
+    },
+    {
+      "id": "open_3102_LLM",
+      "policy": "LLM",
+      "seed": 3102,
+      "obstacles": 0,
+      "expectedTau": 1
+    },
+    {
+      "id": "open_3101_LLM",
+      "policy": "LLM",
+      "seed": 3101,
+      "obstacles": 0,
+      "expectedTau": 1
+    },
+    {
+      "id": "open_3101_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3101,
+      "obstacles": 0,
+      "expectedTau": 1
+    },
+    {
+      "id": "blocked_3101_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3101,
+      "obstacles": 5,
+      "expectedTau": 0
+    },
+    {
+      "id": "partial_3102_LLM",
+      "policy": "LLM",
+      "seed": 3102,
+      "obstacles": 2,
+      "expectedTau": 0.6
+    },
+    {
+      "id": "open_3102_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3102,
+      "obstacles": 0,
+      "expectedTau": 1
+    },
+    {
+      "id": "blocked_3102_LLM",
+      "policy": "LLM",
+      "seed": 3102,
+      "obstacles": 5,
+      "expectedTau": 0
+    },
+    {
+      "id": "partial_3102_OriginalGameTheory",
+      "policy": "OriginalGameTheory",
+      "seed": 3102,
+      "obstacles": 2,
+      "expectedTau": 0.6
+    },
+    {
+      "id": "partial_3101_LLM",
+      "policy": "LLM",
+      "seed": 3101,
+      "obstacles": 2,
+      "expectedTau": 0.6
+    }
+  ]
+}

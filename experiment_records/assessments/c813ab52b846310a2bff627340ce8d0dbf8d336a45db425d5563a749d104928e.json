@@ -1,0 +1,16 @@
+{
+    "recordID": "comprehension_20261111_130423_418356ea",
+    "purpose": "Check understanding of the paper's payoffs and task rules without prescribing cooperation",
+    "recordedAtUtc": "2026-11-11T13:04:27.4075773Z",
+    "kind": "comprehension",
+    "model": "gpt-4o-mini",
+    "specVersion": "paper-agent-v5",
+    "promptHash": "d51935241ac933f89f0be7150bb4a01775bcc1ef9184638d3aac90a824286d9e",
+    "dataDirectory": "data/comprehension/comprehension_20261111_130423_418356ea",
+    "outcome": "completed_pass",
+    "summary": "Suite: paper-single-payoff-diagnostic-v1. A pass requires all factual checks in this suite correct. Supplemental single-player diagnostics do not replace the original v3 assessment. Partial, invalid and interrupted assessments are not passes. This is a factual check, not a volunteering choice or evidence of general model competence.",
+    "logicalCalls": 3,
+    "httpAttempts": 3,
+    "passedChecks": 3,
+    "totalChecks": 3
+}

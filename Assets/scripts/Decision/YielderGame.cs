@@ -10,10 +10,13 @@ namespace Decision
             Random,
             Closest,
             FirstCome,
-            Probabilistic
+            Probabilistic,
+            PaperYielder
         }
 
         private Strategy currentStrategy = Strategy.Random;
+        public float defectionCost = 1f;
+        public float friction = 0f;
 
         public YielderGame(Strategy strategy = Strategy.Random)
         {
@@ -30,6 +33,8 @@ namespace Decision
 
             switch (currentStrategy)
             {
+                case Strategy.PaperYielder:
+                    return ResolvePaperYielder(conflictingAgents);
                 case Strategy.Random:
                     return ResolveByRandom(conflictingAgents);
 
@@ -45,6 +50,26 @@ namespace Decision
                 default:
                     return ResolveByRandom(conflictingAgents);
             }
+        }
+
+        // Lin & Wong (2018), Eqs. (17)-(19). Two or more defectors block all.
+        public static float CooperationProbability(int players, float cost)
+        {
+            if (players <= 1) return 1f;
+            return Mathf.Clamp01(Mathf.Pow(players * Mathf.Clamp01(cost) / (players - 1f),
+                1f / (players - 1f)));
+        }
+
+        private PedestrianAgent ResolvePaperYielder(List<PedestrianAgent> agents)
+        {
+            if (Random.value < Mathf.Clamp01(friction)) return null;
+            float p = CooperationProbability(agents.Count, defectionCost);
+            PedestrianAgent defector = null;
+            int defectors = 0;
+            foreach (var agent in agents)
+                if (Random.value >= p) { defectors++; defector = agent; }
+            if (defectors > 1) return null;
+            return defectors == 1 ? defector : ResolveByRandom(agents);
         }
 
         private PedestrianAgent ResolveByRandom(List<PedestrianAgent> agents)

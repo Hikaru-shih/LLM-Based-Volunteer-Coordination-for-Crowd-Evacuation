@@ -36,8 +36,11 @@ public class MainMenuController : MonoBehaviour
 
     public void StartGame()
     {
-        if (settingsController != null)
-            settingsController.ApplySettings();
+        if (settingsController != null && !settingsController.TryApplySettings())
+        {
+            ShowSettings();
+            return;
+        }
 
         if (string.IsNullOrEmpty(gameplaySceneName))
         {

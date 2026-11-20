@@ -1,0 +1,65 @@
+{
+  "schema": "information-control-followup-v1",
+  "campaignID": "P031_INFORMATION_CONTROL_20261120",
+  "registeredAtUtc": "2026-11-20T09:25:06.655769+00:00",
+  "purpose": "Prospective follow-up after observing P030: separate decision-relevant forecasts from a matched administrative information package and test option presentation order. Not a replication independent of prior findings.",
+  "model": "gpt-6-luna",
+  "temperature": 0.15,
+  "reasoning_effort": "none",
+  "max_completion_tokens": 220,
+  "settings": 8,
+  "informationConditions": [
+    "geometry_only",
+    "length_control",
+    "calibrated_forecast"
+  ],
+  "orders": [
+    "participate_first",
+    "decline_first"
+  ],
+  "completeSchedulingBlocks": 10,
+  "trialsPerCell": 10,
+  "trialsPerSettingInformation": 20,
+  "totalRequests": 480,
+  "orderSeed": 2026112001,
+  "primaryEstimands": [
+    "forecast minus length_control willingness, averaged over all eight settings and two orders",
+    "forecast minus geometry willingness, averaged over all eight settings and two orders"
+  ],
+  "secondaryEstimands": [
+    "length_control minus geometry",
+    "decline_first minus participate_first within each information condition",
+    "difference of forecast-control contrast across option orders"
+  ],
+  "plannedSubgroups": [
+    "B2-B4",
+    "B5"
+  ],
+  "analysis": "Complete-block means; 5000 block-bootstrap percentile resamples, seed 2026112002. Pointwise descriptive 95% intervals; no p-values, power/equivalence claim, independent-person claim or historical pooling. Ten blocks give limited interval stability. All valid free choices retained regardless of reason quality.",
+  "control": "Fixed unrelated printed catalogue records. Artificial administrative numbers follow decimal-shape distributions but do not encode the forecast values. Match entire user-message o200k_base proxy tokens to within one; character ratio .90-1.10 and lexical-word ratio .75-1.25. Proxy is not established as the provider tokenizer. Actual returned prompt-token counts audited without post-outcome editing. One control topic only, so residual semantic and attention effects remain.",
+  "counterbalance": "Reverse both explicit action enumerations in COMMON; keep action codes, system role, JSON schema, remaining prose and model constant. Tests presentation-order sensitivity, not all semantic/social-desirability bias.",
+  "qualification": "Previous successful diagnostic records are context only, not a claim that the new control or current provider passed a fresh semantic gate. New software tests check matching, counterbalance, scheduling and strict parsing before dispatch. No correctness labels are assigned to free choices.",
+  "transport": {
+    "endpoint": "https://api.openai.com/v1/chat/completions",
+    "execution": "live",
+    "attemptsPerTrial": 1,
+    "automaticRetries": 0,
+    "timeoutSeconds": 60,
+    "wallSeconds": 10800,
+    "workers": 1,
+    "maxGeneratedTokens": 105600,
+    "failureRule": "Stop on first HTTP/network/unknown-result/schema/refusal/model-identity/duplicate-ID/source-drift error. Preserve partial data; no automatic rerun, refill or resumption. Valid weak explanations do not trigger stopping."
+  },
+  "pricing": "Uses the existing configured OpenAI API credential and frozen requested model. No free-model substitution. Token ceilings are not a dollar-price promise.",
+  "oldEvidence": {
+    "campaign": "P030",
+    "choices": 840,
+    "pooled": false
+  },
+  "newUnityRuns": 0,
+  "humanValidation": false,
+  "documentationChecked": [
+    "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create"
+  ]
+}

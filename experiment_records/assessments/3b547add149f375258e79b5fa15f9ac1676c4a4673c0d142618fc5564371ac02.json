@@ -1,0 +1,16 @@
+{
+    "recordID": "individual_sampling_4cb5f0630598_639300175641578988",
+    "purpose": "Formal: Luna individual controlled-state comparison v1; pilot excluded; fixed-state only",
+    "recordedAtUtc": "2026-11-11T18:12:44.1578988Z",
+    "kind": "individual_sampling",
+    "model": "gpt-6-luna",
+    "specVersion": "paper-agent-v5",
+    "promptHash": "d51935241ac933f89f0be7150bb4a01775bcc1ef9184638d3aac90a824286d9e",
+    "dataDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\formal\\individual_luna_v1",
+    "outcome": "session_choice_limit",
+    "summary": "Execution source: api. Fixed-state personal sampling; saved calls exclude interrupted unknown outcomes (see interruptions.jsonl). Counts include invalid records. Conservative reserved budget retained across interruptions. No human validation or evacuation simulation. Synthetic outputs are software tests only.",
+    "logicalCalls": 2750,
+    "httpAttempts": 2750,
+    "passedChecks": 0,
+    "totalChecks": 3200
+}

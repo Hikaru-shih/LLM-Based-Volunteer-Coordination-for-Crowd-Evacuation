@@ -1,0 +1,16 @@
+{
+    "recordID": "comprehension_20261111_125343_a5323fab",
+    "purpose": "Check understanding of the paper's payoffs and task rules without prescribing cooperation",
+    "recordedAtUtc": "2026-11-11T12:53:59.9324043Z",
+    "kind": "comprehension",
+    "model": "gpt-4o-mini",
+    "specVersion": "paper-agent-v5",
+    "promptHash": "d51935241ac933f89f0be7150bb4a01775bcc1ef9184638d3aac90a824286d9e",
+    "dataDirectory": "data/comprehension/comprehension_20261111_125343_a5323fab",
+    "outcome": "completed_pass",
+    "summary": "A pass requires all factual checks in the versioned suite correct. Partial, invalid and interrupted assessments are not passes. This is a development comprehension check, not a volunteering choice, an evacuation run, or evidence of general model competence.",
+    "logicalCalls": 10,
+    "httpAttempts": 10,
+    "passedChecks": 10,
+    "totalChecks": 10
+}

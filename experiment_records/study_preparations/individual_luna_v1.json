@@ -1,0 +1,39 @@
+{
+  "schema": "individual-study-preparation-v1",
+  "date": "2026-11-12",
+  "scope": "fixed_state_only",
+  "ready": true,
+  "closedLoopReady": false,
+  "formalDataCollected": false,
+  "remoteRequestsThisPreparation": 0,
+  "lockID": "98773dfc248a2fbdbed8871fccc1d8163674345d79d0441703fb0619cbdddbe6",
+  "bundle": "experiment_records/data/formal_bundles/individual_luna_v1r2",
+  "checks": {
+    "pythonTests": 108,
+    "formalUnityChecks": 30,
+    "samplerUnityChecks": 38,
+    "sharedRuntimeChecks": 302,
+    "originalReferenceRegressionFixtures": 6,
+    "actualUnityLockPreflight": true,
+    "launcherDefaultCheck": true,
+    "isolatedRuntimeSourceMatch": true,
+    "credentialCopied": false
+  },
+  "workload": {
+    "states": 32,
+    "repetitions": 100,
+    "eligibleChoices": 3000,
+    "noGameRecords": 200,
+    "sessions": 12,
+    "maxHttpAttempts": 9000
+  },
+  "limitations": [
+    "Fixed-state readiness does not prepare the separate closed-loop final test.",
+    "Provider alias does not guarantee an immutable backend snapshot.",
+    "No confirmatory power claim; pointwise descriptive precision is conditional on valid independent outputs."
+  ],
+  "supersededPreparationBundles": [
+    "experiment_records/data/formal_bundles/individual_luna_v1",
+    "experiment_records/data/formal_bundles/individual_luna_v1r1"
+  ]
+}

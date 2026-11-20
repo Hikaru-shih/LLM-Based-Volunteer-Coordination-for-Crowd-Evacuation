@@ -1,0 +1,80 @@
+{
+  "schema": "poststudy-deliverables-v1",
+  "date": "2026-11-14",
+  "scope": "Derived from sealed P-028 only. New aggregates/strata are post-hoc exploratory, not new confirmatory tests or new experiments. Identical A_H does not establish identical trajectories/actions.",
+  "sourceCompleteSHA256": "c28c59e67ba21092cb72fa4888f8eb79bd5d40e48c9310900a4f8607b40d8d6c",
+  "sourceManifestSHA256": "0189346388723cd1c9ca03067db0a23b7af4f25db0766a7d4a8d22cc13e5ae02",
+  "files": [
+    {
+      "path": "derived_metrics.json",
+      "bytes": 8588,
+      "sha256": "2ad6637767a94fa46d40b38b98684889ce7dc5f63385223e0ee9c156861f3654"
+    },
+    {
+      "path": "output/PROFESSOR_BRIEFING.pptx",
+      "bytes": 74623,
+      "sha256": "fd603bec57b84cdb3969969389d58d1d8da6d2c4f694bea2d94ea22f7d1b21f9"
+    },
+    {
+      "path": "output/PROFESSOR_BRIEFING_EN.pptx",
+      "bytes": 71809,
+      "sha256": "bd4f357d5ae462af0a1d9e503adf3e6c147b1788d4026f5f5d87836517cc8a6b"
+    },
+    {
+      "path": "output/RESEARCH_REPORT.zh-TW.docx",
+      "bytes": 41347,
+      "sha256": "7dbc8be832ced4f23607652a544190c927bb32227c54602598993f793e2678b1"
+    },
+    {
+      "path": "PROFESSOR_QA.zh-TW.md",
+      "bytes": 3463,
+      "sha256": "5cae9b76b9d7b0e934fd8c49fefa89650d787cc4f6f9629c9718024bdd59eb0c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 986,
+      "sha256": "01a801e5b03ad2678de954cbc8722035e4998d09fa1ddd4baeaaf1895053898e"
+    },
+    {
+      "path": "RESULTS_INTERPRETATION.zh-TW.md",
+      "bytes": 6526,
+      "sha256": "bd506cd296586f2aa8376784a319520c716b2a7ae2a8b2e9f8772ae82243e689"
+    },
+    {
+      "path": "source/analyze_write.py",
+      "bytes": 27624,
+      "sha256": "84d15d2ec09f49263367c3f4aee7bfcc2ff0863213e847aa69a76316f072a67b"
+    },
+    {
+      "path": "source/build-en.mjs",
+      "bytes": 15620,
+      "sha256": "74d86d1b983b969a76c9cb51733477e0e90f0ba00efd4cf3576821ed06198789"
+    },
+    {
+      "path": "source/build.mjs",
+      "bytes": 14245,
+      "sha256": "186d966b6585395e2ff28d3c7d13ed99dbdd3ba4b61fa650199f1a8f9d4f66b2"
+    },
+    {
+      "path": "SPEAKER_NOTES.en.md",
+      "bytes": 5205,
+      "sha256": "450a30193e9dfbf817cc1fe30733843d95fdf74bd5c22d085e246c4352c225fd"
+    },
+    {
+      "path": "SPEAKER_NOTES.zh-TW.md",
+      "bytes": 4215,
+      "sha256": "c61a38fa879f9b0832f2378fd0a9f11c06e14bda3e5166f16e1f6b669c8c1b41"
+    },
+    {
+      "path": "THESIS_CH4_RESULTS.zh-TW.md",
+      "bytes": 8223,
+      "sha256": "1b12cd7f56124df24df2cafae2fc3c8119dc4c90d5c30ed2ae55e55e62cf0a05"
+    },
+    {
+      "path": "THESIS_CH5_DISCUSSION.zh-TW.md",
+      "bytes": 8312,
+      "sha256": "babb7f0eb0ec3bd28a0215b589ac10ea1d9c97ca50b247077089ae516dd793ab"
+    }
+  ],
+  "revision": "English briefing added at user request"
+}

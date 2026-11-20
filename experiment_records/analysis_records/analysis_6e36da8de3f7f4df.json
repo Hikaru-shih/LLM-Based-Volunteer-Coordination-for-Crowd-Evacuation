@@ -1,0 +1,15 @@
+{
+  "recordID": "analysis_6e36da8de3f7f4df",
+  "recordedAtUtc": "2026-11-11T14:47:44.334739+00:00",
+  "kind": "individual_fixed_state_analysis",
+  "model": "gpt-6-luna",
+  "promptVersion": "paper-agent-v5",
+  "execution": "api",
+  "reportDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\pilot\\luna_20261111_224325\\analysis",
+  "manifestSHA256": "c15a4fa9c44b45f030f4af75dfce3b624e8fbf7a0b1f2b5353eaf0b950dbe441",
+  "valid": 24,
+  "invalid": 0,
+  "missing": 0,
+  "noGame": 6,
+  "remoteRequests": 0
+}

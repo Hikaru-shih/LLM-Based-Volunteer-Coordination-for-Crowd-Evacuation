@@ -1,0 +1,29 @@
+{
+  "version": "scenario-reasons-v3",
+  "status": "prospective_development_codebook_not_human_validated",
+  "unit": "one raw, readable, nonduplicated model explanation",
+  "multilabel": true,
+  "labels": {
+    "personal_cost": "Uses a personal payoff or evacuation-time tradeoff, including cost, burden or earlier escape, rather than merely repeating a number. The legacy label includes personal outcome advantages.",
+    "avoid_unhandled_loss": "Uses the consequences of nobody helping as a reason.",
+    "reliance_on_others": "Uses a belief about other people assisting or a stated other-willingness profile.",
+    "shared_benefit": "Considers other pedestrians' outcomes or common passage in the decision.",
+    "guaranteed_payoff": "Expresses preference for a fixed payoff or worst-case protection; physical forecasts do not guarantee an outcome.",
+    "context_use": "Connects supplied layout, player count, tau or work interval to the choice.",
+    "forecast_use": "Uses the supplied calibrated time estimates or their comparisons; unavailable in abstract or geometry-only tasks.",
+    "uncertainty_awareness": "Explicitly acknowledges unknown other choices or the limits of estimated future outcomes.",
+    "scale_or_normalization": "Uses or discusses the meaning of the utility scale or time normalization.",
+    "unsupported_assumption": "Asserts unsupported information as known, such as promised help, injury, an alternative exit or guaranteed success.",
+    "action_reason_conflict": "Explicitly endorses the opposite final action from the raw decision.",
+    "insufficient_reason": "Provides no identifiable consideration supporting the choice, even if the output is nonempty."
+  },
+  "qualityFields": {
+    "actionReasonRelation": ["consistent", "conflict", "unclear"],
+    "comparisonJudgment": ["correct", "incorrect", "not_applicable", "unclear"],
+    "unsupportedInformation": ["none", "present", "unclear"],
+    "arithmeticJudgment": ["correct", "incorrect", "not_applicable", "unclear"]
+  },
+  "reviewerTypes": ["assistant", "human", "llm_assisted_human"],
+  "evidenceRule": "Each assigned label requires exact Unicode-codepoint start/end offsets and quote from the bound raw explanation. Incorrect arithmetic/comparison requires an error evidence span and note.",
+  "scope": "Stated reasons only. Code enforces provenance and coding structure, not semantic correctness, human validity or access to hidden reasoning."
+}

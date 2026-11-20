@@ -6,8 +6,8 @@ public class DynamicFloorField
     private GridWorld world;
     private float[,] values;
 
-    public float decayRate = 0.95f;
-    public float diffusionRate = 0.2f;
+    public float decayRate = 0.1f;
+    public float diffusionRate = 0.3f;
     public float trailStrength = 1.0f;
 
     public DynamicFloorField(GridWorld world)
@@ -23,13 +23,18 @@ public class DynamicFloorField
         {
             for (int y = 0; y < world.height; y++)
             {
-                values[x, y] = 1f; // neutral value
+                values[x, y] = 0f;
             }
         }
     }
 
     public void UpdateField(IEnumerable<PedestrianAgent> agents)
     {
+        var occupied=new HashSet<Vector2Int>();
+        if(world.paperNeighborhood) foreach(var agent in agents) if(!agent.IsEvacuated()) occupied.Add(agent.gridPos);
+        foreach (var agent in agents)
+            if (agent.ConsumeTrace(out var departed))
+                values[departed.x, departed.y] += trailStrength;
         // decay and diffusion
         float[,] newValues = new float[world.width, world.height];
 
@@ -38,45 +43,41 @@ public class DynamicFloorField
             for (int y = 0; y < world.height; y++)
             {
                 float current = values[x, y];
+                if (!world.IsWalkable(x, y))
+                {
+                    newValues[x, y] = (1f - Mathf.Clamp01(decayRate)) * current;
+                    continue;
+                }
                 float neighborSum = 0f;
                 int neighborCount = 0;
 
-                foreach (Vector2Int dir in new Vector2Int[] { new Vector2Int(0, -1), new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(1, 0) })
+                foreach (Vector2Int dir in world.paperNeighborhood ? PaperGrid.Moore : PaperGrid.Cardinal)
                 {
                     int nx = x + dir.x;
                     int ny = y + dir.y;
-                    if (world.InBounds(nx, ny) && world.IsWalkable(nx, ny))
+                    if (world.InBounds(nx, ny) && world.IsWalkable(nx, ny) && (!world.paperNeighborhood || !occupied.Contains(new Vector2Int(nx,ny))))
                     {
                         neighborSum += values[nx, ny];
                         neighborCount++;
                     }
                 }
 
-                float diffusionTerm = neighborCount > 0 ? neighborSum / neighborCount : 0f;
-                newValues[x, y] = Mathf.Clamp01((1 - decayRate) * current + diffusionRate * diffusionTerm);
+                float diffusionTerm = neighborCount > 0 ? neighborSum / neighborCount : current;
+                float alpha = Mathf.Clamp01(diffusionRate);
+                // Paper Eqs. (7)-(9), supported von Neumann neighborhood.
+                newValues[x, y] = (1f - Mathf.Clamp01(decayRate)) *
+                    ((1f - alpha) * current + alpha * diffusionTerm);
             }
         }
 
         values = newValues;
 
-        // add trails where agents currently are
-        foreach (var agent in agents)
-        {
-            if (!agent.IsEvacuated())
-            {
-                Vector2Int p = agent.GetGridPos();
-                if (world.InBounds(p.x, p.y))
-                {
-                    values[p.x, p.y] *= 0.5f; // lower means more attractive
-                }
-            }
-        }
     }
 
     public float GetValue(int x, int y)
     {
         if (!world.InBounds(x, y))
-            return 1f;
+            return 0f;
         return values[x, y];
     }
 

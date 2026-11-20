@@ -1,0 +1,17 @@
+{
+  "schema": "individual-sampling-v1",
+  "purpose": "Development pilot: individual responses to controlled costs and exit blockage",
+  "model": "gpt-4o-mini",
+  "promptVersion": "paper-agent-v5",
+  "repetitions": 5,
+  "orderSeed": 2026,
+  "maxHttpAttempts": 60,
+  "scenarios": [
+    {"id":"single_partial", "nearbyAgentCount":1, "exitNonBlockage":0.5, "volunteerCost":0.005, "failureCost":0.5, "unwillingness":5},
+    {"id":"two_partial", "nearbyAgentCount":2, "exitNonBlockage":0.5, "volunteerCost":0.005, "failureCost":0.5, "unwillingness":5},
+    {"id":"two_blocked", "nearbyAgentCount":2, "exitNonBlockage":0, "volunteerCost":0.005, "failureCost":0.5, "unwillingness":5},
+    {"id":"higher_help_cost", "nearbyAgentCount":2, "exitNonBlockage":0.5, "volunteerCost":0.1, "failureCost":0.5, "unwillingness":5},
+    {"id":"unblocked_negative_control", "nearbyAgentCount":2, "exitNonBlockage":1, "volunteerCost":0.005, "failureCost":0.5, "unwillingness":5}
+  ]
+}
+

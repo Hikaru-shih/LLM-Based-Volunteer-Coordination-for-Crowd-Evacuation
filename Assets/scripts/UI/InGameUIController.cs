@@ -33,7 +33,7 @@ namespace UI
         int remaining = simulationManager.GetTotalAgents() - simulationManager.GetEvacuatedCount();
         totalCountText.text = remaining.ToString();
         volunteerCountText.text = simulationManager.GetVolunteerCount().ToString();
-        stateText.text = simulationManager.IsSimulationRunning() ? "Running" : "Paused";
+        stateText.text = simulationManager.GetRunStateLabel();
         obstacleCountText.text = simulationManager.GetObstacleCount().ToString();
         // 輪次顯示由 SimulationManager 主動呼叫 SetRoundText
     }

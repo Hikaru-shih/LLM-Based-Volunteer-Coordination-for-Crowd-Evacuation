@@ -1,0 +1,8 @@
+{
+  "schema": "individual-launch-v1",
+  "bundle": "experiment_records/data/formal_bundles/individual_luna_v3r1",
+  "runtimeProject": "tmp/completion-project",
+  "output": "experiment_records/data/formal/individual_luna_v3",
+  "analysis": "experiment_records/data/analysis/individual_luna_v3",
+  "unityPreflight": "experiment_records/data/validation/prerun_luna_v3/unity-preflight.json"
+}

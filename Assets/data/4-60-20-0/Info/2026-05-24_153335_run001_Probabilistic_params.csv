@@ -1,2 +1,0 @@
-RunID,Strategy,kStatic,kDynamic,kAnticipation,Temperature,InitialAgents,InitialObstacles
-run001,Probabilistic,1.0000,1.0000,1.0000,1.0000,60,20

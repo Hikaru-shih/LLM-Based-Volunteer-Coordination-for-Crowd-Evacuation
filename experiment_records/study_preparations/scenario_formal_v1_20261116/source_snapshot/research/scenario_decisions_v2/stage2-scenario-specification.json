@@ -1,0 +1,694 @@
+{
+  "schema": "scenario-stage2-specification-v1",
+  "date": "2026-11-16",
+  "status": "physical_characterization_and_scoring_rules_complete",
+  "originalPaperUtilityCalibrationEstablished": false,
+  "humanValidityEstablished": false,
+  "timeUnit": "simulation ticks; no human seconds conversion",
+  "normalization": {
+    "H": 300,
+    "scale": 301,
+    "utility": "1 - min(T,H)/(H+1)",
+    "why": "Keeps capped utilities positive; arbitrary transparent common affine scale, no reward for participation",
+    "limitations": "Censoring and task burden are not the same as additive Eq20 cost. No mortality or physiological interpretation."
+  },
+  "cells": [
+    {
+      "id": "B2_M1",
+      "initialExitNonBlockage": 0.6,
+      "manipulationStepsPerWorkUnit": 1,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 1 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 14.666666666666666,
+        "meanApproachTicks": 9.166666666666666,
+        "meanHandlerTicks": 5.5,
+        "meanOwnDelay": 7.333333333333333,
+        "meanOthersBenefit": -5.425925925925926
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": 1.6666666666666667,
+        "meanOthersBenefit": -0.6666666666666661,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.04872646733111849,
+      "referenceProxyAV": 0.0,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 19.666666666666668,
+            "normalizedTimeUtility": 0.9346622369878184,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M1_Focal0_s71001",
+              "B2_M1_Focal0_s71002",
+              "B2_M1_Focal0_s71003",
+              "B2_M1_Focal0_s71004",
+              "B2_M1_Focal0_s71005",
+              "B2_M1_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 12.333333333333334,
+            "normalizedTimeUtility": 0.9590254706533776,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_None_s71001",
+              "B2_None_s71002",
+              "B2_None_s71003",
+              "B2_None_s71004",
+              "B2_None_s71005",
+              "B2_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 19.666666666666668,
+            "normalizedTimeUtility": 0.9346622369878184,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M1_AllHelp_s71001",
+              "B2_M1_AllHelp_s71002",
+              "B2_M1_AllHelp_s71003",
+              "B2_M1_AllHelp_s71004",
+              "B2_M1_AllHelp_s71005",
+              "B2_M1_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 18.0,
+            "normalizedTimeUtility": 0.9401993355481728,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M1_OthersHelp_s71001",
+              "B2_M1_OthersHelp_s71002",
+              "B2_M1_OthersHelp_s71003",
+              "B2_M1_OthersHelp_s71004",
+              "B2_M1_OthersHelp_s71005",
+              "B2_M1_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B2_M4",
+      "initialExitNonBlockage": 0.6,
+      "manipulationStepsPerWorkUnit": 4,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 4 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 29.833333333333332,
+        "meanApproachTicks": 9.166666666666666,
+        "meanHandlerTicks": 20.666666666666668,
+        "meanOwnDelay": 18.5,
+        "meanOthersBenefit": -16.703703703703702
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -5.833333333333333,
+        "meanOthersBenefit": -2.4074074074074088,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.0991140642303433,
+      "referenceProxyAV": 0.0,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 30.833333333333332,
+            "normalizedTimeUtility": 0.897563676633444,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M4_Focal0_s71001",
+              "B2_M4_Focal0_s71002",
+              "B2_M4_Focal0_s71003",
+              "B2_M4_Focal0_s71004",
+              "B2_M4_Focal0_s71005",
+              "B2_M4_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 12.333333333333334,
+            "normalizedTimeUtility": 0.9590254706533776,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_None_s71001",
+              "B2_None_s71002",
+              "B2_None_s71003",
+              "B2_None_s71004",
+              "B2_None_s71005",
+              "B2_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 32.833333333333336,
+            "normalizedTimeUtility": 0.8909191583610188,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M4_AllHelp_s71001",
+              "B2_M4_AllHelp_s71002",
+              "B2_M4_AllHelp_s71003",
+              "B2_M4_AllHelp_s71004",
+              "B2_M4_AllHelp_s71005",
+              "B2_M4_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 38.666666666666664,
+            "normalizedTimeUtility": 0.8715393133997785,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B2_M4_OthersHelp_s71001",
+              "B2_M4_OthersHelp_s71002",
+              "B2_M4_OthersHelp_s71003",
+              "B2_M4_OthersHelp_s71004",
+              "B2_M4_OthersHelp_s71005",
+              "B2_M4_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B3_M1",
+      "initialExitNonBlockage": 0.4,
+      "manipulationStepsPerWorkUnit": 1,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 1 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 21,
+        "meanApproachTicks": 8.5,
+        "meanHandlerTicks": 12.5,
+        "meanOwnDelay": 16.5,
+        "meanOthersBenefit": -5.611111111111111
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -0.5,
+        "meanOthersBenefit": -2.592592592592592,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.06976744186046512,
+      "referenceProxyAV": 0.0033222591362126247,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 31.666666666666668,
+            "normalizedTimeUtility": 0.8947951273532668,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M1_Focal0_s71001",
+              "B3_M1_Focal0_s71002",
+              "B3_M1_Focal0_s71003",
+              "B3_M1_Focal0_s71004",
+              "B3_M1_Focal0_s71005",
+              "B3_M1_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 15.166666666666666,
+            "normalizedTimeUtility": 0.9496124031007752,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_None_s71001",
+              "B3_None_s71002",
+              "B3_None_s71003",
+              "B3_None_s71004",
+              "B3_None_s71005",
+              "B3_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 23.833333333333332,
+            "normalizedTimeUtility": 0.9208194905869325,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M1_AllHelp_s71001",
+              "B3_M1_AllHelp_s71002",
+              "B3_M1_AllHelp_s71003",
+              "B3_M1_AllHelp_s71004",
+              "B3_M1_AllHelp_s71005",
+              "B3_M1_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 24.333333333333332,
+            "normalizedTimeUtility": 0.9191583610188261,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M1_OthersHelp_s71001",
+              "B3_M1_OthersHelp_s71002",
+              "B3_M1_OthersHelp_s71003",
+              "B3_M1_OthersHelp_s71004",
+              "B3_M1_OthersHelp_s71005",
+              "B3_M1_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B3_M4",
+      "initialExitNonBlockage": 0.4,
+      "manipulationStepsPerWorkUnit": 4,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 4 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 57.833333333333336,
+        "meanApproachTicks": 8.5,
+        "meanHandlerTicks": 49.333333333333336,
+        "meanOwnDelay": 51.333333333333336,
+        "meanOthersBenefit": -33.22222222222222
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -5.333333333333333,
+        "meanOthersBenefit": -0.5555555555555559,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.1921373200442968,
+      "referenceProxyAV": 0.0033222591362126247,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 66.5,
+            "normalizedTimeUtility": 0.7790697674418605,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M4_Focal0_s71001",
+              "B3_M4_Focal0_s71002",
+              "B3_M4_Focal0_s71003",
+              "B3_M4_Focal0_s71004",
+              "B3_M4_Focal0_s71005",
+              "B3_M4_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 15.166666666666666,
+            "normalizedTimeUtility": 0.9496124031007752,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_None_s71001",
+              "B3_None_s71002",
+              "B3_None_s71003",
+              "B3_None_s71004",
+              "B3_None_s71005",
+              "B3_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 46.0,
+            "normalizedTimeUtility": 0.8471760797342193,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M4_AllHelp_s71001",
+              "B3_M4_AllHelp_s71002",
+              "B3_M4_AllHelp_s71003",
+              "B3_M4_AllHelp_s71004",
+              "B3_M4_AllHelp_s71005",
+              "B3_M4_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 51.333333333333336,
+            "normalizedTimeUtility": 0.8294573643410853,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B3_M4_OthersHelp_s71001",
+              "B3_M4_OthersHelp_s71002",
+              "B3_M4_OthersHelp_s71003",
+              "B3_M4_OthersHelp_s71004",
+              "B3_M4_OthersHelp_s71005",
+              "B3_M4_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B4_M1",
+      "initialExitNonBlockage": 0.19999999999999996,
+      "manipulationStepsPerWorkUnit": 1,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 1 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 29.666666666666668,
+        "meanApproachTicks": 11.833333333333334,
+        "meanHandlerTicks": 17.833333333333332,
+        "meanOwnDelay": 20.5,
+        "meanOthersBenefit": -9.537037037037038
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": 3.3333333333333335,
+        "meanOthersBenefit": 1.6111111111111118,
+        "sacrificePublicBenefitSeeds": 2
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.09856035437430787,
+      "referenceProxyAV": 0.011627906976744186,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 38.166666666666664,
+            "normalizedTimeUtility": 0.8732004429678848,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M1_Focal0_s71001",
+              "B4_M1_Focal0_s71002",
+              "B4_M1_Focal0_s71003",
+              "B4_M1_Focal0_s71004",
+              "B4_M1_Focal0_s71005",
+              "B4_M1_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 17.666666666666668,
+            "normalizedTimeUtility": 0.9413067552602437,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_None_s71001",
+              "B4_None_s71002",
+              "B4_None_s71003",
+              "B4_None_s71004",
+              "B4_None_s71005",
+              "B4_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 27.666666666666668,
+            "normalizedTimeUtility": 0.9080841638981174,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M1_AllHelp_s71001",
+              "B4_M1_AllHelp_s71002",
+              "B4_M1_AllHelp_s71003",
+              "B4_M1_AllHelp_s71004",
+              "B4_M1_AllHelp_s71005",
+              "B4_M1_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 24.333333333333332,
+            "normalizedTimeUtility": 0.9191583610188261,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M1_OthersHelp_s71001",
+              "B4_M1_OthersHelp_s71002",
+              "B4_M1_OthersHelp_s71003",
+              "B4_M1_OthersHelp_s71004",
+              "B4_M1_OthersHelp_s71005",
+              "B4_M1_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B4_M4",
+      "initialExitNonBlockage": 0.19999999999999996,
+      "manipulationStepsPerWorkUnit": 4,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Partial exit blockage with remaining routes in this layout; 4 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 80.83333333333333,
+        "meanApproachTicks": 12,
+        "meanHandlerTicks": 68.83333333333333,
+        "meanOwnDelay": 71.5,
+        "meanOthersBenefit": -42.72222222222222
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -0.5,
+        "meanOthersBenefit": 3.351851851851851,
+        "sacrificePublicBenefitSeeds": 1
+      },
+      "referenceProxyMappingEligible": false,
+      "referenceProxyCV": 0.26854928017718716,
+      "referenceProxyAV": 0.011627906976744186,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate; keep negative-benefit outcomes",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 89.16666666666667,
+            "normalizedTimeUtility": 0.7037652270210409,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M4_Focal0_s71001",
+              "B4_M4_Focal0_s71002",
+              "B4_M4_Focal0_s71003",
+              "B4_M4_Focal0_s71004",
+              "B4_M4_Focal0_s71005",
+              "B4_M4_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 17.666666666666668,
+            "normalizedTimeUtility": 0.9413067552602437,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_None_s71001",
+              "B4_None_s71002",
+              "B4_None_s71003",
+              "B4_None_s71004",
+              "B4_None_s71005",
+              "B4_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 55.5,
+            "normalizedTimeUtility": 0.8156146179401993,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M4_AllHelp_s71001",
+              "B4_M4_AllHelp_s71002",
+              "B4_M4_AllHelp_s71003",
+              "B4_M4_AllHelp_s71004",
+              "B4_M4_AllHelp_s71005",
+              "B4_M4_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 56.0,
+            "normalizedTimeUtility": 0.813953488372093,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B4_M4_OthersHelp_s71001",
+              "B4_M4_OthersHelp_s71002",
+              "B4_M4_OthersHelp_s71003",
+              "B4_M4_OthersHelp_s71004",
+              "B4_M4_OthersHelp_s71005",
+              "B4_M4_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B5_M1",
+      "initialExitNonBlockage": 0.0,
+      "manipulationStepsPerWorkUnit": 1,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Fully blocked relevant exit; 1 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 38.666666666666664,
+        "meanApproachTicks": 14.166666666666666,
+        "meanHandlerTicks": 24.5,
+        "meanOwnDelay": -252.16666666666666,
+        "meanOthersBenefit": 260.75925925925924
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -10.833333333333334,
+        "meanOthersBenefit": 3.8333333333333353,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": true,
+      "referenceProxyCV": 0.12846068660022147,
+      "referenceProxyAV": 0.9496124031007751,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate, fully-blocked case also a necessary-removal control",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 47.833333333333336,
+            "normalizedTimeUtility": 0.8410852713178294,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M1_Focal0_s71001",
+              "B5_M1_Focal0_s71002",
+              "B5_M1_Focal0_s71003",
+              "B5_M1_Focal0_s71004",
+              "B5_M1_Focal0_s71005",
+              "B5_M1_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 300.0,
+            "normalizedTimeUtility": 0.0033222591362126463,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_None_s71001",
+              "B5_None_s71002",
+              "B5_None_s71003",
+              "B5_None_s71004",
+              "B5_None_s71005",
+              "B5_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 27.5,
+            "normalizedTimeUtility": 0.9086378737541528,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M1_AllHelp_s71001",
+              "B5_M1_AllHelp_s71002",
+              "B5_M1_AllHelp_s71003",
+              "B5_M1_AllHelp_s71004",
+              "B5_M1_AllHelp_s71005",
+              "B5_M1_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 38.333333333333336,
+            "normalizedTimeUtility": 0.8726467331118494,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M1_OthersHelp_s71001",
+              "B5_M1_OthersHelp_s71002",
+              "B5_M1_OthersHelp_s71003",
+              "B5_M1_OthersHelp_s71004",
+              "B5_M1_OthersHelp_s71005",
+              "B5_M1_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "B5_M4",
+      "initialExitNonBlockage": 0.0,
+      "manipulationStepsPerWorkUnit": 4,
+      "population": 10,
+      "totalMovableObstacles": 5,
+      "seeds": 6,
+      "meaning": "Fully blocked relevant exit; 4 progress ticks per manipulation unit, without extra injury assumptions",
+      "focalWhenOthersDecline": {
+        "meanAssignedBurdenTicks": 89.16666666666667,
+        "meanApproachTicks": 12.5,
+        "meanHandlerTicks": 76.66666666666667,
+        "meanOwnDelay": -202,
+        "meanOthersBenefit": 222.57407407407408
+      },
+      "ownActionWhenOthersWilling": {
+        "meanOwnDelay": -4.0,
+        "meanOthersBenefit": 7.222222222222224,
+        "sacrificePublicBenefitSeeds": 0
+      },
+      "referenceProxyMappingEligible": true,
+      "referenceProxyCV": 0.29623477297895906,
+      "referenceProxyAV": 0.9496124031007751,
+      "usedAsPaperUtility": false,
+      "use": "Physical extension candidate, fully-blocked case also a necessary-removal control",
+      "empiricalConditionalPayoffs": {
+        "others_decline": {
+          "participate": {
+            "meanCappedOwnExitStep": 98.0,
+            "normalizedTimeUtility": 0.6744186046511628,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M4_Focal0_s71001",
+              "B5_M4_Focal0_s71002",
+              "B5_M4_Focal0_s71003",
+              "B5_M4_Focal0_s71004",
+              "B5_M4_Focal0_s71005",
+              "B5_M4_Focal0_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 300.0,
+            "normalizedTimeUtility": 0.0033222591362126463,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_None_s71001",
+              "B5_None_s71002",
+              "B5_None_s71003",
+              "B5_None_s71004",
+              "B5_None_s71005",
+              "B5_None_s71006"
+            ]
+          }
+        },
+        "others_willing": {
+          "participate": {
+            "meanCappedOwnExitStep": 61.666666666666664,
+            "normalizedTimeUtility": 0.7951273532668881,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M4_AllHelp_s71001",
+              "B5_M4_AllHelp_s71002",
+              "B5_M4_AllHelp_s71003",
+              "B5_M4_AllHelp_s71004",
+              "B5_M4_AllHelp_s71005",
+              "B5_M4_AllHelp_s71006"
+            ]
+          },
+          "decline_assistance": {
+            "meanCappedOwnExitStep": 65.66666666666667,
+            "normalizedTimeUtility": 0.7818383167220376,
+            "formula": "1 - min(T,300)/301",
+            "sourceJobs": [
+              "B5_M4_OthersHelp_s71001",
+              "B5_M4_OthersHelp_s71002",
+              "B5_M4_OthersHelp_s71003",
+              "B5_M4_OthersHelp_s71004",
+              "B5_M4_OthersHelp_s71005",
+              "B5_M4_OthersHelp_s71006"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "pilotExecutionHold": true,
+  "holdReason": "Earlier 156-choice exporter remains an abstract-utility diagnostic candidate, not these eight empirical physical scenarios. Exact prompt/protocol and registered sampling must be aligned at step3.",
+  "data": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/results.json",
+  "sampling": "Development-only six seed blocks; all geometries/costs retained, no selection of favorable seeds",
+  "oldSixUtilityCells": "Retained as numerical cost-ratio/scale diagnostic, not validated physical time mapping"
+}

@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-16",
+  "stage": "2",
+  "status": {
+    "date": "2026-11-16",
+    "stage2": "physical_characterization_and_scoring_specification_complete",
+    "paperUtilityToTimeValidated": false,
+    "newLLMCalls": 0,
+    "developmentUnityRuns": 174,
+    "formalUnityRuns": 0,
+    "validTimeouts": 6,
+    "invalid": 0,
+    "stage3ExecutionHold": true,
+    "reason": "Align abstract diagnostic and physical extension interfaces; old156-choice plan is not the calibrated physical task",
+    "report": "STAGE2_COMPLETE.zh-TW.md",
+    "specification": "stage2-scenario-specification.json",
+    "analysis": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/results.json"
+  },
+  "files": [
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/agent-costs.csv",
+      "sha256": "dcc67910605728f32d0360a5dd259c44bd983cbc85f71eae8cb3d881ceb2aefb"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/CALIBRATION_RUN_CATALOG.csv",
+      "sha256": "c743bc5917a245197631027c5f356788f48792abc8018336197152fefd712925"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/own-action-counterfactuals.csv",
+      "sha256": "1d8aa6cdda6728613b48072e078007f5d32d03cdd114990791c3cff851bd3b3f"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/paired-effects.csv",
+      "sha256": "fa900a78b031072433e361483abcc0b6fa8018b8438148b02776f148370e0189"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/results.json",
+      "sha256": "498413dc0b77a92c6c272b5cdcd83c5c5a67d1ac131c113ccd2abca288d4800a"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/runs.csv",
+      "sha256": "60d8ccd2c4a844595bee9aecb0fc834eb4debbfd713e067432d0d0e0651cfa97"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/scenario-summary.csv",
+      "sha256": "3579a8551d2f9073f0f96b08ec45310095de059840a4ac3ad95527411a68af73"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_physical_v2_20261116_final/source-manifest.json",
+      "sha256": "c120668dd74ca8563ae712d25e8645084a2752c80a6e056f9779a4c5b04823f2"
+    }
+  ],
+  "specSHA256": "715c40a46ce56f03d62519b92217d6e28f5197091b1ee84bc078ccd932ad97df",
+  "reportSHA256": "76ab397fa73024090df92ac5673442aefe63cfcdd9c53ad04c5aac4585f40cfd",
+  "documentationFiles": [
+    {
+      "path": "research/scenario_decisions_v2/DESIGN_RECEIPT.json",
+      "sha256": "fad254999ebe4a1585535cd2d1200b990cc65ea660a04712a2fe66fc842fe3eb"
+    },
+    {
+      "path": "research/scenario_decisions_v2/ISOLATED_CLEANUP.json",
+      "sha256": "4b10c4c367fab303dd34c64b7cb40d4c18b47f5b5ef4626aa28ef82218e13abc"
+    },
+    {
+      "path": "research/scenario_decisions_v2/MODEL_AND_SCENARIOS.zh-TW.md",
+      "sha256": "bde87ddad6f749994724c19f4cc58df84174a34938c876a06128041286dd8caf"
+    },
+    {
+      "path": "research/scenario_decisions_v2/OFFLINE_STATUS.json",
+      "sha256": "ab0d840e4f6ce9fff61053a6f7e29dcd636163f21c74e9b833b5d34d490aa8d0"
+    },
+    {
+      "path": "research/scenario_decisions_v2/OFFLINE_TOOLING.zh-TW.md",
+      "sha256": "fc61a0de5b48b6f30e2283bbf6c618b252e0bd6c6bc87eccb2a755ac872b2a5f"
+    },
+    {
+      "path": "research/scenario_decisions_v2/physical-scenario-payoffs.csv",
+      "sha256": "59eb5998ea76746a85ea536f6cf86aef7abef511f646feac42f5e18ea3743297"
+    },
+    {
+      "path": "research/scenario_decisions_v2/pilot-plan.draft.json",
+      "sha256": "288a326dbb0670a8bcf02e2619262caa58726edede5539ac666f0d1c2dc71a07"
+    },
+    {
+      "path": "research/scenario_decisions_v2/PILOT_AND_GATES.zh-TW.md",
+      "sha256": "200a5166d6d2e9f3f771169acb0484dc2592485c59df6b3c8887b0f33f76f9e2"
+    },
+    {
+      "path": "research/scenario_decisions_v2/PROMPT_CANDIDATE.en.md",
+      "sha256": "5a9f89924d23d4dd9d7963c7505c95f048df9dec42c645b0365529344a48ac6d"
+    },
+    {
+      "path": "research/scenario_decisions_v2/README.zh-TW.md",
+      "sha256": "1eda20510dcf4f336ff7811a067ebc51b442b10e38666f9ecd05934875cdc433"
+    },
+    {
+      "path": "research/scenario_decisions_v2/REASON_CODEBOOK.zh-TW.md",
+      "sha256": "c11165f42e09d5d2c9ba27bed1d400d9c05400afda19e84f0b0648deca6c29c8"
+    },
+    {
+      "path": "research/scenario_decisions_v2/scenario-matrix.csv",
+      "sha256": "9ba7aba1fd4a1d00419c0d7853fdb1430d37f2e4697ada26200ce43bb29d221d"
+    },
+    {
+      "path": "research/scenario_decisions_v2/stage2-scenario-specification.json",
+      "sha256": "715c40a46ce56f03d62519b92217d6e28f5197091b1ee84bc078ccd932ad97df"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE2_COMPLETE.zh-TW.md",
+      "sha256": "76ab397fa73024090df92ac5673442aefe63cfcdd9c53ad04c5aac4585f40cfd"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE2_STATUS.json",
+      "sha256": "39ccfdbf5f038a3a58915c4ec1f02de84a5b783ebda50dcbfe0ee53f5aca8e55"
+    }
+  ],
+  "analysisToolSHA256": "54d438eeffc0f9d040d4bcc429ba96ae58817ce41d9936e0b9471baa633818fe"
+}

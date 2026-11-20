@@ -1,0 +1,16 @@
+{
+    "recordID": "individual_sampling_8fe6622b47b7_639300052406982622",
+    "purpose": "Luna independent development pilot: compatibility, invalid rate, latency and scenario choices; excluded from formal estimates",
+    "recordedAtUtc": "2026-11-11T14:47:20.6992634Z",
+    "kind": "individual_sampling",
+    "model": "gpt-6-luna",
+    "specVersion": "paper-agent-v5",
+    "promptHash": "d51935241ac933f89f0be7150bb4a01775bcc1ef9184638d3aac90a824286d9e",
+    "dataDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\pilot\\luna_20261111_224325\\choices",
+    "outcome": "completed",
+    "summary": "Execution source: api. Fixed-state personal sampling; saved calls exclude interrupted unknown outcomes (see interruptions.jsonl). Counts include invalid records. Conservative reserved budget retained across interruptions. No human validation or evacuation simulation. Synthetic outputs are software tests only.",
+    "logicalCalls": 24,
+    "httpAttempts": 24,
+    "passedChecks": 0,
+    "totalChecks": 30
+}

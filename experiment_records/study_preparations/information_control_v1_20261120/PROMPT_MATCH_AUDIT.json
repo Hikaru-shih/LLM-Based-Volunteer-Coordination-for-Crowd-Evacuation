@@ -1,0 +1,186 @@
+[
+  {
+    "scenario": "B2_M1",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 894,
+      "characters": 3903,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 894,
+      "characters": 3647,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0701946805593638,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B2_M4",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 895,
+      "characters": 3913,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 895,
+      "characters": 3655,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0705882352941176,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B3_M1",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 896,
+      "characters": 3914,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 896,
+      "characters": 3660,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0693989071038252,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B3_M4",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 894,
+      "characters": 3909,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 894,
+      "characters": 3651,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0706655710764175,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B4_M1",
+    "geometry": {
+      "proxyTokens": 386,
+      "characters": 1991,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 900,
+      "characters": 3929,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 900,
+      "characters": 3671,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.070280577499319,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B4_M4",
+    "geometry": {
+      "proxyTokens": 386,
+      "characters": 1991,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 899,
+      "characters": 3923,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 899,
+      "characters": 3666,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0701036552100383,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B5_M1",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 890,
+      "characters": 3893,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 890,
+      "characters": 3636,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0706820682068208,
+    "wordRatio": 1.0820895522388059
+  },
+  {
+    "scenario": "B5_M4",
+    "geometry": {
+      "proxyTokens": 381,
+      "characters": 1975,
+      "words": 271,
+      "numericLiterals": 11
+    },
+    "length_control": {
+      "proxyTokens": 890,
+      "characters": 3893,
+      "words": 435,
+      "numericLiterals": 41
+    },
+    "forecast": {
+      "proxyTokens": 890,
+      "characters": 3638,
+      "words": 402,
+      "numericLiterals": 41
+    },
+    "characterRatio": 1.0700934579439252,
+    "wordRatio": 1.0820895522388059
+  }
+]

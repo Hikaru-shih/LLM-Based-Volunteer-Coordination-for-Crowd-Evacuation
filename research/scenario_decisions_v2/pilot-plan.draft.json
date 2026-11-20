@@ -1,0 +1,139 @@
+{
+  "schema": "scenario-decision-redesign-v2-draft",
+  "date": "2026-11-16",
+  "status": "design_prepared_not_implemented_not_preregistered",
+  "execute": false,
+  "newAPICalls": 0,
+  "newUnityRuns": 0,
+  "oldFormalCohort": "P-028 preserved separately",
+  "question": "How do individual LLM willingness and stated reasons change across cost-to-loss ratios and utility scales, relative to the reference law?",
+  "cells": [
+    {
+      "cell": "A30_R10",
+      "failureCost": 0.3,
+      "volunteerCost": 0.03,
+      "costRatio": 0.1,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.23691368928896273,
+      "cooperatePayoff": 0.97,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.7
+    },
+    {
+      "cell": "A30_R50",
+      "failureCost": 0.3,
+      "volunteerCost": 0.15,
+      "costRatio": 0.5,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.0874913363708345,
+      "cooperatePayoff": 0.85,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.7
+    },
+    {
+      "cell": "A30_R90",
+      "failureCost": 0.3,
+      "volunteerCost": 0.27,
+      "costRatio": 0.9,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.025906583475111877,
+      "cooperatePayoff": 0.73,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.7
+    },
+    {
+      "cell": "A70_R10",
+      "failureCost": 0.7,
+      "volunteerCost": 0.07,
+      "costRatio": 0.1,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.23691368928896273,
+      "cooperatePayoff": 0.93,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.3
+    },
+    {
+      "cell": "A70_R50",
+      "failureCost": 0.7,
+      "volunteerCost": 0.35,
+      "costRatio": 0.5,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.0874913363708345,
+      "cooperatePayoff": 0.65,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.3
+    },
+    {
+      "cell": "A70_R90",
+      "failureCost": 0.7,
+      "volunteerCost": 0.63,
+      "costRatio": 0.9,
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.4,
+      "unwillingness": 5,
+      "referenceProbability": 0.025906583475111877,
+      "cooperatePayoff": 0.37,
+      "declineOthersHelpPayoff": 1,
+      "declineNobodyHelpsPayoff": 0.3
+    }
+  ],
+  "pilot": {
+    "framing": [
+      "numeric",
+      "contextual_equivalent"
+    ],
+    "responsesPerCellPerFraming": 10,
+    "logicalChoices": 120,
+    "knownBeliefGate": {
+      "qAllOthersDecline": [
+        0.05,
+        0.5,
+        0.95
+      ],
+      "replicates": 2,
+      "logicalChoices": 36,
+      "strictNonTieExpectedUtilityCases": 32,
+      "tieCases": 4,
+      "scope": "Explicit risk-neutral expected-utility instruction in diagnostic ONLY; not free-choice correctness labels"
+    },
+    "totalLogicalChoices": 156,
+    "automaticRetries": 0,
+    "failureRule": "Stop on first technical invalid, preserve all records; no automatic refill or batch restart. Resume requires a documented decision.",
+    "selectionRule": "Retain all six cells including saturated conditions. No selection for significance or desired refusal rates."
+  },
+  "formal": {
+    "registered": false,
+    "sampleSize": null,
+    "rule": "Separate unused request IDs, freeze after pilot; report precision/power rationale before collection, no optional stopping."
+  },
+  "runtime": {
+    "model": "Resolve actual model and availability before lock; do not silently substitute",
+    "promptVersion": "candidate-scenario-v2, not deployed",
+    "protocol": "Existing response-v3 candidate pending payload and action-mapping gate",
+    "temperature": "inherit current setting only after recorded verification; not human variability"
+  },
+  "physicalMapping": {
+    "status": "qualitative hypotheses only; no empirical seconds-to-utility conversion",
+    "secondsPerUtility": null,
+    "injuryRiskSpecified": false,
+    "deadlineSpecified": false,
+    "fullBlockageMainFactor": false
+  },
+  "boundaries": [
+    "No human validity claim",
+    "No causal inference from explanation text",
+    "No known-belief probability injected into the reference formula",
+    "No paid run authorized by this file itself",
+    "No production or sealed-source modifications"
+  ]
+}

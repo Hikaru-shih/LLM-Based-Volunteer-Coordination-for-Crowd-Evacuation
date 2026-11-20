@@ -1,0 +1,15 @@
+{
+  "recordID": "analysis_b5bc6b619b96abe9",
+  "recordedAtUtc": "2026-11-11T13:07:00.418135+00:00",
+  "kind": "individual_fixed_state_analysis",
+  "model": "gpt-4o-mini",
+  "promptVersion": "paper-agent-v5",
+  "execution": "api",
+  "reportDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\analysis\\pilot_20261111_205319",
+  "manifestSHA256": "f5fb925f91beb3dbc92bd1e68cc4399cdd3cf555304c3c69db7cec92fdf1082b",
+  "valid": 24,
+  "invalid": 0,
+  "missing": 0,
+  "noGame": 6,
+  "remoteRequests": 0
+}

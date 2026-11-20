@@ -1,0 +1,19 @@
+{
+  "status": "review-drafts-delivered",
+  "date": "2026-11-14",
+  "newUnityRuns": 0,
+  "newAPICalls": 0,
+  "slides": 13,
+  "nativeCharts": 2,
+  "nativeTables": 5,
+  "finalSlidesVisuallyReviewed": 13,
+  "nativePowerPointExecutionTested": false,
+  "presentationSHA256": "fd603bec57b84cdb3969969389d58d1d8da6d2c4f694bea2d94ea22f7d1b21f9",
+  "artifactManifestSHA256": "19e3641557c30cdddff931259fa364eeb94bb7230d26569fea36f55f9c207c2c",
+  "notebookEntry": "V-035",
+  "remainingScope": "School formatting, complete bibliography/literature positioning, and professor review; no claim of final submitted thesis.",
+  "preferredPresentation": "output/PROFESSOR_BRIEFING_EN.pptx",
+  "englishPresentationSHA256": "bd4f357d5ae462af0a1d9e503adf3e6c147b1788d4026f5f5d87836517cc8a6b",
+  "englishSlidesVisuallyReviewed": 13,
+  "englishNotebookEntry": "V-036"
+}

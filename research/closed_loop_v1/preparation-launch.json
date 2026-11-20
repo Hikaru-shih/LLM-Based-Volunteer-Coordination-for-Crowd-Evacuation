@@ -1,0 +1,7 @@
+{
+  "preparation": "experiment_records/data/preparation/closed_loop_v1_20261113_015415",
+  "status": "completed_and_frozen_before_formal",
+  "formalExecutionAuthorized": false,
+  "lockID": "94acf62e1f128ce31dadddf0074336fe0aabef5ebba89c00dffff69473c27a80",
+  "completionReceipt": "experiment_records/data/preparation_summary/group_v1/READY.json"
+}

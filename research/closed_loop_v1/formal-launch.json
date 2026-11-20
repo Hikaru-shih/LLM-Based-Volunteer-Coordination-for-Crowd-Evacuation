@@ -1,0 +1,18 @@
+{
+  "schema": "closed-loop-launch-v1",
+  "defaultAction": "Check",
+  "bundle": "experiment_records/data/group_bundles/g1r2",
+  "runtimeProjects": [
+    "tmp/completion-project",
+    "tmp/wb"
+  ],
+  "outputs": [
+    "experiment_records/data/formal/group_v2/w0",
+    "experiment_records/data/formal/group_v2/w1"
+  ],
+  "analysis": "experiment_records/data/analysis/group_v2",
+  "unityPreflight": "experiment_records/data/validation/g2_zero/result.json",
+  "preparation": "experiment_records/data/preparation/closed_loop_v1_20261113_015415",
+  "formalSimulationRunsPlanned": 1140,
+  "formalExecutionByDefault": false
+}

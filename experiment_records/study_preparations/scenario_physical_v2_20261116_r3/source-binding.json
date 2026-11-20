@@ -1,0 +1,5 @@
+{
+  "baseProductionSHA": "1466241a451c2d176f942ec8ebe26452a9df7e1a1be440d841f4b8cf83e2c59a",
+  "instrumentedProjectSHA": "c7a3442863c7c2ba1bd0013c8a74ba6a50d9c6463958a8bf74f29a90a57184b1",
+  "instrumentation": "Same approach observer, isolated callback intervention, systematic B3/B4 geometry extension; production unchanged"
+}

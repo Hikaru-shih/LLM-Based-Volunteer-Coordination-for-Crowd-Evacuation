@@ -1,0 +1,84 @@
+{
+  "schema": "scenario-stage4-delivery-v1",
+  "status": {
+    "date": "2026-11-16",
+    "stage4": "two_layer_reason_codebook_and_audit_tools_complete",
+    "codebookVersion": "scenario-reasons-v3",
+    "labels": 12,
+    "newTestsPassed": 25,
+    "stage3RegressionTestsPassed": 27,
+    "legacyRegressionTestsPassed": 11,
+    "syntheticWorkedRows": 16,
+    "realNewLLMReasonsAnalyzed": 0,
+    "newAPICalls": 0,
+    "newUnityRuns": 0,
+    "independentHumanReview": false,
+    "semanticClassifierAccuracyEstablished": false,
+    "report": "STAGE4_REASON_ANALYSIS.zh-TW.md",
+    "codebook": "REASON_CODEBOOK_V3.zh-TW.md",
+    "next": "Stage5: prospectively lock small-pilot sampling and exact registrations; collect real diagnostic replies, review reasons, then permit free-choice phases."
+  },
+  "files": [
+    {
+      "path": "research/scenario_decisions_v2/reason-codebook.v3.json",
+      "sha256": "b25d67f68cd0fea99273d4176d0d0497560d4f1e1bb60444006f1fa9d1d398b8"
+    },
+    {
+      "path": "research/scenario_decisions_v2/REASON_CODEBOOK_V3.zh-TW.md",
+      "sha256": "5df7367ad57671e16473239e66d909fed5baef59eed249afab45e9535a5c4f7d"
+    },
+    {
+      "path": "research/scenario_decisions_v2/REASON_CODING_EXAMPLES.en.md",
+      "sha256": "8e99f94c4ca9bacee3c79cff892e17f251569ce752ef2644d64432fc785e6612"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE4_REASON_ANALYSIS.zh-TW.md",
+      "sha256": "e534229a8942dc4dd3b54edb2e029fda45a6a582e07c552ce4aca3ef78329a8a"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE4_STATUS.json",
+      "sha256": "e82bc923585b51b393669851b49d53ec2918698ea7a325f6bfa6bc410855c3d4"
+    },
+    {
+      "path": "research/scenario_decisions_v2/WORKFLOW_STATUS.json",
+      "sha256": "8772cac420c76c9330c6d087008c4e046e8d2c04624d102bf0d473c1ded85cdf"
+    },
+    {
+      "path": "tools/scenario_reason_coding.py",
+      "sha256": "55031ed93b9f8539acfd98591ed4aad695cb501dd9c0e2752c99b7db44270ac3"
+    },
+    {
+      "path": "tools/test_scenario_reason_coding.py",
+      "sha256": "5c579ed165c08166ef8b1c1815fb336b237ae749cd7c25678c70f555323fdfbb"
+    },
+    {
+      "path": "tools/validate_scenario_reason_workflow.py",
+      "sha256": "38f09ddd62c12380ad0ac9a120f0a9ab6abf9b54f3bdcbd8d0dea3fff08551e3"
+    },
+    {
+      "path": "tools/finalize_scenario_stage4.py",
+      "sha256": "89985066c9de5c2444ba393aaaa6d54daeb91c3404786f56c867463affb047d2"
+    },
+    {
+      "path": "experiment_records/data/validation/scenario_reason_stage4_20261116/coding.synthetic-worked-example.json",
+      "sha256": "7cbc8fdcb6800bbbb316fd430b415988f3260f135568d54fc4bd17557cf3fc53"
+    },
+    {
+      "path": "experiment_records/data/validation/scenario_reason_stage4_20261116/coding.unreviewed.json",
+      "sha256": "50f86ac153a56c45644b0b7a221ff5157af3513cd19d16ec15dad61c4e258fa4"
+    },
+    {
+      "path": "experiment_records/data/validation/scenario_reason_stage4_20261116/summary.synthetic-worked-example.json",
+      "sha256": "b54e27f85b0f04ec47695a592b1fa12faa2ceded8f529d5757974e13efdac231"
+    },
+    {
+      "path": "experiment_records/data/validation/scenario_reason_stage4_20261116/summary.unreviewed.json",
+      "sha256": "e66c6f4c4c4cd7d7482e804915851851f89edca5a992307b2187505724af441e"
+    },
+    {
+      "path": "experiment_records/data/validation/scenario_reason_stage4_20261116/VALIDATION.json",
+      "sha256": "14d2a71f566a46e97027a4933fd2e3805b910894f4822cf8cd2113950b08b4ec"
+    }
+  ],
+  "stage3ReceiptSHA256": "6611152b9f3b88aa150710d4114b4c1b3637436a7a78241d377875ae6beda25f"
+}

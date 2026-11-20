@@ -1,0 +1,101 @@
+{
+  "schema": "scenario-formal-design-delivery-v1",
+  "status": {
+    "date": "2026-11-16",
+    "registration": "P-030",
+    "status": "formal_design_locked_collection_not_started",
+    "formalConditions": 28,
+    "perCondition": 30,
+    "plannedChoices": 840,
+    "abstractChoices": 360,
+    "physicalChoices": 480,
+    "schedulingBlocks": 30,
+    "formalCollected": 0,
+    "newAPICallsThisStep": 0,
+    "newUnityRunsThisStep": 0,
+    "formalGuardTestsPassed": 15,
+    "lockID": "eb5b35d6f58193969a45216669c0aa5d25425794134a12da7b7fc766c732d716",
+    "lockFolder": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2",
+    "readyForExplicitCollection": true,
+    "automaticDispatch": false,
+    "paperUtilityToTimeValidated": false,
+    "humanValidityEstablished": false,
+    "report": "FORMAL_DESIGN.zh-TW.md",
+    "scope": "Design and precollection tooling complete; formal results do not exist yet.",
+    "next": "Execute the sealed P030 registration only as a separately explicit formal-collection action, then review all reasons and run the prespecified analysis."
+  },
+  "files": [
+    {
+      "path": "research/scenario_decisions_v2/FORMAL_DESIGN.zh-TW.md",
+      "sha256": "8710c58414bebb6b7eff6b98be4edda1e95058ce1b9f7fc3f81126d8d7e50ac9"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE6_STATUS.json",
+      "sha256": "d8fbf578d8f49002c970fd57d65a06ba6bc7bcfd136d7be3f03adf814775b308"
+    },
+    {
+      "path": "tools/scenario_formal.py",
+      "sha256": "fcc5a460d37703cc6a5b9de99e854c26556f4446d629f61ef71dde7a12526465"
+    },
+    {
+      "path": "tools/scenario_formal_analysis.py",
+      "sha256": "511828bb43dbc0247c0e4ffc0658fa8f8e2e770795832ce7430f52e2979bbb00"
+    },
+    {
+      "path": "tools/test_scenario_formal.py",
+      "sha256": "43c685b86713e3288b4a00a00145cc9fd2343c7a1c05ada61f8d77e510e4ae2d"
+    },
+    {
+      "path": "tools/finalize_scenario_formal_design.py",
+      "sha256": "654fd39f3b820cfbf4a747927e933fcbd7cd141f292989e12762753a572b52f9"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/design.json",
+      "sha256": "dfe37646f58f2fae724fb375aa8f1c863c7bb950fc850c37ba64d9de4879e329"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/LOCK.json",
+      "sha256": "87af2cf7b31f928db79c0ad1c2691e82696792ad24bd801a19f33e8d74ee5c57"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/registration.json",
+      "sha256": "3a524fde1b0a5f0d031a3da7a94ac9755180cd7ae89edc1972fa09c84b16a12d"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/individual_analysis.py",
+      "sha256": "a0f9086ca8af4fd1466c11a9f945c3140f30e50d77a4b544f30913260ddd91c8"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/individual_sampling.py",
+      "sha256": "573a13c7a0721509a0901889a408a5208dfcbc8d485c100fd13733c4a70fd6ae"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/scenario_agent_contract.py",
+      "sha256": "ef414cbd5322d848fd0a9f6c3f95d45e2941d3b31b7bd66b1aa6cc87a3415bb1"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/scenario_agent_transport.py",
+      "sha256": "6978360d074df7c226de950c31bc5754e6865005bef7650f0265219e220259ef"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/scenario_formal.py",
+      "sha256": "fcc5a460d37703cc6a5b9de99e854c26556f4446d629f61ef71dde7a12526465"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/scenario_formal_analysis.py",
+      "sha256": "511828bb43dbc0247c0e4ffc0658fa8f8e2e770795832ce7430f52e2979bbb00"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/tools/scenario_reason_coding.py",
+      "sha256": "55031ed93b9f8539acfd98591ed4aad695cb501dd9c0e2752c99b7db44270ac3"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/research/scenario_decisions_v2/reason-codebook.v3.json",
+      "sha256": "b25d67f68cd0fea99273d4176d0d0497560d4f1e1bb60444006f1fa9d1d398b8"
+    },
+    {
+      "path": "experiment_records/study_preparations/scenario_formal_v1_20261116_r2/source_snapshot/research/scenario_decisions_v2/stage2-scenario-specification.json",
+      "sha256": "715c40a46ce56f03d62519b92217d6e28f5197091b1ee84bc078ccd932ad97df"
+    }
+  ]
+}

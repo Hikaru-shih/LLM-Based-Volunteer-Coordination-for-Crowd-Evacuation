@@ -1,0 +1,214 @@
+{
+  "schema": "closed-loop-design-draft-v1",
+  "status": "draft_for_review_not_formal_lock",
+  "locked": false,
+  "executable": false,
+  "paidExecutionAuthorized": false,
+  "createdDateTaipei": "2026-11-13",
+  "mainQuestion": "Scenario-dependent downstream consequences of individual LLM willingness versus original adjusted game theory",
+  "model": "gpt-6-luna",
+  "promptVersion": "paper-agent-v5",
+  "responseProtocol": "paper-choice-response-v3",
+  "information": "Core",
+  "wording": "Standard",
+  "primaryPolicies": [
+    "OriginalGameTheory",
+    "LLM",
+    "NoVolunteers"
+  ],
+  "optionalPolicy": "RandomMatched",
+  "optionalPolicyDecision": "Must be fixed before any final tests; independent calibration required if selected",
+  "cells": [
+    {
+      "id": "B2_N10_cv0p05",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 2,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.6,
+      "agents": 10,
+      "cv": 0.05
+    },
+    {
+      "id": "B2_N10_cv0p2",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 2,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.6,
+      "agents": 10,
+      "cv": 0.2
+    },
+    {
+      "id": "B2_N30_cv0p05",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 2,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.6,
+      "agents": 30,
+      "cv": 0.05
+    },
+    {
+      "id": "B2_N30_cv0p2",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 2,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.6,
+      "agents": 30,
+      "cv": 0.2
+    },
+    {
+      "id": "B5_N10_cv0p05",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 5,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.0,
+      "agents": 10,
+      "cv": 0.05
+    },
+    {
+      "id": "B5_N10_cv0p2",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 5,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.0,
+      "agents": 10,
+      "cv": 0.2
+    },
+    {
+      "id": "B5_N30_cv0p05",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 5,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.0,
+      "agents": 30,
+      "cv": 0.05
+    },
+    {
+      "id": "B5_N30_cv0p2",
+      "stratum": "blocked",
+      "initialBlockedObstacles": 5,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 0.0,
+      "agents": 30,
+      "cv": 0.2
+    },
+    {
+      "id": "open_N10",
+      "stratum": "no_game_control",
+      "initialBlockedObstacles": 0,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 1,
+      "agents": 10,
+      "cv": 0.05
+    },
+    {
+      "id": "open_N30",
+      "stratum": "no_game_control",
+      "initialBlockedObstacles": 0,
+      "totalMovableObstacles": 5,
+      "expectedInitialTau": 1,
+      "agents": 30,
+      "cv": 0.05
+    }
+  ],
+  "seedCandidates": {
+    "development": [
+      41001,
+      41002,
+      41003,
+      41004,
+      41005,
+      41006
+    ],
+    "calibration": [
+      42001,
+      42002,
+      42003,
+      42004,
+      42005,
+      42006,
+      42007,
+      42008,
+      42009,
+      42010
+    ],
+    "finalTest": [
+      51001,
+      51002,
+      51003,
+      51004,
+      51005,
+      51006,
+      51007,
+      51008,
+      51009,
+      51010,
+      51011,
+      51012,
+      51013,
+      51014,
+      51015,
+      51016,
+      51017,
+      51018,
+      51019,
+      51020,
+      51021,
+      51022,
+      51023,
+      51024,
+      51025,
+      51026,
+      51027,
+      51028,
+      51029,
+      51030
+    ]
+  },
+  "commonCandidates": {
+    "width": 21,
+    "height": 21,
+    "spawnWidth": 8,
+    "spawnHeight": 8,
+    "exitCount": 1,
+    "exitWidth": 3,
+    "visibility": 20,
+    "av": 0.5,
+    "omega": 5,
+    "horizon": 300,
+    "perRunLogicalRequestCap": null,
+    "totalHttpBudget": null
+  },
+  "geometryStatus": "Candidate coordinates only; new manifest generator/preflight required",
+  "primaryMetric": "A_H = mean_i min(T_i,H), non-evacuated count as H",
+  "primaryContrast": "Mean over base seeds of equal-weight mean over eight blocked cells of A_H(LLM)-A_H(OriginalGameTheory)",
+  "inferenceUnit": "Base initial-state seed block; preserve all within-seed conditions/policies",
+  "sampleSizeStatus": "Candidate 30 base seeds, not a power guarantee; confirm precision/cost before final lock",
+  "candidateCounts": {
+    "conditions": 10,
+    "blockedConditions": 8,
+    "primaryPolicies": 3,
+    "finalSeedBlocks": 30,
+    "coreFormalRuns": 900,
+    "coreFormalLLMRuns": 300,
+    "coreFormalPotentiallyPaidLLMRuns": 240,
+    "optionalCalibrationLLMRuns": 80,
+    "optionalRandomMatchedFormalRuns": 240,
+    "withOptionalFormalRuns": 1140
+  },
+  "readiness": {
+    "geometry": false,
+    "strictRunner": false,
+    "groupAnalysis": false,
+    "v3AwareGroupLock": false,
+    "randomMatchedCalibration": false,
+    "formalExecution": false
+  },
+  "rules": [
+    "No current simulations or API calls",
+    "Do not pool prior pilots/fixed-state data",
+    "No target refusal or policy advantage",
+    "H is observation horizon, not a hazard or prompt intervention",
+    "Keep technical invalids distinct from legitimate horizon timeouts",
+    "No outcome-dependent resampling or source changes during final collection"
+  ]
+}

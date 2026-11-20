@@ -7,6 +7,7 @@ public class AgentManager
     private GameObject agentPrefab;
     private List<PedestrianAgent> agents = new List<PedestrianAgent>();
     private Transform agentsContainer;
+    private bool ownsPrefab;
 
     public AgentManager(GridWorld world, GameObject prefab)
     {
@@ -16,6 +17,7 @@ public class AgentManager
         if (agentPrefab == null)
         {
             agentPrefab = CreateDefaultAgentPrefab();
+            ownsPrefab = true;
         }
 
         agentsContainer = new GameObject("Agents").transform;
@@ -31,6 +33,8 @@ public class AgentManager
 
         GameObject agentGO = Object.Instantiate(agentPrefab, agentsContainer);
         agentGO.name = "Agent_" + agents.Count;
+        agentGO.transform.localScale *= world.cellSize;
+        agentGO.SetActive(true);
 
         PedestrianAgent agent = agentGO.GetComponent<PedestrianAgent>();
         if (agent == null)
@@ -39,6 +43,7 @@ public class AgentManager
         }
 
         agent.Init(world, gridPos);
+        agent.AgentID = agents.Count;
 
         agents.Add(agent);
 
@@ -60,22 +65,30 @@ public class AgentManager
         if (agents.Contains(agent))
         {
             agents.Remove(agent);
-            Object.Destroy(agent.gameObject);
+            DestroyObject(agent.gameObject);
         }
     }
     public void DestroyAllAgents()
     {
         foreach (PedestrianAgent agent in agents)
         {
-            Object.Destroy(agent.gameObject);
+            DestroyObject(agent.gameObject);
         }
         agents.Clear();
+        if (agentsContainer != null) DestroyObject(agentsContainer.gameObject);
+        if (ownsPrefab && agentPrefab != null) DestroyObject(agentPrefab);
         Debug.Log("All agents destroyed");
     }
 
     public List<PedestrianAgent> GetAgents()
     {
         return new List<PedestrianAgent>(agents);
+    }
+
+    private static void DestroyObject(Object target)
+    {
+        if (Application.isPlaying) Object.Destroy(target);
+        else Object.DestroyImmediate(target);
     }
 
 
@@ -172,6 +185,7 @@ public class AgentManager
         }
 
         prefab.AddComponent<PedestrianAgent>();
+        prefab.SetActive(false);
 
         Debug.Log("Created default agent prefab");
         return prefab;

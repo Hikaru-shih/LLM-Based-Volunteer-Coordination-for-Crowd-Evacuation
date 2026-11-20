@@ -1,0 +1,5 @@
+{
+  "baseProductionSHA": "1466241a451c2d176f942ec8ebe26452a9df7e1a1be440d841f4b8cf83e2c59a",
+  "instrumentedProjectSHA": "32db3327bbcc7829a2bb383f70a3f9d1a39feead755cb643443e79d9142ab5df",
+  "instrumentation": "One approach-branch event hook plus isolated Editor runner; original production Assets unchanged"
+}

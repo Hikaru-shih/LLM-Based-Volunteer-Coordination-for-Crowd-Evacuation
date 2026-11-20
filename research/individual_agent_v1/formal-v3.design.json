@@ -1,0 +1,83 @@
+{
+  "schema": "individual-formal-design-v1",
+  "model": "gpt-6-luna",
+  "primaryContrast": {
+    "factor": "volunteerCost",
+    "fromValue": 0.005,
+    "toValue": 0.2,
+    "fixed": {
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    "metric": "(LLM participation rate at high cost - at low cost) - (reference probability at high cost - at low cost)"
+  },
+  "failurePolicy": "Stop session on invalid response, retain it, never code as refusal or silently replace. Preserve missing/interrupted records and conservative reservations; no repair retries. Transport retries at most 3 attempts per choice. Resume may repeat unknown-result interruptions, with old reservation retained.",
+  "multiplicityPolicy": "One declared primary contrast; pointwise descriptive intervals; all other comparisons exploratory, no unadjusted family significance claims",
+  "pilotExcluded": true,
+  "modelLifecycleReviewed": true,
+  "explanationReview": "Prespecified exploratory manual review of repetition indices 0,49,99 in each of 30 eligible states (90 choices). Raw SHA256-bound judgments; no action relabeling/exclusion. Non-reviewed explanations are not assumed correct.",
+  "repetitionsJustification": "100 planned outputs/state fixed before formal collection: maximum pointwise Wilson 95% half-width about 0.0962 conditional on 100 valid independent outputs. This is a descriptive precision target, not power for detecting effects. No early stopping, sample-size adaptation or filling invalid slots based on outcomes.",
+  "scope": "Fixed-state only",
+  "promptVersion": "paper-agent-v5",
+  "transportProfile": "luna-chat-none-v1",
+  "analysisMode": "descriptive_pointwise_no_confirmatory_tests",
+  "repetitionsLocked": true,
+  "modelLifecycleReview": {
+    "date": "2026-11-12",
+    "sources": [
+      "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "https://developers.openai.com/api/docs/deprecations"
+    ],
+    "providerObserved": "gpt-6-luna",
+    "datedSnapshotAvailableInEvidence": false,
+    "limitation": "Reported alias, not an immutable backend snapshot. A matching alias cannot exclude unannounced backend changes. Capture request/response identifiers and timestamps; stop on reported provider drift. Do not silently replace model."
+  },
+  "transport": {
+    "endpoint": "https://api.openai.com/v1/chat/completions",
+    "reasoning_effort": "none",
+    "temperature": 0.15,
+    "max_completion_tokens": 220,
+    "responseProtocol": "paper-choice-response-v3",
+    "factualTemperature": 0,
+    "factualMaxCompletionTokens": 160
+  },
+  "scenarioRationale": "Retain the preregistered 3x3x3 multiplayer grid, three single-player boundary states and two no-game controls. Do not expand or tune prompts to obtain desired non-cooperation after the all-participate development pilot.",
+  "sampling": {
+    "multiplayerStates": 27,
+    "singlePlayerStates": 3,
+    "noGameStates": 2,
+    "repetitionsPerState": 100,
+    "eligibleChoices": 3000,
+    "noGameRecords": 200,
+    "totalRecords": 3200,
+    "maxHttpAttempts": 9000,
+    "orderSeed": 2026111208,
+    "sessionChoices": 250,
+    "independenceLimitation": "Each request has two fresh messages and no memory/history. Provider-side independence and stationarity are assumptions, not verified properties. orderSeed randomizes work ordering only; it is not a provider response seed."
+  },
+  "exclusions": {
+    "allDevelopmentPilots": true,
+    "oldModelData": true,
+    "syntheticData": true,
+    "replayData": true,
+    "factualAssessments": true,
+    "oldFormalV1Data": true
+  },
+  "stopping": "Stop on first invalid saved response, reported provider drift, source mismatch, wall-clock interruption or exhausted reservation budget. Preserve all slots and failures. No response-repair retry or replacement of saved invalid choices. Stop at the fixed planned workload, never at desired significance/cooperation.",
+  "primaryReporting": "Observed high-minus-low participation change minus the deterministic reference change at X=5,tau=.5,av=.5,omega=5. Newcombe-Wilson pointwise interval; no confirmatory tests or multiplicity-wide coverage claim.",
+  "secondaryReporting": "All states, conditional response curves, one-factor exploratory contrasts, invalid/missing sensitivity bounds and separately stratified single-player boundaries. No-game controls are not refusals.",
+  "prerequisites": {
+    "rules": "experiment_records/data/comprehension/comprehension_20261111_144347_ae2b90e3",
+    "payoffs": "experiment_records/data/comprehension/comprehension_20261111_144503_e65d714b",
+    "independentPilot": "experiment_records/data/validation/semantic_release_v3_20261112_215124/sampling-pilot",
+    "semantic": "experiment_records/data/validation/semantic_release_v3_20261112_215124",
+    "factualEvidenceLimitation": "Ten-rule and eight-payoff assessments reused from prior v5/Luna factual suites; factual response schema is separate and unchanged. Fresh P-023 semantic gate and v3 sampling pilot required; old v1 action data not used as a current-protocol pilot."
+  },
+  "closedLoop": "Not part of this lock. Requires separate scenario/horizon design, closed-loop pilot, independently collected RandomMatched calibration and a new final-test gate. Fixed-state observations cannot establish evacuation outcomes.",
+  "semanticReleaseGate": "experiment_records/data/validation/semantic_release_v3_20261112_215124",
+  "semanticGatePolicy": "New registered P-023 gate must pass; formal primary endpoint remains raw action. Numerical explanations are secondary and never repair or exclude choices.",
+  "registrationRationale": "Retain original scenario grid and primary contrast despite prior all-C results; response-v3 is a new study version, no outcome-adaptive sample size or prompt tuning.",
+  "sourceLockRequiredBeforeCollection": true
+}

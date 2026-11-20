@@ -1,0 +1,8 @@
+{
+  "promptVersion": "paper-agent-v4",
+  "responseProtocol": "paper-choice-response-v1",
+  "date": "2026-11-11",
+  "liveValidated": false,
+  "comprehensionVersion": "paper-comprehension-v2",
+  "comprehensionQuestions": 10
+}

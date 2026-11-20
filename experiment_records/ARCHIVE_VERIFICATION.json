@@ -1,0 +1,9 @@
+{
+  "all_destinations_exist": true,
+  "individual_file_checksums_match": true,
+  "directory_counts_and_bytes_match": true,
+  "extended_windows_paths_included": true,
+  "verified_move_entries": 359,
+  "in_progress_trace_left_in_staging": "889d142d_run013",
+  "note": "Verification performed before adding new purpose notes outside the relocated directory roots."
+}

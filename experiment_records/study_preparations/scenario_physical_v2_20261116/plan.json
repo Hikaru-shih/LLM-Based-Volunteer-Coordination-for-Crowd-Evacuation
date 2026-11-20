@@ -1,0 +1,490 @@
+{
+  "schema": "scenario-physical-calibration-v1",
+  "date": "2026-11-16",
+  "purpose": "Stage2 physical interpretation, not new LLM/formal data",
+  "baseSourceSHA": "1466241a451c2d176f942ec8ebe26452a9df7e1a1be440d841f4b8cf83e2c59a",
+  "horizon": 300,
+  "jobs": [
+    {
+      "id": "O_s71001",
+      "seed": 71001,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71001",
+      "seed": 71001,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71001",
+      "seed": 71001,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "O_s71002",
+      "seed": 71002,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71002",
+      "seed": 71002,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71002",
+      "seed": 71002,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "O_s71003",
+      "seed": 71003,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71003",
+      "seed": 71003,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71003",
+      "seed": 71003,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "O_s71004",
+      "seed": 71004,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71004",
+      "seed": 71004,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71004",
+      "seed": 71004,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "O_s71005",
+      "seed": 71005,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71005",
+      "seed": 71005,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71005",
+      "seed": 71005,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "O_s71006",
+      "seed": 71006,
+      "blocked": 0,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_None_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_Focal0_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M1_AllHelp_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B2_M4_Focal0_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B2_M4_AllHelp_s71006",
+      "seed": 71006,
+      "blocked": 2,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_None_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "None",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_Focal0_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M1_AllHelp_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 1
+    },
+    {
+      "id": "B5_M4_Focal0_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "Focal0",
+      "manipulationSteps": 4
+    },
+    {
+      "id": "B5_M4_AllHelp_s71006",
+      "seed": 71006,
+      "blocked": 5,
+      "policy": "AllHelp",
+      "manipulationSteps": 4
+    }
+  ],
+  "agents": 10,
+  "apiCallsAllowed": 0,
+  "randomization": "Fixed six fresh development seed blocks; paired initial positions, divergent trajectories need not share future random draws",
+  "intervention": "Override decision callback; focal ID0 or all willing, others decline. No false Original or LLM policy claims.",
+  "factors": "B2/B5 layouts and workProgress intervals1/4; total5 obstacles; no pure tau causal claim",
+  "units": "simulation ticks, not measured human seconds",
+  "failureRule": "Stop on invalid or unexpected API; retain all timeouts, negative benefits and unsuccessful handling; no automatic rerun",
+  "mappingRule": {
+    "scale": 301,
+    "burden": "per-agent approach-assigned ticks plus active-handler ticks; includes nonworker candidates and failed approach",
+    "personalDelta": "capped exit step in intervention minus same-ID None control",
+    "othersBenefit": "mean capped exit step in None minus intervention for IDs1..9, focal comparison only",
+    "noHelpLoss": "mean capped exit step None blocked minus None open; never use test-future values as LLM observation",
+    "projection": "exploratory nonnegative time-burden/301 and nonnegative noHelpLoss/301; report zero/negative raw values and reject cv>=av or av=0, never clip into paper domain"
+  },
+  "sourceFiles": {
+    "tools/ScenarioPhysicalCalibration.cs": "877bbd34af6ce0f458757c27c72dfea9f348e83d6a7d8b59268fada6f1a045d0",
+    "tools/prepare_scenario_physics.py": "10b97ddbc2bd9e57a541027d38bf21bb22d9812dbc13a76da81932d494355775"
+  }
+}

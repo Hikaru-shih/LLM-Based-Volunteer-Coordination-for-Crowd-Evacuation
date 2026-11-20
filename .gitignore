@@ -107,3 +107,36 @@ InitTestScene*.unity*
 
 # Local API credentials (never commit)
 /openai-key.local.txt
+
+# Local analysis dependencies, rendered reference pages and raw validation runs.
+/tmp/
+__pycache__/
+*.pyc
+
+# Historical local experiment archive (large raw data).
+/archived_results/
+
+# Organized raw experiment data and local execution logs.
+/experiment_records/data/
+
+# Local-only explanations, writing drafts, superseded data and generated artifacts.
+/local_archive/
+/.codex-build/
+/.chart-data-*/
+/research/scenario_decisions_v2/poststudy_20261117/
+/report/
+
+# Runtime exports are local research data, not source files.
+/Assets/data/
+
+# Keep editable Word documents local; publish PDF copies separately.
+*.[dD][oO][cC]
+*.[dD][oO][cC][xX]
+*.[dD][oO][cC][mM]
+*.[dD][oO][tT][xX]
+*.[dD][oO][tT][mM]
+
+# Local editor state, historical datasets and runtime notebook locks.
+/.vscode/
+/research/s5/datasets/
+/experiment_records/.notebook.lock

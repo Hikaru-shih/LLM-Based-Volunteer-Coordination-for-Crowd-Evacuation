@@ -1,0 +1,16 @@
+{
+    "recordID": "individual_sampling_e0f0486a8bbc_639299988446549833",
+    "purpose": "P4 development pilot: compatibility, invalid rate, latency and coarse variation; excluded from formal estimates",
+    "recordedAtUtc": "2026-11-11T13:00:44.6549833Z",
+    "kind": "individual_sampling",
+    "model": "gpt-4o-mini",
+    "specVersion": "paper-agent-v5",
+    "promptHash": "d51935241ac933f89f0be7150bb4a01775bcc1ef9184638d3aac90a824286d9e",
+    "dataDirectory": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\individual_sampling\\pilot_20261111_205319",
+    "outcome": "completed",
+    "summary": "Execution source: api. Fixed-state personal sampling; saved calls exclude interrupted unknown outcomes (see interruptions.jsonl). Counts include invalid records. Conservative reserved budget retained across interruptions. No human validation or evacuation simulation. Synthetic outputs are software tests only.",
+    "logicalCalls": 24,
+    "httpAttempts": 24,
+    "passedChecks": 0,
+    "totalChecks": 30
+}

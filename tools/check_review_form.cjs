@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const root=path.resolve(__dirname,'..'),html=fs.readFileSync(path.join(root,'report/human_review/Review.html'),'utf8');
+const code=html.match(/<script>([\s\S]*)<\/script>/)[1],nodes={};
+const context={document:{getElementById(id){return nodes[id]??=( {value:'',textContent:'',innerHTML:''});},querySelectorAll(){return []},createElement(){return {click(){}}}},localStorage:{getItem(){return null},setItem(){}},Blob,URL,setTimeout,alert(){throw Error('Unexpected alert')}};
+vm.createContext(context);vm.runInContext(code,context);
+assert.equal(vm.runInContext('state.items.length',context),48);
+assert.equal(vm.runInContext('state.items.filter(x=>Object.keys(x.ratings).length).length',context),0);
+assert.equal((nodes.items.innerHTML.match(/<fieldset>/g)||[]).length,240);
+assert.equal((nodes.items.innerHTML.match(/type="radio"/g)||[]).length,816);
+assert.equal((nodes.items.innerHTML.match(/<details>/g)||[]).length,48);
+assert(nodes.progress.textContent.includes('0/48'));
+nodes.save.onclick();
+console.log('Review form: 48 prompts, 240 blank judgments, 816 radio options; initial render and JSON export passed. DOM mocked; no browser layout claim.');

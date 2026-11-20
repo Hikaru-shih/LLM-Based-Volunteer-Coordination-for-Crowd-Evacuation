@@ -1,0 +1,81 @@
+{
+  "schema": "scenario-stage5-delivery-v1",
+  "status": {
+    "date": "2026-11-16",
+    "stage5": "small_pilot_complete_reviewed",
+    "registration": "P-029",
+    "liveChoices": 208,
+    "actualHTTPAttempts": 208,
+    "retries": 0,
+    "technicalInvalids": 0,
+    "newUnityRuns": 0,
+    "abstractDiagnostics": 36,
+    "physicalDiagnostics": 32,
+    "abstractFreeParticipate": 56,
+    "abstractFreeN": 60,
+    "physicalGeometryParticipate": 40,
+    "physicalGeometryN": 40,
+    "physicalForecastParticipate": 13,
+    "physicalForecastN": 40,
+    "reasonReviewCount": 208,
+    "independentHumanReview": false,
+    "formalStudyStarted": false,
+    "report": "PILOT_RESULTS.zh-TW.md",
+    "analysis": "experiment_records/data/analysis/scenario_pilot_v1_20261116",
+    "next": "Stage6: prospectively specify focused formal questions, sample rationale and coding plan; do not automatically dispatch."
+  },
+  "files": [
+    {
+      "path": "research/scenario_decisions_v2/PILOT_RESULTS.zh-TW.md",
+      "sha256": "69ca5a3da2ab806565276fe8b5cb29114976bdb4bea436afec356535a7882cca"
+    },
+    {
+      "path": "research/scenario_decisions_v2/STAGE5_STATUS.json",
+      "sha256": "9c4df9516830c7fec81ee2064929311090fc53e0cfd35830249882ba487c3c51"
+    },
+    {
+      "path": "tools/register_scenario_stage5.py",
+      "sha256": "f7ca72dfcd2c02a043dfca37d14b76c29b37c6c84b08262abb90b9786bad2120"
+    },
+    {
+      "path": "tools/apply_scenario_reason_judgments.py",
+      "sha256": "7d9416bad33459931a40df759120b55a19c12027f497f427a17ee4320529106c"
+    },
+    {
+      "path": "tools/analyze_scenario_stage5.py",
+      "sha256": "2652469b244167ef22d2a2cc7836a7fec923df2f76d069ad26d58533c0adc69c"
+    },
+    {
+      "path": "tools/finalize_scenario_stage5.py",
+      "sha256": "5a35686ebf55e5a89c726badec2e8fb0d17f505b67cbfd3ddc45ab69c8cbb5c6"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/choice-summary.csv",
+      "sha256": "f1d86e609447eac776c03968c3df146139ae3462b1536a887683483655c198af"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/COMPLETE.json",
+      "sha256": "076b8aa44e33b070363b34bb826da4bf98eaa85d26ae9c7a53ae44729774c3d7"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/reason-coding.csv",
+      "sha256": "a2b9a365b7b5960c5603030ee18eba6c3078bdba40a2ae1b7670bba8112e5f17"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/RESULTS.md",
+      "sha256": "78597db618d0ed8186a279c3b8a2d3f362bdbb1b4106b75d207bfcd65b7b1a15"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/SOURCE_MANIFEST.json",
+      "sha256": "1e2b42ee02958f0dec415f95c78c8bb54090ae67f369821b13c53704427cc69d"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/summary.json",
+      "sha256": "ca0e40f6b635fd13dbd8c62a15d528dc5dc04327dfdeb45bc27e958bf0de8705"
+    },
+    {
+      "path": "experiment_records/data/analysis/scenario_pilot_v1_20261116/TRIAL_CATALOG.csv",
+      "sha256": "8632940ff6b055b935eaf1f57536dc04f7ffab93f5b225b10b724d1c5913562c"
+    }
+  ]
+}

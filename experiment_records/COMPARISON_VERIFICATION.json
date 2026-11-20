@@ -1,0 +1,46 @@
+{
+  "purpose": "Verify identical initialization for a bounded three-policy functional comparison, not statistical superiority",
+  "initial_states_identical": true,
+  "condition_keys_identical": true,
+  "seeds_identical": true,
+  "initial_state_sha256": "dbbcfa45699756122ad94566c671acd994fb3711999573de859666075cf60af9",
+  "seed": 2026,
+  "records": [
+    {
+      "record_id": "2026-11-09_161143_117_c56fc90c_run001_PaperYielder",
+      "policy": "LLM",
+      "data_directory": "data\\functional_comparison\\blocked_exit_llm\\20261109_161143",
+      "termination": "invalid_llm_run_request_limit",
+      "stop_step": "2",
+      "t100_steps": "",
+      "evacuated": "0",
+      "activations": "0",
+      "settled": "0",
+      "api_logical_calls": "12"
+    },
+    {
+      "record_id": "2026-11-09_161449_385_d7995424_run001_PaperYielder",
+      "policy": "OriginalGameTheory",
+      "data_directory": "data\\functional_comparison\\blocked_exit_game_theory\\20261109_161449",
+      "termination": "completed",
+      "stop_step": "13",
+      "t100_steps": "13",
+      "evacuated": "2",
+      "activations": "2",
+      "settled": "2",
+      "api_logical_calls": "0"
+    },
+    {
+      "record_id": "2026-11-09_163149_759_cf280550_run001_PaperYielder",
+      "policy": "NoVolunteers",
+      "data_directory": "data\\functional_comparison\\blocked_exit_no_volunteers\\20261109_163149",
+      "termination": "timeout",
+      "stop_step": "40",
+      "t100_steps": "",
+      "evacuated": "0",
+      "activations": "0",
+      "settled": "0",
+      "api_logical_calls": "0"
+    }
+  ]
+}

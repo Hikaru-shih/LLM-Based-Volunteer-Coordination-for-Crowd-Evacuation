@@ -1,0 +1,34 @@
+[
+  {
+    "path": "Assets/scripts/Core/ResearchScenario.cs",
+    "sha256": "2a2c2cdc75249726004c890ace384460b87d8cc92d1e45faea000cfec2a98a0b"
+  },
+  {
+    "path": "Assets/scripts/Core/SimulationManager.cs",
+    "sha256": "94467999e68be03edf676a680bb9716b1f07862d4557260cc1b6492987948f0e"
+  },
+  {
+    "path": "Assets/scripts/Decision/AgentResearchSettings.cs",
+    "sha256": "a072b74f7c90862a6d10bb5067c1dd87284afac00e07e55d33a0fffa5cc3dfb9"
+  },
+  {
+    "path": "tools/research_plan.py",
+    "sha256": "d29d92abc63609929dea74429ededdeaa0f79218750d64db41b495d94fa5d823"
+  },
+  {
+    "path": "tools/agent_research.py",
+    "sha256": "d7000a6f2329f6fedde3330f7b563e897e925fef19854ad9f4e6fbec9beeb490"
+  },
+  {
+    "path": "research/diagnostics/BoundedGamePilot.cs",
+    "sha256": "70d3112ae0b82b25e654a518158515099d5c1767f765795327713c394bca0d49"
+  },
+  {
+    "path": "research/closed_loop_v1/DESIGN.zh-TW.md",
+    "sha256": "7eb0c750743f886d2d85c206c6d130bed5df8c631afbf2c9b99ab50015910e4a"
+  },
+  {
+    "path": "research/closed_loop_v1/design.draft.json",
+    "sha256": "fb5ffb55f0a43e041ceeab371a66f2918f5236b36bb899062896377435662130"
+  }
+]

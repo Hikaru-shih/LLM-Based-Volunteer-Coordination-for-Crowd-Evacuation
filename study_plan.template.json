@@ -1,0 +1,16 @@
+{
+  "schema": "agent-study-plan-v1",
+  "locked": false,
+  "horizon": 0,
+  "model": "",
+  "promptVersion": "paper-agent-v5",
+  "developmentSeeds": [],
+  "calibrationSeeds": [],
+  "testSeeds": [],
+  "conditionKeys": [],
+  "calibrationFiles": [],
+  "informationConditions": ["Core", "SharedContext"],
+  "policies": ["OriginalGameTheory", "LLM", "MockHeuristic", "RandomMatched"],
+  "primaryContrast": "SharedContext LLM minus OriginalGameTheory: capped T100 and completion rate",
+  "multiplicityTreatment": "Primary contrast specified in advance; remaining descriptive intervals are exploratory and unadjusted"
+}

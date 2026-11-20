@@ -13,6 +13,7 @@ public abstract class FloorField
     }
 
     protected abstract void ComputeDistances();
+    public void Recompute() { ComputeDistances(); }
 
     public float GetDistance(int x, int y)
     {

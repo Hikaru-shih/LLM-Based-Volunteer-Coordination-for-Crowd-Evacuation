@@ -55,7 +55,12 @@ public class LLMDecisionPolicy
     public class ChatResponse
     {
         public Choice[] choices;
+        public string model;
+        public Usage usage;
     }
+
+    [Serializable]
+    public class Usage { public int prompt_tokens; public int completion_tokens; public int total_tokens; }
 
     [Serializable]
     public class Choice
@@ -66,6 +71,9 @@ public class LLMDecisionPolicy
     [Serializable]
     public class VolunteerContext
     {
+        public string sharedObservationJson;
+        public string informationCondition;
+        public AgentPromptWording promptWording;
         public int agentId;
         public string role;
         public int positionX;
@@ -82,6 +90,10 @@ public class LLMDecisionPolicy
         public float targetObstacleToExitDistance;
         public int evacueesNearTargetObstacle;
         public float estimatedEvacuationImpact;
+        public float exitNonBlockage;
+        public float volunteerCost;
+        public float failureCost;
+        public float unwillingness;
     }
 
     [Serializable]
@@ -106,11 +118,52 @@ public class LLMDecisionPolicy
         public string explanation;
     }
 
+    public string LastPayload { get; private set; }
+    public string LastResponse { get; private set; }
+    public int LastAttempts { get; private set; }
+    public string LastRequestError { get; private set; }
+    public void ResetRequestAudit()
+    {LastRequestSucceeded=false;LastPayload=LastResponse=LastRequestError="";LastAttempts=0;LastHttpStatus=0;LastExecution="live";attemptAudit.Clear();}
+    public const string PaperPromptVersion = AgentObservation.PromptVersion;
+    [Serializable] public sealed class AttemptAudit {public int attempt;public long status;public string error;public double elapsedSeconds;}
+    private readonly List<AttemptAudit> attemptAudit=new List<AttemptAudit>();
+    public AttemptAudit[] LastAttemptAudit => attemptAudit.ToArray();
+    public long LastHttpStatus {get;private set;}
+    public string LastExecution {get;private set;}="live";
+#if UNITY_EDITOR
+    public delegate IEnumerator SyntheticTransport(string payload,Action<string,string> callback);
+    [NonSerialized] public SyntheticTransport testTransport;
+#endif
     private string apiKey;
+    public bool LastRequestSucceeded { get; private set; }
     private string model;
     private const string OpenAIChatUrl = "https://api.openai.com/v1/chat/completions";
     private const int MaxRetries = 2;
     private const int RequestTimeoutSeconds = 25;
+    public static bool IsRetryableStatus(long status) => status==0 || status==408 || status==409 || status==429 || status>=500;
+    [Serializable] private class ErrorEnvelope { public ErrorDetail error; }
+    [Serializable] private class ErrorDetail { public string code; public string type; }
+    public static string SafeErrorCode(string body)
+    {
+        try
+        {
+            var error=JsonUtility.FromJson<ErrorEnvelope>(body)?.error;
+            // Never print provider messages: they may echo credential fragments.
+            foreach(string value in new[]{error?.code,error?.type})
+                switch(value)
+                {
+                    case "insufficient_quota": case "credit_balance_exhausted":
+                    case "organization_spend_limit_exceeded": case "organization_usage_limit_exceeded":
+                    case "rate_limit_exceeded": case "rate_limit_error": case "slow_down":
+                    case "invalid_api_key": case "model_not_found": return value;
+                }
+        }
+        catch(ArgumentException) { }
+        return "unclassified";
+    }
+    public static bool CanRetry(long status,string code) => IsRetryableStatus(status) &&
+        code!="insufficient_quota" && code!="credit_balance_exhausted" &&
+        code!="organization_spend_limit_exceeded" && code!="organization_usage_limit_exceeded";
 
     public LLMDecisionPolicy(string apiKey, string model = "gpt-4.1")
     {
@@ -118,44 +171,59 @@ public class LLMDecisionPolicy
         this.model = model;
     }
 
+    public IEnumerator RequestComprehension(string prompt,Action<string> callback)
+    {
+        ResetRequestAudit();
+        if(string.IsNullOrEmpty(apiKey)) {LastRequestError="missing_api_key";callback(null);yield break;}
+        var request=new ChatRequest(model,new List<LLMMessage> {
+            new LLMMessage("system","Answer factual comprehension questions about a specified simulation game. Do not choose a volunteering action. Return the requested JSON only."),
+            new LLMMessage("user",prompt)},0f,160);
+        string response=null,error="";
+        yield return SendChatRequestWithRetry(request,text=>response=text,text=>error=text);
+        if(response==null) {LastRequestError=error;Debug.LogWarning("[COMPREHENSION] Request failed: "+error);callback(null);yield break;}
+        string content,errorCode;
+        LastRequestSucceeded=PersonalDecisionProtocol.EnvelopeContent(response,out content,out errorCode);
+        if(!LastRequestSucceeded)LastRequestError=errorCode;
+        callback(content);
+    }
+
     public IEnumerator RequestVolunteerDecision(VolunteerContext context, Action<VolunteerDilemma.CooperationLevel, string> callback)
     {
-        if (string.IsNullOrEmpty(apiKey))
+        ResetRequestAudit();
+        if(context==null){LastRequestError="invalid_observation";callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,LastRequestError);yield break;}
+        bool personal=!string.IsNullOrEmpty(context.sharedObservationJson);
+        string information=string.IsNullOrEmpty(context.informationCondition)?AgentInformationCondition.Core.ToString():context.informationCondition;
+        if(personal)
         {
-            Debug.LogWarning("[LLM] OpenAI API key is not configured");
-            callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish, "openAI api key not configured");
-            yield break;
+            Decision.VolunteerDecisionContext observation;bool rule;
+            if(!PaperDecisionSpecification.Observation(context.sharedObservationJson,information,out observation))
+            {LastRequestError="invalid_observation";callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,LastRequestError);yield break;}
+            var kind=PaperDecisionSpecification.Classify(observation,out rule);
+            if(kind==PaperDecisionSpecification.DecisionKind.NoGame)
+            {LastRequestError="no_game_state";callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,LastRequestError);yield break;}
+
         }
-
-        string prompt = CreatePrompt(context);
-        ChatRequest requestData = new ChatRequest(model, new List<LLMMessage>
+        if(string.IsNullOrEmpty(apiKey))
+        {LastRequestError="missing_api_key";callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,LastRequestError);yield break;}
+        string payload;
+        if(personal)payload=PersonalDecisionProtocol.Payload(model,context.sharedObservationJson,information,context.promptWording);
+        else payload=JsonUtility.ToJson(new ChatRequest(model,new List<LLMMessage> {
+            new LLMMessage("system","You represent one pedestrian making a personal participation decision in a simulated evacuation. Respond with strict JSON only."),
+            new LLMMessage("user",CreatePrompt(context))},.15f,220));
+        string response=null,error="";
+        yield return SendPayloadWithRetry(payload,text=>response=text,code=>error=code);
+        if(response==null)
+        {LastRequestError=error;callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,error);yield break;}
+        DecisionResult parsed;
+        if(personal)
         {
-            new LLMMessage("system", "You are an evacuation decision-making assistant. Respond with strict JSON only."),
-            new LLMMessage("user", prompt)
-        }, 0.15f, 220);
-
-        string responseText = null;
-        string error = string.Empty;
-        Debug.Log("[LLM] Sending request to OpenAI for volunteer decision (agent " + context.agentId + ")");
-        yield return SendChatRequestWithRetry(requestData, text => responseText = text, err => error = err);
-
-        if (string.IsNullOrEmpty(responseText))
-        {
-            callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish, "openai request failed: " + error);
-            yield break;
+            if(!PersonalDecisionProtocol.Response(response,out parsed,out error))
+            {LastRequestError=error;callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,error);yield break;}
         }
-
-        DecisionResult parsed = ParseDecisionResult(responseText);
-        if (parsed == null || string.IsNullOrEmpty(parsed.decision))
-        {
-            Debug.LogError("[LLM] Failed to parse API response");
-            callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish, "failed to parse llm response");
-            yield break;
-        }
-
-        VolunteerDilemma.CooperationLevel decision = VolunteerDecisionToCooperationLevel(parsed.decision);
-        Debug.Log("[LLM] Decision made: " + decision + " | Explanation: " + parsed.explanation);
-        callback?.Invoke(decision, parsed.explanation ?? string.Empty);
+        else parsed=ParseDecisionResult(response);
+        if(parsed==null){LastRequestError="invalid_legacy_response";callback?.Invoke(VolunteerDilemma.CooperationLevel.Selfish,LastRequestError);yield break;}
+        LastRequestSucceeded=true;
+        callback?.Invoke(VolunteerDecisionToCooperationLevel(parsed.decision),parsed.explanation??"");
     }
 
     public IEnumerator RequestVolunteerAssignment(AssignmentContext context, Action<Dictionary<int, int>, string> callback)
@@ -199,12 +267,28 @@ public class LLMDecisionPolicy
 
     private IEnumerator SendChatRequestWithRetry(ChatRequest requestData, Action<string> onResponse, Action<string> onError)
     {
-        string payload = JsonUtility.ToJson(requestData);
+        return SendPayloadWithRetry(JsonUtility.ToJson(requestData),onResponse,onError);
+    }
+    private IEnumerator SendPayloadWithRetry(string payload,Action<string> onResponse,Action<string> onError)
+    {
+        payload=PersonalDecisionProtocol.TransportPayload(model,payload);
+        LastPayload=payload;attemptAudit.Clear();
+#if UNITY_EDITOR
+        if(testTransport!=null)
+        {
+            LastExecution="synthetic_test";string body=null,failure="";
+            yield return testTransport(payload,(text,error)=>{body=text;failure=error;});
+            if(body==null && string.IsNullOrEmpty(failure))failure="missing_transport_response";
+            LastResponse=body??"";onResponse(body);onError(failure??"");yield break;
+        }
+#endif
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(payload);
         string lastError = "unknown error";
 
         for (int attempt = 0; attempt <= MaxRetries; attempt++)
         {
+            if(attempt>0) yield return new WaitForSecondsRealtime(Mathf.Pow(2,attempt-1));
+            LastAttempts = attempt + 1;
             using (UnityWebRequest request = new UnityWebRequest(OpenAIChatUrl, "POST"))
             {
                 request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -213,17 +297,23 @@ public class LLMDecisionPolicy
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("Authorization", "Bearer " + apiKey);
 
-                yield return request.SendWebRequest();
+                var clock=System.Diagnostics.Stopwatch.StartNew();
+                yield return request.SendWebRequest();clock.Stop();LastHttpStatus=request.responseCode;
+                string safeCode=request.result==UnityWebRequest.Result.Success?"":SafeErrorCode(request.downloadHandler.text);
+                attemptAudit.Add(new AttemptAudit {attempt=attempt+1,status=request.responseCode,error=safeCode,elapsedSeconds=clock.Elapsed.TotalSeconds});
 
                 if (request.result == UnityWebRequest.Result.Success)
                 {
-                    onResponse?.Invoke(request.downloadHandler.text);
+                    LastResponse = request.downloadHandler.text;
+                    onResponse?.Invoke(LastResponse);
                     onError?.Invoke(string.Empty);
                     yield break;
                 }
 
-                lastError = request.error + " (status=" + request.responseCode + ")";
+                string code=SafeErrorCode(request.downloadHandler.text);
+                lastError = "http_"+request.responseCode+"_"+code;
                 Debug.LogWarning("[LLM] request attempt " + (attempt + 1) + " failed: " + lastError);
+                if(!CanRetry(request.responseCode,code)) break;
             }
         }
 
@@ -282,6 +372,10 @@ public class LLMDecisionPolicy
 
     private string CreatePrompt(VolunteerContext context)
     {
+        if (!string.IsNullOrEmpty(context.sharedObservationJson))
+            return PaperVolunteerPrompt.Build(context.sharedObservationJson,
+                string.IsNullOrEmpty(context.informationCondition) ? AgentInformationCondition.Core.ToString() : context.informationCondition,
+                context.promptWording);
         string obstacleList = context.nearbyObstaclePositions.Length > 0 
             ? string.Join(", ", context.nearbyObstaclePositions) 
             : "none";
@@ -294,6 +388,8 @@ public class LLMDecisionPolicy
                $"agent_role: {context.role}\n" +
                $"position: ({context.positionX}, {context.positionY})\n" +
                $"nearby_agents: {context.nearbyAgents}\n" +
+               $"exit_non_blockage_fraction: {context.exitNonBlockage}\n" +
+               $"volunteer_cost: {context.volunteerCost}\nfailure_cost: {context.failureCost}\nunwillingness: {context.unwillingness}\n" +
                $"distance_to_exit: {context.distanceToExit}\n" +
                $"current_volunteers: {context.currentVolunteers}\n" +
                $"nearby_obstacles: {context.nearbyObstacles}\n" +
@@ -338,10 +434,11 @@ public class LLMDecisionPolicy
             string jsonStr = messageContent.Substring(jsonStart, jsonEnd - jsonStart + 1);
             Debug.Log("[LLM] Extracted JSON: " + jsonStr);
 
-            DecisionResult result = new DecisionResult();
-
-            result.decision = ExtractJsonStringValue(jsonStr, "decision");
-            result.explanation = ExtractJsonStringValue(jsonStr, "explanation");
+            DecisionResult result = JsonUtility.FromJson<DecisionResult>(jsonStr);
+            if (result == null || (!string.Equals(result.decision, "volunteer", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(result.decision, "selfish", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(result.decision, "participate", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(result.decision, "decline_assistance", StringComparison.Ordinal))) return null;
             if (!string.IsNullOrEmpty(result.decision))
             {
                 Debug.Log("[LLM] Extracted decision: " + result.decision);
@@ -365,7 +462,7 @@ public class LLMDecisionPolicy
 
     private VolunteerDilemma.CooperationLevel VolunteerDecisionToCooperationLevel(string value)
     {
-        if (string.Equals(value, "volunteer", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(value, "volunteer", StringComparison.OrdinalIgnoreCase) || string.Equals(value, "participate", StringComparison.OrdinalIgnoreCase))
             return VolunteerDilemma.CooperationLevel.Cooperative;
         return VolunteerDilemma.CooperationLevel.Selfish;
     }

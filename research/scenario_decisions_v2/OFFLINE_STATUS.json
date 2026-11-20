@@ -1,0 +1,28 @@
+{
+  "status": "offline_tooling_complete_live_not_started",
+  "date": "2026-11-16",
+  "tool": "tools/scenario_decision_pilot.py",
+  "tests": "tools/test_scenario_decision_pilot.py",
+  "checksPassed": 11,
+  "activeExport": "experiment_records/data/preparation/scenario_v2_20261116_offline_r2",
+  "supersededDevelopmentExport": "experiment_records/data/preparation/scenario_v2_20261116_offline",
+  "plannedChoices": 156,
+  "gateChoices": 36,
+  "freeChoices": 120,
+  "observedResponses": 0,
+  "newAPICalls": 0,
+  "newUnityRuns": 0,
+  "reasonSheet": "reason-review.blank.csv",
+  "preregistered": false,
+  "providerAvailabilityVerified": false,
+  "next": "Implement fail-closed live transport and registration with exact payload hashes, resolve model and expense limit, then execute 36 gate choices and review all reasons before any free choices.",
+  "limitations": [
+    "Synthetic response fixtures validate code only, not provider behavior.",
+    "Same model alias does not establish immutable backend.",
+    "Original 220-token response cap retained; truncation stops rather than silently expands."
+  ],
+  "sourceSHA256": {
+    "tools/scenario_decision_pilot.py": "6ae25c86a5e74f36f5e17deffc0c76e2f67deec9967c4a95b0efe2429fa6df8b",
+    "tools/test_scenario_decision_pilot.py": "d9d5bcb6ba999b7e60f2d36b4245cde8dd6cfc916ad7c8f79ac440b657d67e63"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "scenario-formal-design-v1",
+  "campaignID": "P030_SV3_20261116",
+  "registrationID": "P-030",
+  "dateLocal": "2026-11-16",
+  "scope": "Pilot-informed formal descriptive replication, individual choices and stated reasons; no new group simulations or human participants",
+  "questions": {
+    "A": "How does LLM willingness change with the relative cost, compared with the adjusted reference formula under the shared base payoff specification?",
+    "B": "How does willingness change with supplied earlier-development time forecasts in the physical extension?"
+  },
+  "blocks": 30,
+  "conditionsPerBlock": 28,
+  "conditions": {
+    "abstract": 12,
+    "physical": 16
+  },
+  "totalChoices": 840,
+  "orderSeed": 2026111661,
+  "sampling": "One fresh request per condition in each of30 scheduling blocks; shuffle all28 within each block, then concatenate blocks. Blocks are time/scheduling units, not people or paired simulation trajectories.",
+  "sampleRationale": "Thirty per condition balances full scenario coverage and full-text reason review, not a formal power guarantee. Independent-binomial Wilson half-width at p=.5,n30 is about.1685 as a scale reference only; model requests need not be independent. Primary summaries average per-block contrasts; no result-driven extension.",
+  "primaryA": {
+    "name": "relative_cost_response_difference",
+    "formula": "Per block, mean over av(.3,.7) and wording(numeric,contextual): (Y_R90-Y_R10)-(pRef_R90-pRef_R10); then mean over30 blocks",
+    "unit": "probability difference",
+    "reference": "Adjusted reference-law probability, not a global optimum or a complete belief specification supplied to the LLM"
+  },
+  "primaryB": {
+    "name": "forecast_minus_geometry",
+    "formula": "Per block, equal mean over8 physical scenarios of Y_forecast-Y_geometry; then mean over30 blocks",
+    "unit": "probability difference",
+    "scope": "Information-and-prompt condition difference, not isolated reasoning, human realism, group evacuation benefit or proof of mediation"
+  },
+  "intervals": {
+    "method": "Resample whole scheduling blocks with replacement, recomputing mean contrast",
+    "iterations": 5000,
+    "seed": 2026111662,
+    "coverage": "Pointwise descriptive95%, conditional on these model/prompt/scenarios and exchangeable scheduling blocks",
+    "confirmatoryPValues": false,
+    "multiplicity": "Two separately named descriptive summaries, no joint95% coverage or significance claims. All other cell, scale, wording, layout/work or reason comparisons secondary/exploratory."
+  },
+  "secondary": [
+    "All28 cell willingness counts/n30",
+    "Abstract mean LLM-minus-reference difference",
+    "Full three-level cost profile, scale and wording patterns",
+    "Physical eight per-scenario information contrasts",
+    "Twelve reason labels and quality fields, separated by task/information; no hidden-reasoning or motive causality"
+  ],
+  "reasonAnalysis": {
+    "version": "scenario-reasons-v3",
+    "coverage": "All840 valid readable reasons, exact spans and named assistant reviewer; no second human agreement claim",
+    "denominator": "Reviewed eligible reasons per task/scenario/information, with planned/readable/reviewed/unreviewed shown",
+    "quality": "Retain and code insufficient, contradictory, arithmetic and unsupported-info reasons; do not repair/relabel raw action or exclude inconvenient valid choices",
+    "gate": "Existing live68-choice P029 comprehension/reason gates reused only for identical hashes/profile; excluded from formal estimates. Successful gates do not imply all free explanations are correct."
+  },
+  "resources": {
+    "maxAttempts": 840,
+    "attemptsPerTrial": 1,
+    "maxGeneratedTokens": 184800,
+    "timeoutSeconds": 60,
+    "wallSeconds": 10800,
+    "parallelWorkers": 1,
+    "automaticRetries": 0,
+    "cost": "Request/token limits, no dollar-cost guarantee"
+  },
+  "failureRule": "First technical invalid, unknown network result, source/profile drift, repeated provider ID or budget/time stop ends the campaign. Preserve all partial records; mark formal incomplete, no automatic refill/restart or pooling. A valid free reason-quality problem is retained and coded, not a technical invalid.",
+  "exclusions": {
+    "P029": "All208 pilot replies and their208 provider IDs excluded; source forecasts are fixed stimulus estimates, not new independent physical samples",
+    "P028": "Original1140-run study remains separate",
+    "physicalCalibration": "174 development Unity runs stay development evidence, not formal outcome trials"
+  },
+  "stimulusPolicy": "Retain all6 abstract cells x2 wordings and8 physical scenarios x2 information conditions, including saturated conditions; no new maps, rewards, q, deadlines, personality, history or model changes",
+  "limits": [
+    "No validated mapping from time to original Eq20 utility; physical extension analyzed separately",
+    "Only six earlier geometry seeds support fixed forecast means/ranges; no general forecast-accuracy claim",
+    "Same alias does not guarantee immutable backend; record raw provider metadata",
+    "Independent-binomial or exchangeable-block assumptions are not established human sampling",
+    "Pilot informed hypotheses, so this is a prospective replication after development, not an untouched initial hypothesis test"
+  ],
+  "collectionAutomaticallyStarted": false
+}

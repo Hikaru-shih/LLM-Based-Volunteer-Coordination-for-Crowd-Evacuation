@@ -1,0 +1,23 @@
+{
+  "schema": "scenario-formal-lock-v1",
+  "campaignID": "P030_SV3_20261116",
+  "designSHA256": "dfe37646f58f2fae724fb375aa8f1c863c7bb950fc850c37ba64d9de4879e329",
+  "registrationSHA256": "3a524fde1b0a5f0d031a3da7a94ac9755180cd7ae89edc1972fa09c84b16a12d",
+  "sources": {
+    "tools/scenario_formal.py": "fcc5a460d37703cc6a5b9de99e854c26556f4446d629f61ef71dde7a12526465",
+    "tools/scenario_formal_analysis.py": "511828bb43dbc0247c0e4ffc0658fa8f8e2e770795832ce7430f52e2979bbb00",
+    "tools/scenario_agent_contract.py": "ef414cbd5322d848fd0a9f6c3f95d45e2941d3b31b7bd66b1aa6cc87a3415bb1",
+    "tools/scenario_agent_transport.py": "6978360d074df7c226de950c31bc5754e6865005bef7650f0265219e220259ef",
+    "tools/scenario_reason_coding.py": "55031ed93b9f8539acfd98591ed4aad695cb501dd9c0e2752c99b7db44270ac3",
+    "tools/individual_analysis.py": "a0f9086ca8af4fd1466c11a9f945c3140f30e50d77a4b544f30913260ddd91c8",
+    "tools/individual_sampling.py": "573a13c7a0721509a0901889a408a5208dfcbc8d485c100fd13733c4a70fd6ae",
+    "research/scenario_decisions_v2/reason-codebook.v3.json": "b25d67f68cd0fea99273d4176d0d0497560d4f1e1bb60444006f1fa9d1d398b8",
+    "research/scenario_decisions_v2/stage2-scenario-specification.json": "715c40a46ce56f03d62519b92217d6e28f5197091b1ee84bc078ccd932ad97df"
+  },
+  "priorPilotCompletionSHA256": "076b8aa44e33b070363b34bb826da4bf98eaa85d26ae9c7a53ae44729774c3d7",
+  "codebookSHA256": "b25d67f68cd0fea99273d4176d0d0497560d4f1e1bb60444006f1fa9d1d398b8",
+  "trials": 840,
+  "executedAtLock": 0,
+  "validationOnly": false,
+  "lockID": "eb5b35d6f58193969a45216669c0aa5d25425794134a12da7b7fc766c732d716"
+}

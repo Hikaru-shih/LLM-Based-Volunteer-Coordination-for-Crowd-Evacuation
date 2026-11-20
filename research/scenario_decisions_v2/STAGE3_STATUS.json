@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-16",
+  "stage3": "decision_interface_and_transport_implemented_and_offline_verified",
+  "newAPICalls": 0,
+  "newUnityRuns": 0,
+  "newTestsPassed": 27,
+  "legacyRegressionTestsPassed": 11,
+  "persistentSyntheticRoundtrip": 16,
+  "syntheticStopFixture": 1,
+  "contractSpecimens": 62,
+  "notPilotSamples": true,
+  "model": "gpt-6-luna",
+  "liveProviderSupportVerified": false,
+  "liveSemanticGatesPassed": false,
+  "livePilotStarted": false,
+  "formalStudyRegistered": false,
+  "productionSourceSHA": "1466241a451c2d176f942ec8ebe26452a9df7e1a1be440d841f4b8cf83e2c59a",
+  "report": "STAGE3_INTERFACE.zh-TW.md",
+  "interfaceBundle": "experiment_records/data/preparation/scenario_agent_stage3_20261116",
+  "next": "Align stage4 reason coding across both tasks, lock stage5 sampling/registrations, then execute actual semantic gates before free choice.",
+  "unityLiveSceneReplaced": false,
+  "scope": "Individual decision layer and CLI; physical extension remains separate from original reference utility."
+}

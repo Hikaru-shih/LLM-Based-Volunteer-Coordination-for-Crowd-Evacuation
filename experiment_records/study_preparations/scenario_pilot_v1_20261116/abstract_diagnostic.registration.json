@@ -1,0 +1,1970 @@
+{
+  "schema": "scenario-interface-registration-v1",
+  "registeredAtUtc": "2026-11-16T11:30:56.053835+00:00",
+  "purpose": "Stage3 isolated development/pilot, not formal or human evidence",
+  "bundlePath": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\preparation\\scenario_agent_stage3_20261116",
+  "bundleSHA256": "ba0a228cb449cdcff0fb25de6f9a1830a02bbca67ea9a60ee4b74741d92db109",
+  "phase": "abstract_diagnostic",
+  "repetitions": 2,
+  "orderSeed": 2026111651,
+  "execution": "live",
+  "providerAvailabilityVerified": false,
+  "model": "gpt-6-luna",
+  "endpoint": "https://api.openai.com/v1/chat/completions",
+  "attemptsPerTrial": 1,
+  "maxAttempts": 36,
+  "maxGeneratedTokens": 7920,
+  "maxPayloadBytes": 91788,
+  "timeoutSeconds": 60,
+  "wallSeconds": 2340,
+  "automaticRetries": 0,
+  "stopRule": "Stop on first invalid/network/model/duplicate-ID error. No automatic resume, refill or overwrite.",
+  "costDisclosure": "Fixed request and output ceilings, not a dollar-price guarantee. Input usage and account pricing remain provider-side.",
+  "gateEvidence": [],
+  "trials": [
+    {
+      "trialID": "AD_A70_R90_Q95_r001",
+      "case": {
+        "caseID": "AD_A70_R90_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "8714f92459cc93b189e310d84f714a379fde61407923e53864f7fad99e7deb8b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R90_Q50_r002",
+      "case": {
+        "caseID": "AD_A70_R90_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b2a536649196e668dcdb7411eda14438337411e6a996065c7ad821e706add500",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R10_Q50_r001",
+      "case": {
+        "caseID": "AD_A70_R10_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c707060a378d50e772bb83832ad23cb930b036675638352810f6d32b54192cf9",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R90_Q05_r002",
+      "case": {
+        "caseID": "AD_A30_R90_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "faf022c1891cdf99ca66b7b0c70eb01f70cd372f60d6ff5717102bf82363ce60",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R10_Q05_r002",
+      "case": {
+        "caseID": "AD_A70_R10_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "bacd503689bd8e5220c13a7d242510ed09b33a9392244965a5213bb66a1bcc96",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R10_Q50_r001",
+      "case": {
+        "caseID": "AD_A30_R10_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c60b9746692524f276876be1e3f918c02ad222d62b6221a7c3db6f40a9dff76b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R50_Q95_r002",
+      "case": {
+        "caseID": "AD_A70_R50_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "e94848c3ee5a4c4c75457f213794389c3af77a73db28c13fef01e19f38a7f734",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R50_Q05_r002",
+      "case": {
+        "caseID": "AD_A70_R50_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "f6f7495cf2caf6f3d4690f32ae70c12eb5896c6122543f7db8d15e12d3584182",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R50_Q95_r001",
+      "case": {
+        "caseID": "AD_A70_R50_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "e94848c3ee5a4c4c75457f213794389c3af77a73db28c13fef01e19f38a7f734",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R90_Q95_r002",
+      "case": {
+        "caseID": "AD_A70_R90_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "8714f92459cc93b189e310d84f714a379fde61407923e53864f7fad99e7deb8b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R90_Q50_r002",
+      "case": {
+        "caseID": "AD_A30_R90_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "9120ed154563ee12716f5d22f1ec0c7d89cd2a2d45f4912069611b5438c12e9b",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R10_Q95_r002",
+      "case": {
+        "caseID": "AD_A30_R10_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "3a8df96e5593db70bbc574927fe1ba608bbaac98bca49866595aa82e9eb84d75",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R50_Q05_r001",
+      "case": {
+        "caseID": "AD_A70_R50_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "f6f7495cf2caf6f3d4690f32ae70c12eb5896c6122543f7db8d15e12d3584182",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R90_Q95_r002",
+      "case": {
+        "caseID": "AD_A30_R90_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "65a9362f9c0d6306dec3670060cd108d5380c2883feb021d3424306acc1d066f",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R90_Q50_r001",
+      "case": {
+        "caseID": "AD_A70_R90_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b2a536649196e668dcdb7411eda14438337411e6a996065c7ad821e706add500",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R50_Q50_r002",
+      "case": {
+        "caseID": "AD_A30_R50_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "544e0f1e160832a92e6f419f36bc17c92c004107d94674daa1a91c162c26f5c4",
+        "diagnosticExpectedAction": null,
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R50_Q50_r002",
+      "case": {
+        "caseID": "AD_A70_R50_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "0fca9a5a7ba28282a1fddd63c5536f9b07cdf7910a619407834b0816aaf74fb5",
+        "diagnosticExpectedAction": null,
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R50_Q95_r001",
+      "case": {
+        "caseID": "AD_A30_R50_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "1f0772d75267759fda3e0ec7cb6af64c8cb29ea1734a29ac2721c9bab06222eb",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R90_Q95_r001",
+      "case": {
+        "caseID": "AD_A30_R90_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "65a9362f9c0d6306dec3670060cd108d5380c2883feb021d3424306acc1d066f",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R50_Q05_r002",
+      "case": {
+        "caseID": "AD_A30_R50_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b7d88d84eef104018181dd3c6b504bf19ebe58d1906dbc1e237eb07025facb5d",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R50_Q50_r001",
+      "case": {
+        "caseID": "AD_A70_R50_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.35, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "0fca9a5a7ba28282a1fddd63c5536f9b07cdf7910a619407834b0816aaf74fb5",
+        "diagnosticExpectedAction": null,
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R50_Q95_r002",
+      "case": {
+        "caseID": "AD_A30_R50_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "1f0772d75267759fda3e0ec7cb6af64c8cb29ea1734a29ac2721c9bab06222eb",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R10_Q95_r001",
+      "case": {
+        "caseID": "AD_A30_R10_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "3a8df96e5593db70bbc574927fe1ba608bbaac98bca49866595aa82e9eb84d75",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R10_Q05_r001",
+      "case": {
+        "caseID": "AD_A30_R10_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d934ac13cda0fd859aa2a251eaf28cdadcf18a9e0acbfd9123778d45476933d0",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R10_Q05_r001",
+      "case": {
+        "caseID": "AD_A70_R10_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "bacd503689bd8e5220c13a7d242510ed09b33a9392244965a5213bb66a1bcc96",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R50_Q50_r001",
+      "case": {
+        "caseID": "AD_A30_R50_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "544e0f1e160832a92e6f419f36bc17c92c004107d94674daa1a91c162c26f5c4",
+        "diagnosticExpectedAction": null,
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R90_Q05_r001",
+      "case": {
+        "caseID": "AD_A30_R90_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "faf022c1891cdf99ca66b7b0c70eb01f70cd372f60d6ff5717102bf82363ce60",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R10_Q95_r002",
+      "case": {
+        "caseID": "AD_A70_R10_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d026f316757b789cc06e4059bb173a92c02457fa48d2571277fd89834e6e293c",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R10_Q95_r001",
+      "case": {
+        "caseID": "AD_A70_R10_Q95",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.95. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d026f316757b789cc06e4059bb173a92c02457fa48d2571277fd89834e6e293c",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.95
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R50_Q05_r001",
+      "case": {
+        "caseID": "AD_A30_R50_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R50",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.15, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "b7d88d84eef104018181dd3c6b504bf19ebe58d1906dbc1e237eb07025facb5d",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A70_R10_Q50_r002",
+      "case": {
+        "caseID": "AD_A70_R10_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.07, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c707060a378d50e772bb83832ad23cb930b036675638352810f6d32b54192cf9",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R10_Q05_r002",
+      "case": {
+        "caseID": "AD_A30_R10_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "d934ac13cda0fd859aa2a251eaf28cdadcf18a9e0acbfd9123778d45476933d0",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A30_R90_Q50_r001",
+      "case": {
+        "caseID": "AD_A30_R90_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.27, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "9120ed154563ee12716f5d22f1ec0c7d89cd2a2d45f4912069611b5438c12e9b",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 1
+    },
+    {
+      "trialID": "AD_A30_R10_Q50_r002",
+      "case": {
+        "caseID": "AD_A30_R10_Q50",
+        "phase": "abstract_diagnostic",
+        "scenario": "A30_R10",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.5. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.03, \"failureCost\": 0.3}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "c60b9746692524f276876be1e3f918c02ad222d62b6221a7c3db6f40a9dff76b",
+        "diagnosticExpectedAction": "participate",
+        "metadata": {
+          "qAllOthersDecline": 0.5
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R90_Q05_r002",
+      "case": {
+        "caseID": "AD_A70_R90_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "88b31eb0d1c39b5d73878eab1804c25f324457f67431969b2afae0c6ab2a00d3",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 2
+    },
+    {
+      "trialID": "AD_A70_R90_Q05_r001",
+      "case": {
+        "caseID": "AD_A70_R90_Q05",
+        "phase": "abstract_diagnostic",
+        "scenario": "A70_R90",
+        "information": "known_joint_belief",
+        "payload": {
+          "model": "gpt-6-luna",
+          "temperature": 0.15,
+          "reasoning_effort": "none",
+          "max_completion_tokens": 220,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You represent one pedestrian making an individual assistance decision. Respond with strict JSON only."
+            },
+            {
+              "role": "user",
+              "content": "You decide only your own willingness to assist with movable obstacles during a simulated evacuation. Actions are participate and decline_assistance. Both are allowed. You cannot assign other people or control movement. Willingness does not guarantee activation, obstacle movement or faster evacuation. Do not invent injuries, deadlines, alternative exits or commitments from other pedestrians. You have no personal history. Give a brief explanation based on the supplied information. Explanation text describes your stated considerations, not a report of hidden calculations.\nReturn exactly a JSON object with explanation and decision. decision must be participate or decline_assistance.\n\nThis task uses the reference volunteer game's normalized dimensionless utilities, not measured travel times or money. Baseline utility is 1. Participation gives 1-cv regardless of others. Declining gives 1 if at least one other player participates, and 1-av if all other players decline. There is no extra participation bonus. X includes you. tau is the unblocked fraction of the relevant exit. omega is a separate coefficient in the reference behavioral law, not injury risk, personality or a payoff deduction. The reference adjusts behavior separately from the base payoff table. Do not reproduce its probability or infer a utility loss from tau or omega.\nFor this diagnostic only, the joint probability that ALL other players decline is q=0.05. It is not an individual probability. Choose the action with greater risk-neutral expected utility. Either action is acceptable on an exact tie.\nObservation:\n{\"nearbyAgentCount\": 10, \"exitNonBlockage\": 0.4, \"unwillingness\": 5, \"volunteerCost\": 0.63, \"failureCost\": 0.7}"
+            }
+          ],
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "paper_individual_choice",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "explanation": {
+                    "type": "string"
+                  },
+                  "decision": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "explanation",
+                  "decision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "payloadSHA256": "88b31eb0d1c39b5d73878eab1804c25f324457f67431969b2afae0c6ab2a00d3",
+        "diagnosticExpectedAction": "decline_assistance",
+        "metadata": {
+          "qAllOthersDecline": 0.05
+        }
+      },
+      "repetition": 1
+    }
+  ]
+}

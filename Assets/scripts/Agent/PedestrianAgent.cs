@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class PedestrianAgent : MonoBehaviour
 {
+    public int AgentID { get; set; }
     public Vector2Int gridPos;
     public Vector2Int desiredPos;
     public Vector2Int moveDirection = Vector2Int.zero;
@@ -36,6 +37,34 @@ public class PedestrianAgent : MonoBehaviour
     private Vector2Int assignedObstaclePos = new Vector2Int(-1, -1);
     private int assignedObstacleId = -1;
     private int volunteerActionRange = 2;
+    private bool pendingTrace;
+    private Vector2Int lastTracePosition;
+    private bool hasLastTrace;
+    private readonly HashSet<Vector2Int> rejectedObstacles = new HashSet<Vector2Int>();
+    private StaticFloorField localFloorField;
+    private int localFieldRevision = -1;
+    public void RememberRejectedObstacle(Vector2Int obstacle)
+    {
+        if (rejectedObstacles.Add(obstacle)) localFloorField = null;
+    }
+    private HashSet<Vector2Int> occupiedCells;
+    public void SetOccupancy(HashSet<Vector2Int> cells) { occupiedCells = cells; }
+    private bool OccupiedByOther(Vector2Int cell) => cell != gridPos && occupiedCells != null && occupiedCells.Contains(cell);
+
+    public bool ConsumeTrace(out Vector2Int position)
+    {
+        position = lastTracePosition;
+        bool result = pendingTrace;
+        pendingTrace = false;
+        return result;
+    }
+    public float TraceAdjustedValue(Vector2Int position)
+    {
+        float value=dynamicField != null ? dynamicField.GetValue(position) : 0;
+        if(!hasLastTrace || position!=lastTracePosition) return value;
+        float adjusted=value-(dynamicField != null ? dynamicField.trailStrength : 1);
+        return world.paperNeighborhood ? adjusted : Mathf.Max(0,adjusted);
+    }
 
     public void Init(GridWorld world, Vector2Int startPos)
     {
@@ -44,6 +73,15 @@ public class PedestrianAgent : MonoBehaviour
         desiredPos = startPos;
         moveDirection = Vector2Int.zero;
         evaluatedObstacleIds.Clear();
+        rejectedObstacles.Clear();
+        localFloorField = null;
+        localFieldRevision = -1;
+        evacuated = false;
+        evacuationStep = -1;
+        pendingTrace = false;
+        hasLastTrace = false;
+        path.Clear();
+        pathIndex = 0;
         hasAssignedObstacle = false;
         assignedObstaclePos = new Vector2Int(-1, -1);
         assignedObstacleId = -1;
@@ -139,7 +177,7 @@ public class PedestrianAgent : MonoBehaviour
             return gridPos;
         }
 
-        if (IsActiveVolunteer() && hasAssignedObstacle)
+        if ((IsActiveVolunteer() || IsPotentialVolunteer()) && hasAssignedObstacle)
         {
             int distToTarget = Mathf.Abs(gridPos.x - assignedObstaclePos.x) + Mathf.Abs(gridPos.y - assignedObstaclePos.y);
             if (distToTarget <= volunteerActionRange)
@@ -149,30 +187,26 @@ public class PedestrianAgent : MonoBehaviour
                 return desiredPos;
             }
 
-            List<Vector2Int> volunteerNeighbors = new List<Vector2Int>
-            {
-                gridPos,
-                gridPos + new Vector2Int(0, -1),
-                gridPos + new Vector2Int(0, 1),
-                gridPos + new Vector2Int(-1, 0),
-                gridPos + new Vector2Int(1, 0)
-            };
-
+            // Breadth-first approach avoids the old greedy local minima.
+            var frontier = new Queue<Vector2Int>();
+            var firstSteps = new Dictionary<Vector2Int, Vector2Int>();
+            frontier.Enqueue(gridPos);
+            firstSteps[gridPos] = gridPos;
             Vector2Int bestPos = gridPos;
-            float bestDist = distToTarget;
-            for (int i = 0; i < volunteerNeighbors.Count; i++)
+            var directions = new[] { Vector2Int.down, Vector2Int.up, Vector2Int.left, Vector2Int.right };
+            while (frontier.Count > 0)
             {
-                Vector2Int nextPos = volunteerNeighbors[i];
-                if (!world.InBounds(nextPos.x, nextPos.y))
-                    continue;
-                if (!world.IsWalkable(nextPos.x, nextPos.y) && world.cells[nextPos.x, nextPos.y] != CellType.Exit)
-                    continue;
-
-                float nextDist = Mathf.Abs(nextPos.x - assignedObstaclePos.x) + Mathf.Abs(nextPos.y - assignedObstaclePos.y);
-                if (nextDist < bestDist)
+                var current = frontier.Dequeue();
+                int remaining = Mathf.Abs(current.x - assignedObstaclePos.x) + Mathf.Abs(current.y - assignedObstaclePos.y);
+                if (remaining <= volunteerActionRange) { bestPos = firstSteps[current]; break; }
+                foreach (var direction in directions)
                 {
-                    bestDist = nextDist;
-                    bestPos = nextPos;
+                    var next = current + direction;
+                    if (!world.IsWalkable(next.x, next.y) || OccupiedByOther(next) || firstSteps.ContainsKey(next)) continue;
+                    // An approach route must not accidentally evacuate its volunteer.
+                    if (world.cells[next.x, next.y] == CellType.Exit) continue;
+                    firstSteps[next] = current == gridPos ? next : firstSteps[current];
+                    frontier.Enqueue(next);
                 }
             }
 
@@ -193,11 +227,11 @@ public class PedestrianAgent : MonoBehaviour
             if (path != null && path.Count > 1 && pathIndex < path.Count)
             {
                 Vector2Int nextPos = path[pathIndex];
+                if (OccupiedByOther(nextPos)) { desiredPos = gridPos; return desiredPos; }
                 if (world.IsWalkable(nextPos.x, nextPos.y) || world.cells[nextPos.x, nextPos.y] == CellType.Exit)
                 {
                     moveDirection = nextPos - gridPos;
                     desiredPos = nextPos;
-                    pathIndex++;
                     return desiredPos;
                 }
             }
@@ -211,6 +245,17 @@ public class PedestrianAgent : MonoBehaviour
             gridPos + new Vector2Int(-1, 0),
             gridPos + new Vector2Int(1, 0)
         };
+
+        StaticFloorField navigationField = floorField;
+        if (rejectedObstacles.Count > 0)
+        {
+            if (localFloorField == null || localFieldRevision != world.ObstacleRevision)
+            {
+                localFloorField = new StaticFloorField(world, rejectedObstacles);
+                localFieldRevision = world.ObstacleRevision;
+            }
+            navigationField = localFloorField;
+        }
 
 
         List<Vector2Int> walkableNeighbors = new List<Vector2Int>();
@@ -237,38 +282,38 @@ public class PedestrianAgent : MonoBehaviour
         }
 
         float totalScore = 0f;
+        float maxExponent = float.NegativeInfinity;
 
         // 先檢查鄰居是否有出口格，有的話直接進去
         foreach (Vector2Int nextPos in neighbors)
         {
             if (!world.InBounds(nextPos.x, nextPos.y))
                 continue;
-            if (world.cells[nextPos.x, nextPos.y] == CellType.Exit)
-            {
-                desiredPos = nextPos;
-                return desiredPos;
-            }
-        }
 
-        // 沒有出口才走原本的分數選擇
-        foreach (Vector2Int nextPos in neighbors)
-        {
-            if (!world.InBounds(nextPos.x, nextPos.y))
-                continue;
+            if (OccupiedByOther(nextPos)) continue;
 
             if (!world.IsWalkable(nextPos.x, nextPos.y) && world.cells[nextPos.x, nextPos.y] != CellType.Exit)
                 continue;
 
-            float staticDist = floorField != null ? floorField.GetDistance(nextPos) : 0f;
+            float staticDist = navigationField != null ? navigationField.GetDistance(nextPos) : 0f;
             float dynamicVal = dynamicField != null ? dynamicField.GetValue(nextPos) : 0f;
             float anticipationVal = anticipationField != null ? anticipationField.GetValue(nextPos) : 0f;
 
-            float exponent = -ks * staticDist + kd * dynamicVal - ka * anticipationVal;
-            float score = Mathf.Exp(exponent / temperature);
+            if (staticDist == float.MaxValue && ks > 0f) continue;
+            if (hasLastTrace && nextPos == lastTracePosition)
+                dynamicVal = Mathf.Max(0f, dynamicVal - (dynamicField != null ? dynamicField.trailStrength : 1f));
+            float exponent = (-ks * staticDist + kd * dynamicVal - ka * anticipationVal) / Mathf.Max(0.01f, temperature);
 
             walkableNeighbors.Add(nextPos);
-            scores.Add(score);
-            totalScore += score;
+            scores.Add(exponent);
+            maxExponent = Mathf.Max(maxExponent, exponent);
+        }
+
+        // Stable softmax avoids freezing distant agents through exp underflow.
+        for (int i = 0; i < scores.Count; i++)
+        {
+            scores[i] = Mathf.Exp(scores[i] - maxExponent);
+            totalScore += scores[i];
         }
 
         Vector2Int chosenPos = gridPos;
@@ -321,8 +366,17 @@ public class PedestrianAgent : MonoBehaviour
             return;
         }
 
+        int distance = Mathf.Abs(desiredPos.x - gridPos.x) + Mathf.Abs(desiredPos.y - gridPos.y);
+        if (world.paperNeighborhood ? Mathf.Max(Mathf.Abs(desiredPos.x-gridPos.x),Mathf.Abs(desiredPos.y-gridPos.y))>1 : distance>1)
+        { desiredPos = gridPos; return; }
+        Vector2Int previous = gridPos;
+        bool wasEvacuee = !IsActiveVolunteer() && (world.paperNeighborhood || !IsPotentialVolunteer());
+
         if (world.cells[desiredPos.x, desiredPos.y] == CellType.Exit)
         {
+            if (wasEvacuee && desiredPos != previous)
+            { lastTracePosition = previous; pendingTrace = true; hasLastTrace = true; }
+            gridPos = desiredPos;
             evacuated = true;
             gameObject.SetActive(false);
             return;
@@ -331,6 +385,12 @@ public class PedestrianAgent : MonoBehaviour
         if (world.IsWalkable(desiredPos.x, desiredPos.y))
         {
             gridPos = desiredPos;
+            if (gridPos != previous)
+            {
+                if (wasEvacuee) { lastTracePosition = previous; pendingTrace = true; hasLastTrace = true; }
+                if (movementStrategy == MovementStrategy.AStar && pathIndex < path.Count && path[pathIndex] == gridPos)
+                    pathIndex++;
+            }
             transform.position = world.GridToWorld(gridPos.x, gridPos.y);
         }
         else

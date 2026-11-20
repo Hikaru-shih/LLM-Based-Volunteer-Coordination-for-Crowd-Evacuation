@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-16",
+  "currentMilestone": "formal_collection_full_reason_review_analysis_complete",
+  "formalCampaign": "P030_SV3_20261116",
+  "formalChoices": 840,
+  "formalReasonReviewed": 840,
+  "formalCells": 28,
+  "perCondition": 30,
+  "technicalInvalid": 0,
+  "retries": 0,
+  "newAPICallsThisStep": 840,
+  "pilotChoicesSeparate": 208,
+  "developmentPhysicalRunsSeparate": 174,
+  "newUnityRunsThisStep": 0,
+  "humanValidation": false,
+  "paperUtilityToTimeValidated": false,
+  "currentReport": "FORMAL_RESULTS.zh-TW.md",
+  "previousDesignReceipt": "STAGE6_STATUS.json",
+  "next": "Integrate completed findings into thesis and professor review; no automatic further experiments."
+}

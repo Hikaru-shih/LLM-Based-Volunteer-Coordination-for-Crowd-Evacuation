@@ -26,6 +26,10 @@ public class VolunteerDilemma
 
     public float volunteerCost = 1.0f;
     public float volunteerBenefit = 2.0f;
+    public int observationRange = 5;
+    public int exitApproachDepth = 3;
+    public float failureCost = 2f;
+    public float unwillingness = 1f;
 
     private int helpActions = 0;
     private int cooperativeCount = 0;
@@ -63,12 +67,12 @@ public class VolunteerDilemma
         }
 
         Vector2Int volunteerPos = volunteer.GetGridPos();
-        List<PedestrianAgent> nearbyAgents = agentManager.GetAgentsNearPosition(volunteerPos, 3);
+        List<PedestrianAgent> nearbyAgents = agentManager.GetAgentsNearPosition(targetObstacle, observationRange);
 
         int activeAgents = 0;
         foreach (PedestrianAgent agent in nearbyAgents)
         {
-            if (!agent.IsEvacuated() && agent.GetRole() == PedestrianAgent.Role.Evacuee)
+            if (!agent.IsEvacuated() && agent.GetVolunteerState() == PedestrianAgent.VolunteerState.None)
             {
                 activeAgents++;
             }
@@ -76,7 +80,7 @@ public class VolunteerDilemma
 
         LLMDecisionPolicy.VolunteerContext context = new LLMDecisionPolicy.VolunteerContext
         {
-            agentId = volunteer.gameObject.GetInstanceID(),
+            agentId = volunteer.AgentID,
             role = volunteer.GetRole().ToString(),
             positionX = volunteerPos.x,
             positionY = volunteerPos.y,
@@ -84,7 +88,9 @@ public class VolunteerDilemma
             distanceToExit = floorField.GetDistance(volunteerPos),
             currentVolunteers = agentManager.GetAgentsByRole(PedestrianAgent.Role.Volunteer).Count,
             nearbyObstacles = world.GetObstaclePositions().Count,
-            nearbyObstaclePositions = GetNearbyObstaclePositions(volunteerPos, 5),
+            nearbyObstaclePositions = GetNearbyObstaclePositions(volunteerPos, observationRange),
+            exitNonBlockage = ResearchEnvironment.ExitNonBlockage(world, targetObstacle, exitApproachDepth),
+            volunteerCost = volunteerCost, failureCost = failureCost, unwillingness = unwillingness,
             mapWidth = world.width,
             mapHeight = world.height,
             targetObstacleX = targetObstacle.x,

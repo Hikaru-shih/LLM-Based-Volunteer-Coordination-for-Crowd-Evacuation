@@ -1,0 +1,18 @@
+{
+  "reason": "User explicitly requested deletion of recent manual trial runs.",
+  "deletedRunIDs": [
+    "2026-11-12_081800_262_dd6885b8_run001_Random",
+    "2026-11-12_081938_955_bc308cb6_run001_Random",
+    "2026-11-12_082016_866_09026b40_run001_Random",
+    "2026-11-12_082034_920_3cd508cd_run001_Random",
+    "2026-11-12_082043_348_d88dc770_run001_Random",
+    "2026-11-12_082100_152_3293f358_run001_Random",
+    "2026-11-12_082147_157_f2109e9a_run001_Random",
+    "2026-11-12_082234_716_70183d04_run001_Random",
+    "2026-11-12_082301_586_0d620482_run001_Random",
+    "2026-11-12_082341_457_7d360202_run001_Random"
+  ],
+  "deletedRawFiles": 95,
+  "deletedEntryFiles": 10,
+  "formalDataPreserved": true
+}

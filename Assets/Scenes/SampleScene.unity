@@ -2184,6 +2184,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c47adb144680b4aa0891f82eda8e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  researchScenario: 0
+  obstacleHandlingMode: 0
+  paperDestinationRule: 0
+  paperDestinationExitDistance: 2
+  paperAbandonDensity: 0.01
+  paperDensityWindow: 10
+  paperReplanAfterSteps: 10
+  paperExitWidthWeighting: 1
+  paperManipulationSteps: 1
+  paperSigmaMetric: 0
+  paperDiffusion: 0.3
+  paperDecay: 0.1
+  paperAnticipationRadius: 6
+  baseSeed: 2026
+  maxSimulationSteps: 0
+  researchExitWidth: 3
+  exitApproachDepth: 3
+  obstacleRemovalWorkSteps: 5
+  yielderDefectionCost: 1
+  yielderFriction: 0
+  allowMockFallback: 0
+  useLLMAssignment: 0
   batchRunCount: 30
   world: {fileID: 909573718}
   agentCount: 90
@@ -2196,9 +2218,16 @@ MonoBehaviour:
   movementStrategy: 3
   volunteerDecisionMode: 1
   volunteerSelectionInterval: 10
-  obstacleVisibilityRange: 5
+  obstacleVisibilityRange: 20
   obstacleActionRange: 2
   maxLLMRequestsPerStep: 3
+  paperDecisionReplayPath: 
+  agentInformation: 0
+  agentPromptWording: 0
+  agentResearchPhase: 0
+  cooperationCalibrationPath: 
+  lockedStudyPlanPath: 
+  maxAgentRequestsPerRun: 0
   volunteerCost: 1
   failureCost: 2
   unwillingnessOmega: 1
@@ -3152,6 +3181,7 @@ MonoBehaviour:
   height: 30
   cellSize: 1
   origin: {x: 0, y: 0, z: 0}
+  fixedObstaclePositions: []
   exitPositions:
   - {x: 13, y: 0}
   - {x: 14, y: 0}

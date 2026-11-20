@@ -1,0 +1,8 @@
+{
+  "campaignID": "P030_SV3_20261116",
+  "lockID": "eb5b35d6f58193969a45216669c0aa5d25425794134a12da7b7fc766c732d716",
+  "registrationSHA256": "3a524fde1b0a5f0d031a3da7a94ac9755180cd7ae89edc1972fa09c84b16a12d",
+  "outputPath": "D:\\LLM-Based-Volunteer-Coordination-for-Crowd-Evacuation\\experiment_records\\data\\scenario_formal_v1_20261116",
+  "reservedAtUtc": "2026-11-16T13:08:19.400131+00:00",
+  "meaning": "Exclusive dispatch reservation, not proof of an HTTP call; never automatically clear or resend."
+}

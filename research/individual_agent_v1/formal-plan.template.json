@@ -1,0 +1,267 @@
+{
+  "schema": "individual-sampling-v1",
+  "purpose": "Formal: individual controlled-state comparison; template, requires validated model and study lock",
+  "model": "MODEL_AFTER_VALIDATION",
+  "promptVersion": "paper-agent-v5",
+  "repetitions": 100,
+  "orderSeed": 20261112,
+  "maxHttpAttempts": 9000,
+  "scenarios": [
+    {
+      "id": "main_00",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_01",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_02",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_03",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_04",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_05",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_06",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_07",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_08",
+      "nearbyAgentCount": 2,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_09",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_10",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_11",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_12",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_13",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_14",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_15",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_16",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_17",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_18",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_19",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_20",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_21",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_22",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_23",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_24",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.005,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_25",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "main_26",
+      "nearbyAgentCount": 10,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.2,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "single_0",
+      "nearbyAgentCount": 1,
+      "exitNonBlockage": 0,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "single_1",
+      "nearbyAgentCount": 1,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "single_2",
+      "nearbyAgentCount": 1,
+      "exitNonBlockage": 0.9,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "zero_players",
+      "nearbyAgentCount": 0,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "unblocked",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 1,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    }
+  ]
+}

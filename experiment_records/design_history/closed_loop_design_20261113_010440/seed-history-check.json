@@ -1,0 +1,25 @@
+{
+  "checkedAtUtc": "2026-11-12T17:06:02.715794+00:00",
+  "sources": [
+    "experiment_records/RUN_CATALOG.csv",
+    "experiment_records/data/**/*_config.json"
+  ],
+  "recordedDistinctPhysicalSeeds": 102,
+  "candidateRanges": {
+    "development": [
+      41001,
+      41006
+    ],
+    "calibration": [
+      42001,
+      42010
+    ],
+    "finalTest": [
+      51001,
+      51030
+    ]
+  },
+  "recordedOverlaps": [],
+  "scope": "Current saved project catalog/config artifacts only; recheck at final lock; no new run was executed",
+  "candidateStatus": "Provisional, not a formal seed lock"
+}

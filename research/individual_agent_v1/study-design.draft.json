@@ -1,0 +1,112 @@
+{
+  "schema": "individual-study-design-v1",
+  "status": "draft_before_pilot_not_formal_lock",
+  "model": "gpt-4o-mini",
+  "modelStatus": "Existing project alias; provisional, provider version must be recorded during pilot",
+  "promptVersion": "paper-agent-v5",
+  "information": "Core",
+  "responseProtocol": "paper-choice-response-v1",
+  "researchQuestion": "How do individual LLM willingness responses vary with help cost, player count and exit nonblockage relative to the original adjusted behavioral model?",
+  "pilotPlan": "research/individual_agent_v1/pilot.sampling.json",
+  "pilotComprehension": {
+    "version": "paper-comprehension-v3",
+    "questions": 10,
+    "requiredCorrect": 10,
+    "maxHttpAttempts": 30
+  },
+  "pilotLimits": {
+    "choiceLogicalCalls": 24,
+    "comprehensionLogicalCalls": 10,
+    "totalLogicalCalls": 34,
+    "maxHttpAttempts": 102,
+    "monetaryBudget": null,
+    "paidExecutionAuthorized": false
+  },
+  "proposedFactors": {
+    "nearbyAgentCount": [
+      2,
+      5,
+      10
+    ],
+    "exitNonBlockage": [
+      0,
+      0.5,
+      0.9
+    ],
+    "volunteerCost": [
+      0.005,
+      0.05,
+      0.2
+    ],
+    "failureCost": [
+      0.5
+    ],
+    "unwillingness": [
+      5
+    ]
+  },
+  "singlePlayer": {
+    "nearbyAgentCount": 1,
+    "exitNonBlockage": [
+      0,
+      0.5,
+      0.9
+    ],
+    "volunteerCost": 0.05,
+    "failureCost": 0.5,
+    "unwillingness": 5,
+    "analysis": "Separate reference-boundary stratum"
+  },
+  "noGameControls": [
+    {
+      "id": "zero_players",
+      "nearbyAgentCount": 0,
+      "exitNonBlockage": 0.5,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    {
+      "id": "unblocked",
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 1,
+      "volunteerCost": 0.05,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    }
+  ],
+  "proposedFormalRepetitions": 100,
+  "formalRepetitionsLocked": false,
+  "formalExecutionAuthorized": false,
+  "primaryContrast": {
+    "factor": "volunteerCost",
+    "fromValue": 0.005,
+    "toValue": 0.2,
+    "fixed": {
+      "nearbyAgentCount": 5,
+      "exitNonBlockage": 0.5,
+      "failureCost": 0.5,
+      "unwillingness": 5
+    },
+    "metric": "(LLM participation rate at high cost - at low cost) - (reference probability at high cost - at low cost)"
+  },
+  "secondary": "Per-state gaps and other one-factor changes; descriptive and exploratory; single-player separate; no-game not refusal",
+  "intervalPolicy": "Pointwise Wilson 95%; unpaired Newcombe-Wilson changes; no multiplicity-corrected significance claim",
+  "sampleSizeRule": "100 planned choices/state is a provisional precision target (worst-case Wilson half-width about .10 if all valid), not a powered detection claim. Review feasibility and precision only after pilot, document changes, then freeze before formal collection. Never top up based on willingness or significance.",
+  "failurePolicy": "Stop session on invalid response, retain it, never code as refusal or silently replace. Preserve missing/interrupted records and conservative reservations; no repair retries. Transport retries at most 3 attempts per choice. Resume may repeat unknown-result interruptions, with old reservation retained.",
+  "separation": "Pilot and comprehension excluded from formal estimates and RandomMatched calibration. Independent calibration before closed-loop tests; no reuse of old global S5 or old study lock.",
+  "pilotAcceptance": [
+    "All 10 v3 comprehension questions correct on the selected v5 task/model",
+    "Valid current-schema response, exact raw audit and no credential leakage",
+    "No-game controls make zero calls; single-player decisions remain autonomous",
+    "Estimate failure rate, latency, known usage and coarse variation without a cooperation-rate pass criterion",
+    "Record provider model identifiers, source/prompt hashes and all failures before revising the draft"
+  ],
+  "pendingBeforeFormal": [
+    "Bounded live compatibility/comprehension and pilot",
+    "Document feasible repetition count and cost estimate; obtain actual monetary cap before live execution",
+    "Freeze final factors, primary/secondary contrasts and any multiplicity policy",
+    "Implement/enforce new formal individual-study lock; existing legacy lock is not applicable",
+    "P3-B closed-loop specification, shared horizon/seeds, independent RandomMatched calibration and outcome-analysis adaptation"
+  ]
+}

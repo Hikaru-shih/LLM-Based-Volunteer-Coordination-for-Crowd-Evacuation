@@ -4,6 +4,9 @@ namespace Decision
 {
     public class MockLLMVolunteerStrategy : IVolunteerDecisionStrategy
     {
+        private readonly System.Func<float> sample;
+        public MockLLMVolunteerStrategy(System.Func<float> sample = null)
+        { this.sample = sample ?? (() => Random.value); }
         public bool ShouldVolunteer(VolunteerDecisionContext context)
         {
             // Mock LLM tendency: high blockage/obstacle load and low active volunteers increase willingness.
@@ -19,7 +22,7 @@ namespace Decision
                 + 0.10f * proximityScore;
 
             pVolunteer = Mathf.Clamp01(pVolunteer);
-            return Random.value < pVolunteer;
+            return sample() < pVolunteer;
         }
     }
 }
